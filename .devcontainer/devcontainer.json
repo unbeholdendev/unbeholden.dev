@@ -1,6 +1,7 @@
 {
   "name": "unbeholden.dev",
   "build": { "dockerfile": "Dockerfile" },
+  "appPort": ["4321:4321"],
   "containerEnv": {
     "FORGEJO_URL": "https://git.home.unbeholden.dev",
     "IS_SANDBOX": "1",

@@ -1,15 +1,5 @@
 {
   "name": "unbeholden.dev",
-  "build": { "dockerfile": "Dockerfile" },
-  "appPort": ["4321:4321"],
-  "containerEnv": {
-    "FORGEJO_URL": "https://git.home.unbeholden.dev",
-    "IS_SANDBOX": "1",
-    "CLAUDE_CONFIG_DIR": "/root/.claude",
-  },
-  "mounts": [
-    "source=claude-auth,target=/root/.claude,type=volume",
-    "source=/root/.forgejo-token,target=/root/.forgejo-token,type=bind,readonly"
-  ],
-  "postCreateCommand": ".devcontainer/post-create.sh"
+  "image": "oven/bun:1.4",
+  "appPort": ["4321:4321"]
 }

@@ -21,9 +21,9 @@ Every tool takes `owner` and `repo`, which are not inferred from `git remote`:
 - **List issues**: `mcp__forgejo__list_repo_issues` with `state` (`open`/`closed`/`all`),
   `labels` (comma-separated names) and `type` (`issues` or `pulls`).
 - **Comment**: `mcp__forgejo__create_issue_comment`.
-- **Apply labels**: `mcp__forgejo__add_issue_labels` with comma-separated label *names*.
-- **Remove labels**: `mcp__forgejo__remove_issue_labels` takes comma-separated numeric
-  label *IDs*, not names. Get the IDs from `mcp__forgejo__list_repo_labels`.
+- **Apply / remove labels**: `mcp__forgejo__add_issue_labels` and
+  `mcp__forgejo__remove_issue_labels` both take comma-separated numeric label *IDs*, not
+  names. Get the IDs from `mcp__forgejo__list_repo_labels`.
 - **Close**: post the explanation with `create_issue_comment`, then
   `mcp__forgejo__issue_state_change` with `state: "closed"`. State changes carry no comment.
 - **Assign**: `mcp__forgejo__update_issue` with `assignee`. There is no `@me`; pass the

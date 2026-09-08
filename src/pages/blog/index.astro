@@ -1,0 +1,11 @@
+---
+import EntryList from '../../components/EntryList.astro';
+import Layout from '../../layouts/Layout.astro';
+import { listEntries } from '../../lib/entries';
+
+const entries = await listEntries();
+---
+
+<Layout title="Blog · unbeholden.dev">
+	<EntryList entries={entries} />
+</Layout>

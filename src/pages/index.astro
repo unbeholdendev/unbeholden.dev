@@ -1,5 +1,9 @@
 ---
+import EntryList from '../components/EntryList.astro';
 import Layout from '../layouts/Layout.astro';
+import { listEntries } from '../lib/entries';
+
+const latest = (await listEntries()).slice(0, 3);
 ---
 
 <Layout>
@@ -8,4 +12,7 @@ import Layout from '../layouts/Layout.astro';
 		configurations that make daily work less annoying. Every system written about here runs in my
 		own rack or on a VPS I pay for.
 	</p>
+	<div class="mt-[clamp(40px,6vw,80px)]">
+		<EntryList entries={latest} />
+	</div>
 </Layout>

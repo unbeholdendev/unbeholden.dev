@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { articleStats } from '../lib/entries';
+
+interface Props {
+	entries: CollectionEntry<'entries'>[];
+}
+
+const { entries } = Astro.props;
+const dateFormat = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' });
+---
+
+<ul>
+	{
+		entries.map((entry) => {
+			const href = `/blog/${entry.id}`;
+			return (
+				<li class="border-rule flex flex-col-reverse gap-x-12 gap-y-6 border-t py-[clamp(28px,4vw,44px)] sm:flex-row sm:items-start sm:justify-between">
+					<div class="max-w-[620px]">
+						<h2 class="font-display text-[clamp(28px,3.4vw,42px)] leading-[1.12] font-medium">
+							<a href={href}>{entry.data.title}</a>
+						</h2>
+						<p class="text-dim mt-3 leading-[1.7]">{entry.data.summary}</p>
+						<p class="meta mt-5 flex flex-wrap gap-x-7 gap-y-2">
+							<span>{dateFormat.format(entry.data.date)}</span>
+							<span>Read · {articleStats(entry).minutes} min</span>
+							{entry.data.video && <a href={href}>Watch · {entry.data.video.duration}</a>}
+						</p>
+					</div>
+					<a href={href} class="w-full shrink-0 sm:max-w-[320px]">
+						<Image
+							src={entry.data.poster.src}
+							alt={entry.data.poster.alt}
+							widths={[320, 640]}
+							sizes="(min-width: 640px) 320px, 100vw"
+							class="bg-bg2 aspect-video w-full object-cover"
+							loading="lazy"
+						/>
+					</a>
+				</li>
+			);
+		})
+	}
+</ul>

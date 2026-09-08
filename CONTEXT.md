@@ -10,7 +10,7 @@ the same standard it argues for.
 ### Content
 
 **Entry**:
-One published thing. An entry always has an article and may also have a film.
+One published thing. An entry always has an article and may also have a video.
 _Avoid_: post, blog post. Also avoid `guide` and `note` as types — the distinction between
 a maintained entry and a dated one is carried by an `updated` date, not by a second type.
 
@@ -18,13 +18,13 @@ a maintained entry and a dated one is carried by an `updated` date, not by a sec
 The written rendition of an entry. Always present.
 _Avoid_: body, content, copy.
 
-**Film**:
-The video rendition of an entry, published on YouTube. Optional, and complementary to the
+**Video**:
+The recorded rendition of an entry, published on YouTube. Optional, and complementary to the
 article rather than a substitute for it.
-_Avoid_: video.
+_Avoid_: film.
 
 **Poster**:
-The single image an entry carries. It heads the entry, stands in for an unplayed film, and
+The single image an entry carries. It heads the entry, stands in for an unplayed video, and
 serves as the entry's social preview.
 _Avoid_: thumbnail, hero, featured image.
 

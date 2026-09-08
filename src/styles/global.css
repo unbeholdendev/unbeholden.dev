@@ -1,9 +1,65 @@
 @import "tailwindcss";
 
-@theme {
+@theme inline {
   --font-display: 'Bodoni Moda', Didot, serif;
   --font-body: Literata, Georgia, serif;
   --font-mono: 'IBM Plex Mono', monospace;
+
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg2);
+  --color-fg: var(--fg);
+  --color-dim: var(--dim);
+  --color-faint: var(--faint);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+}
+
+:root {
+  color-scheme: dark;
+
+  --bg: light-dark(oklch(0.974 0.010 85), oklch(0.145 0.008 40));
+  --bg2: light-dark(oklch(0.938 0.012 85), oklch(0.19 0.010 40));
+  --fg: light-dark(oklch(0.185 0.012 40), oklch(0.945 0.014 85));
+  --dim: light-dark(oklch(0.40 0.014 45), oklch(0.72 0.014 70));
+  --faint: light-dark(oklch(0.50 0.014 50), oklch(0.60 0.014 60));
+  --rule: light-dark(oklch(0.85 0.012 60), oklch(0.28 0.012 50));
+  --accent: light-dark(oklch(0.47 0.15 28), oklch(0.66 0.145 28));
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.72;
+  }
+
+  a:hover {
+    color: var(--accent);
+  }
+}
+
+@utility meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
 }
 
 @font-face {

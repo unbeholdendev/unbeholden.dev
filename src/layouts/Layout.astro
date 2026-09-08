@@ -3,9 +3,12 @@ import '../styles/global.css';
 
 interface Props {
 	title?: string;
+	description?: string;
+	image?: string;
 }
 
-const { title = 'unbeholden.dev' } = Astro.props;
+const { title = 'unbeholden.dev', description, image } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
 const year = new Date().getFullYear();
 ---
 
@@ -25,6 +28,12 @@ const year = new Date().getFullYear();
 		/>
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<link rel="canonical" href={canonical} />
+		<meta property="og:title" content={title} />
+		<meta property="og:url" content={canonical} />
+		{description && <meta name="description" content={description} />}
+		{description && <meta property="og:description" content={description} />}
+		{image && <meta property="og:image" content={new URL(image, Astro.site)} />}
 		<script is:inline>
 			if (localStorage.theme) document.documentElement.dataset.theme = localStorage.theme;
 		</script>

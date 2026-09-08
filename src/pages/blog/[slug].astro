@@ -1,0 +1,93 @@
+---
+import { render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { listEntries, articleStats } from '../../lib/entries';
+
+export async function getStaticPaths() {
+	const entries = await listEntries();
+	return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { title, date, summary, topic, poster, updated, video, stats, notes } = entry.data;
+const { Content } = await render(entry);
+const { words, minutes } = articleStats(entry);
+
+const social = await getImage({ src: poster.src, format: 'jpg', width: 1200, height: 675 });
+const PosterFrame = video ? 'a' : 'div';
+const day = (d: Date) =>
+	d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const rail = [
+	['Published', day(date)],
+	...(updated ? [['Updated', day(updated)]] : []),
+	['Read', `${minutes} min`],
+	['Words', words.toLocaleString('en-GB')],
+	['Topic', topic],
+];
+---
+
+<Layout title={`${title} · Unbeholden`} description={summary} image={social.src}>
+	<article
+		class="flex flex-col gap-x-[clamp(32px,6vw,88px)] gap-y-12 lg:grid lg:grid-cols-[minmax(0,620px)_minmax(0,300px)] lg:items-start"
+	>
+		<div class="article max-w-[620px] text-[19px] leading-[1.8]">
+			<h1
+				class="font-display text-[clamp(32px,4.4vw,54px)] leading-[1.08] font-medium text-balance"
+			>
+				{title}
+			</h1>
+			<p class="text-dim mt-6 text-[20px] leading-[1.7]">{summary}</p>
+			<Content />
+		</div>
+
+		<aside class="meta text-dim flex flex-col gap-8 leading-[1.9] lg:sticky lg:top-8">
+			<PosterFrame
+				href={video && `https://www.youtube.com/watch?v=${video.id}`}
+				class="group border-rule block border"
+			>
+				<Image src={poster.src} alt={poster.alt} widths={[300, 600]} sizes="300px" />
+				{
+					video && (
+						<span class="border-rule group-hover:text-accent flex justify-between border-t px-3 py-2">
+							<span>▶ Watch</span>
+							<span>{video.duration}</span>
+						</span>
+					)
+				}
+			</PosterFrame>
+
+			<dl class="grid grid-cols-[auto_1fr] gap-x-5">
+				{
+					rail.map(([term, value]) => (
+						<Fragment>
+							<dt class="text-faint">{term}</dt>
+							<dd>{value}</dd>
+						</Fragment>
+					))
+				}
+			</dl>
+
+			{
+				stats && (
+					<ul class="border-rule border-t pt-4">
+						{stats.map((stat) => (
+							<li>{stat}</li>
+						))}
+					</ul>
+				)
+			}
+
+			{
+				notes && (
+					<ol class="border-rule list-inside list-decimal border-t pt-4 tracking-normal normal-case">
+						{notes.map((note) => (
+							<li class="mb-2">{note}</li>
+						))}
+					</ol>
+				)
+			}
+		</aside>
+	</article>
+</Layout>

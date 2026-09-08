@@ -52,6 +52,11 @@
   a:hover {
     color: var(--accent);
   }
+
+  ::selection {
+    background: var(--accent);
+    color: oklch(0.97 0 0);
+  }
 }
 
 @layer components {
@@ -99,8 +104,8 @@
 
   .article :not(pre) > code {
     font-family: var(--font-mono);
-    font-size: 0.85em;
-    color: var(--accent);
+    font-size: 0.84em;
+    color: var(--dim);
   }
 
   .article pre {
@@ -116,6 +121,13 @@
     border: 0;
     border-top: 1px solid var(--rule);
   }
+}
+
+@utility title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 20;
+  text-wrap: balance;
 }
 
 @utility meta {

@@ -22,7 +22,7 @@ const PosterFrame = video ? 'a' : 'div';
 	<article class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-12">
 		<div class="min-w-0 flex-1 basis-[480px]">
 			<h1
-				class="font-display mb-[clamp(28px,4vw,44px)] max-w-[660px] text-[clamp(32px,4.4vw,54px)] leading-[1.04] font-semibold text-balance"
+				class="title mb-[clamp(28px,4vw,44px)] max-w-[660px] text-[clamp(32px,4.4vw,54px)] leading-[1.04]"
 			>
 				{title}
 			</h1>
@@ -40,7 +40,13 @@ const PosterFrame = video ? 'a' : 'div';
 					href={video && `https://www.youtube.com/watch?v=${video.id}`}
 					class="border-rule block border"
 				>
-					<Image src={poster.src} alt={poster.alt} widths={[300, 600]} sizes="300px" />
+					<Image
+						src={poster.src}
+						alt={poster.alt}
+						widths={[300, 600]}
+						sizes="300px"
+						class="bg-bg2 aspect-video w-full object-cover"
+					/>
 				</PosterFrame>
 				{
 					video && (

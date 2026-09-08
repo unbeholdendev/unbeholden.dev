@@ -29,6 +29,12 @@ const year = new Date().getFullYear();
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<link rel="canonical" href={canonical} />
+		<link
+			rel="alternate"
+			type="application/atom+xml"
+			title="Unbeholden"
+			href={new URL('/feed.xml', Astro.site)}
+		/>
 		<meta property="og:title" content={title} />
 		<meta property="og:url" content={canonical} />
 		{description && <meta name="description" content={description} />}

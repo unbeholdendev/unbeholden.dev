@@ -1,5 +1,5 @@
 ---
-title: Self-hosting email in 2026, the honest version
+title: 'Self-hosting email in 2026: the honest version'
 date: 2026-08-14
 updated: 2026-09-01
 summary: Running your own mail server is neither impossible nor free. Here is what it actually costs, and the two things that will break.
@@ -30,6 +30,9 @@ and the second half is the part that people skip.
 - A VPS with reverse DNS you can set
 - A domain with somewhere sane to edit the zone
 - Roughly two hours, once
+
+Everything after that is time, and the time does not arrive evenly. It comes as one long
+afternoon at the start, and then in twenty-minute pieces, at random, for years.
 
 ## The zone
 
@@ -66,9 +69,19 @@ share of it lands in spam.
 
 > Two things, and neither is the software.
 
-The first is your IP's reputation, which you inherit rather than earn. The second is a
-provider deciding, without notice, that port 25 is now a paid feature.
+1. Your IP's reputation, which you inherit rather than earn. A block that was fine on the
+   day you rented it can be listed a month later for something a neighbour did.
+2. Your provider's terms. Port 25 is a business decision, and the business can change its
+   mind between one invoice and the next.
+
+Neither is fixed by configuration, which is why neither appears in the guides.
 
 ## Whether to do it
+
+The protocol itself is not the hard part and never was. [RFC 5321](https://www.rfc-editor.org/rfc/rfc5321)
+has been stable for longer than most of the services competing to hold your mail for you,
+and a machine that speaks it will still be speaking it in ten years.
+
+---
 
 If the answer has to be yes for everyone, no. If it can be yes for you, then yes.

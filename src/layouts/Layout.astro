@@ -46,58 +46,57 @@ const year = new Date().getFullYear();
 	</head>
 	<body>
 		<div class="mx-auto max-w-[1360px] px-[clamp(24px,6vw,90px)]">
-			<header class="pt-[clamp(28px,5vw,64px)]">
-				<div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
+			<header class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] pt-[clamp(28px,5vw,64px)]">
+				<div class="min-w-0 flex-1 basis-[480px]">
 					<a
 						href="/"
-						class="font-display text-[clamp(40px,9vw,124px)] leading-[0.92] font-medium tracking-[0.02em] uppercase"
+						class="font-display block text-[clamp(44px,9vw,124px)] leading-[0.86] font-medium tracking-[0.02em] uppercase"
 						>Unbeholden</a
 					>
-					<p class="meta text-right leading-[1.9]">
-						Digital sovereignty, in practice<br />unbeholden.dev
-					</p>
+					<nav class="meta mt-[clamp(20px,3vw,38px)] flex flex-wrap gap-5 tracking-[0.18em]">
+						<a href="/">Front</a>
+						<a href="/blog/">Blog</a>
+						<a href="/about">About</a>
+						<a href="/feed.xml" class="text-accent">RSS</a>
+						<button
+							id="mode-toggle"
+							type="button"
+							aria-label="Switch colour mode"
+							class="meta hover:text-accent cursor-pointer tracking-[0.18em]"></button>
+					</nav>
 				</div>
-				<nav
-					class="meta border-rule mt-[clamp(20px,3vw,36px)] flex items-center justify-between gap-6 border-t pt-3"
-				>
-					<p>
-						<a href="/blog/">Blog</a> · <a href="/about">About</a> · <a href="/feed.xml">RSS</a>
-					</p>
-					<button
-						id="mode-toggle"
-						type="button"
-						aria-label="Switch colour mode"
-						class="hover:text-accent -my-2 cursor-pointer p-2"
-					>
-						<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-							<circle cx="8" cy="8" r="7.25" fill="none" stroke="currentColor" stroke-width="1.5" />
-							<path d="M8 0.75a7.25 7.25 0 0 0 0 14.5z" fill="currentColor" />
-						</svg>
-					</button>
-				</nav>
-			</header>
-			<main class="pt-[clamp(40px,6vw,80px)]"><slot /></main>
-			<footer
-				class="meta border-rule mt-[clamp(56px,9vw,120px)] flex flex-wrap justify-between gap-x-10 gap-y-3 border-t py-8 leading-[1.9]"
-			>
-				<p>© {year} Unbeholden</p>
-				<p>Prose CC BY 4.0 · Code CC0/MIT</p>
-				<p>
-					<a href="mailto:hello@unbeholden.dev">Email</a> · <a
-						href="https://git.home.unbeholden.dev/unbeholden">Forgejo</a
-					>
+				<p class="meta min-w-0 flex-1 basis-[260px] self-end leading-[2]">
+					Digital sovereignty<br />unbeholden.dev
 				</p>
+			</header>
+			<main class="py-[clamp(50px,9vw,120px)]"><slot /></main>
+			<footer
+				class="meta border-rule flex flex-wrap justify-between gap-x-5 gap-y-3 border-t pt-5 pb-9 tracking-[0.18em]"
+			>
+				<span>© {year} Unbeholden</span>
+				<span class="flex flex-wrap gap-5">
+					<a href="https://git.home.unbeholden.dev/unbeholden">Forgejo</a>
+					<a href="mailto:hello@unbeholden.dev">hello@unbeholden.dev</a>
+					<a href="/feed.xml" class="text-accent">RSS</a>
+				</span>
 			</footer>
 		</div>
 		<script is:inline>
-			document.getElementById('mode-toggle').addEventListener('click', () => {
+			(() => {
 				const root = document.documentElement;
-				const dark = root.dataset.theme
-					? root.dataset.theme === 'dark'
-					: !matchMedia('(prefers-color-scheme: light)').matches;
-				root.dataset.theme = dark ? 'light' : 'dark';
-				localStorage.setItem('theme', root.dataset.theme);
-			});
+				const button = document.getElementById('mode-toggle');
+				const dark = () =>
+					root.dataset.theme
+						? root.dataset.theme === 'dark'
+						: !matchMedia('(prefers-color-scheme: light)').matches;
+				const label = () => (button.textContent = dark() ? 'Light' : 'Dark');
+				button.addEventListener('click', () => {
+					root.dataset.theme = dark() ? 'light' : 'dark';
+					localStorage.setItem('theme', root.dataset.theme);
+					label();
+				});
+				label();
+			})();
 		</script>
 	</body>
 </html>

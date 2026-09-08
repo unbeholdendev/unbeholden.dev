@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
-import { listEntries, articleStats } from '../../lib/entries';
+import { listEntries, articleStats, day } from '../../lib/entries';
 
 export async function getStaticPaths() {
 	const entries = await listEntries();
@@ -10,82 +10,72 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, date, summary, topic, poster, updated, video, stats, notes } = entry.data;
+const { title, date, summary, topic, poster, video, stats, notes } = entry.data;
 const { Content } = await render(entry);
 const { words, minutes } = articleStats(entry);
 
 const social = await getImage({ src: poster.src, format: 'jpg', width: 1200, height: 675 });
 const PosterFrame = video ? 'a' : 'div';
-const day = (d: Date) =>
-	d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-
-const rail = [
-	['Published', day(date)],
-	...(updated ? [['Updated', day(updated)]] : []),
-	['Read', `${minutes} min`],
-	['Words', words.toLocaleString('en-GB')],
-	['Topic', topic],
-];
 ---
 
 <Layout title={`${title} · Unbeholden`} description={summary} image={social.src}>
-	<article
-		class="flex flex-col gap-x-[clamp(32px,6vw,88px)] gap-y-12 lg:grid lg:grid-cols-[minmax(0,620px)_minmax(0,300px)] lg:items-start"
-	>
-		<div class="article max-w-[620px] text-[19px] leading-[1.8]">
+	<article class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-12">
+		<div class="min-w-0 flex-1 basis-[480px]">
 			<h1
-				class="font-display text-[clamp(32px,4.4vw,54px)] leading-[1.08] font-medium text-balance"
+				class="font-display mb-[clamp(28px,4vw,44px)] max-w-[660px] text-[clamp(32px,4.4vw,54px)] leading-[1.04] font-semibold text-balance"
 			>
 				{title}
 			</h1>
-			<p class="text-dim mt-6 text-[20px] leading-[1.7]">{summary}</p>
-			<Content />
+			<div class="article max-w-[620px] text-[19px] leading-[1.8]">
+				<p class="text-dim text-[20px]">{summary}</p>
+				<Content />
+			</div>
 		</div>
 
-		<aside class="meta text-dim flex flex-col gap-8 leading-[1.9] lg:sticky lg:top-8">
-			<PosterFrame
-				href={video && `https://www.youtube.com/watch?v=${video.id}`}
-				class="group border-rule block border"
-			>
-				<Image src={poster.src} alt={poster.alt} widths={[300, 600]} sizes="300px" />
+		<aside
+			class="text-faint min-w-0 flex-1 basis-[260px] font-mono text-[10.5px] leading-[2] tracking-[0.08em] sm:max-w-[300px]"
+		>
+			<figure class="mb-[26px]">
+				<PosterFrame
+					href={video && `https://www.youtube.com/watch?v=${video.id}`}
+					class="border-rule block border"
+				>
+					<Image src={poster.src} alt={poster.alt} widths={[300, 600]} sizes="300px" />
+				</PosterFrame>
 				{
 					video && (
-						<span class="border-rule group-hover:text-accent flex justify-between border-t px-3 py-2">
-							<span>▶ Watch</span>
-							<span>{video.duration}</span>
-						</span>
+						<figcaption class="text-dim mt-2.5 leading-[1.7] tracking-[0.14em] uppercase">
+							Watch instead — {video.duration}
+						</figcaption>
 					)
 				}
-			</PosterFrame>
-
-			<dl class="grid grid-cols-[auto_1fr] gap-x-5">
-				{
-					rail.map(([term, value]) => (
-						<Fragment>
-							<dt class="text-faint">{term}</dt>
-							<dd>{value}</dd>
-						</Fragment>
-					))
-				}
-			</dl>
-
+			</figure>
+			<p class="mb-[22px]">
+				{day(date)}<br />{minutes} min · {words.toLocaleString('en-GB')} words<br />{topic}
+			</p>
 			{
 				stats && (
-					<ul class="border-rule border-t pt-4">
+					<p class="text-dim mb-[22px]">
 						{stats.map((stat) => (
-							<li>{stat}</li>
+							<Fragment>
+								{stat}
+								<br />
+							</Fragment>
 						))}
-					</ul>
+					</p>
 				)
 			}
-
 			{
 				notes && (
-					<ol class="border-rule list-inside list-decimal border-t pt-4 tracking-normal normal-case">
-						{notes.map((note) => (
-							<li class="mb-2">{note}</li>
+					<p>
+						{notes.map((note, i) => (
+							<Fragment>
+								<span class="text-accent">{i + 1} </span>
+								{note}
+								<br />
+							</Fragment>
 						))}
-					</ol>
+					</p>
 				)
 			}
 		</aside>

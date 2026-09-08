@@ -2,6 +2,12 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 const WORDS_PER_MINUTE = 220;
 
+export const day = new Intl.DateTimeFormat('en-GB', {
+	day: 'numeric',
+	month: 'short',
+	year: 'numeric',
+}).format;
+
 export async function listEntries() {
 	const entries = await getCollection('entries', ({ data }) => import.meta.env.DEV || !data.draft);
 	return entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());

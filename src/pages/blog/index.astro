@@ -1,11 +1,38 @@
 ---
-import EntryList from '../../components/EntryList.astro';
 import Layout from '../../layouts/Layout.astro';
-import { listEntries } from '../../lib/entries';
+import { listEntries, articleStats, day } from '../../lib/entries';
 
 const entries = await listEntries();
 ---
 
 <Layout title="Blog · unbeholden.dev">
-	<EntryList entries={entries} />
+	<section class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-10">
+		<div class="min-w-0 flex-1 basis-[480px]">
+			<p class="meta mb-[clamp(30px,4vw,50px)] tracking-[0.18em]">Blog</p>
+			{
+				entries.map((entry) => (
+					<a href={`/blog/${entry.id}`} class="mb-[clamp(30px,4.5vw,50px)] block last:mb-0">
+						<h2 class="font-display max-w-[660px] text-[clamp(28px,3.4vw,40px)] leading-[1.08] font-semibold text-balance">
+							{entry.data.title}
+						</h2>
+						<p class="text-dim mt-2.5 max-w-[520px]">{entry.data.summary}</p>
+						<p class="meta mt-2">
+							{day(entry.data.date)} · {articleStats(entry).minutes} min
+							{entry.data.video && (
+								<Fragment>
+									{' · '}
+									<span class="text-accent">video {entry.data.video.duration}</span>
+								</Fragment>
+							)}
+						</p>
+					</a>
+				))
+			}
+		</div>
+		<p
+			class="text-faint min-w-0 flex-1 basis-[260px] font-mono text-[10.5px] leading-[2] tracking-[0.10em] sm:max-w-[200px]"
+		>
+			<a href="/feed.xml" class="text-accent">feed.xml</a><br />for anything that<br />speaks RSS
+		</p>
+	</section>
 </Layout>

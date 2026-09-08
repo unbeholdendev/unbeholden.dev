@@ -3,32 +3,33 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="About · unbeholden.dev">
-	<div class="max-w-[620px] text-[19px] leading-[1.8]">
-		<h1 class="font-display text-[clamp(32px,4.4vw,54px)] leading-[1.1] font-medium">About</h1>
-		<p class="text-dim mt-6 text-[20px]">
-			I'm Jakub. Software you depend on should be software you can inspect, move, and turn off. That
-			is a practical position, not a political one.
-		</p>
-
-		<h2 class="meta mt-12">The rules</h2>
-		<p class="mt-3">
-			Everything here runs on hardware I own or a VPS I pay for. No sponsorships. No affiliate
-			links. If a build fails I publish the failure.
-		</p>
-
-		<h2 class="meta mt-10">The dependency budget</h2>
-		<p class="mt-3">
-			No third-party analytics: self-hosted, cookieless, no personal data. No comments and no share
-			buttons anywhere. Replies come by email.
-		</p>
-
-		<h2 class="meta mt-10">Licence</h2>
-		<p class="mt-3">Prose is CC BY 4.0. Code snippets are CC0/MIT.</p>
-
-		<h2 class="meta mt-10">Elsewhere</h2>
-		<p class="text-dim mt-3">
-			<a href="mailto:hello@unbeholden.dev">hello@unbeholden.dev</a><br />
-			<a href="https://git.home.unbeholden.dev/unbeholden">git.home.unbeholden.dev/unbeholden</a>
-		</p>
-	</div>
+	<section class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-12">
+		<div class="min-w-0 flex-1 basis-[480px] sm:max-w-[620px] text-[19px] leading-[1.8]">
+			<p class="meta mb-[clamp(28px,4vw,44px)] tracking-[0.18em]">About</p>
+			<p>
+				I'm Jakub. Software you depend on should be software you can inspect, move, and turn off.
+				That is a practical position, not a political one. What interests me is what it costs, what
+				it breaks, and whether it holds up on a Tuesday when something goes wrong.
+			</p>
+			<p class="text-dim mt-[26px]">
+				Everything here runs on hardware I own or a VPS I pay for. No sponsorships, no affiliate
+				links, no third-party analytics, no comments and no share buttons. Replies come by email. If
+				a build fails I publish the failure.
+			</p>
+			<p class="text-dim mt-[26px]">Prose is CC BY 4.0. Code snippets are CC0/MIT.</p>
+		</div>
+		<div
+			class="text-dim flex min-w-0 flex-1 basis-[260px] flex-col gap-4 font-mono text-[11px] leading-[2] tracking-[0.06em] sm:max-w-[240px]"
+		>
+			<a href="https://git.home.unbeholden.dev/unbeholden"
+				>Forgejo<br /><span class="text-faint">git.home.unbeholden.dev/unbeholden</span></a
+			>
+			<a href="mailto:hello@unbeholden.dev"
+				>Email<br /><span class="text-faint">hello@unbeholden.dev</span></a
+			>
+			<a href="/feed.xml" class="text-accent"
+				>RSS<br /><span class="text-faint">unbeholden.dev/feed.xml</span></a
+			>
+		</div>
+	</section>
 </Layout>

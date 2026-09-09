@@ -9,7 +9,6 @@ interface Props {
 
 const { title = 'unbeholden.dev', description, image } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -71,14 +70,11 @@ const year = new Date().getFullYear();
 			</header>
 			<main class="py-[clamp(50px,9vw,120px)]"><slot /></main>
 			<footer
-				class="meta border-rule flex flex-wrap justify-between gap-x-5 gap-y-3 border-t pt-5 pb-9 tracking-[0.18em]"
+				class="meta border-rule flex flex-wrap gap-5 border-t pt-5 pb-9 tracking-[0.18em]"
 			>
-				<span>© {year} Unbeholden</span>
-				<span class="flex flex-wrap gap-5">
-					<a href="https://git.home.unbeholden.dev/unbeholden">Forgejo</a>
-					<a href="mailto:hello@unbeholden.dev">hello@unbeholden.dev</a>
-					<a href="/feed.xml" class="text-accent">RSS</a>
-				</span>
+				<a href="https://git.home.unbeholden.dev/unbeholden">Forgejo</a>
+				<a href="mailto:hello@unbeholden.dev">hello@unbeholden.dev</a>
+				<a href="/feed.xml" class="text-accent">RSS</a>
 			</footer>
 		</div>
 		<script is:inline>

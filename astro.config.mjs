@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
 
 // Colours are CSS custom properties, not hex, so one build serves both modes.
@@ -25,6 +26,8 @@ const shikiTheme = {
 
 export default defineConfig({
   site: 'https://unbeholden.dev',
+  // Every page stays prerendered. The adapter is here for the analytics proxy alone.
+  adapter: node({ mode: 'standalone' }),
   markdown: {
     shikiConfig: { theme: shikiTheme },
   },

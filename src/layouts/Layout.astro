@@ -9,6 +9,8 @@ interface Props {
 
 const { title = 'unbeholden.dev', description, image } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Both, or the page ships a script tag pointing at a proxy that 404s every load.
+const websiteId = import.meta.env.UMAMI_URL && import.meta.env.UMAMI_WEBSITE_ID;
 ---
 
 <!doctype html>
@@ -42,6 +44,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<script is:inline>
 			if (localStorage.theme) document.documentElement.dataset.theme = localStorage.theme;
 		</script>
+		{
+			websiteId && (
+				<script is:inline defer src="/u/script.js" data-website-id={websiteId} />
+			)
+		}
 	</head>
 	<body>
 		<div class="mx-auto max-w-[1360px] px-[clamp(24px,6vw,90px)]">

@@ -2,7 +2,8 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-const upstream = import.meta.env.UMAMI_URL;
+// import.meta.env freezes the value into the bundle at build; this has to be read at runtime.
+const upstream = process.env.UMAMI_URL;
 
 const strip = ['host', 'cookie', 'connection', 'content-length', 'accept-encoding'];
 

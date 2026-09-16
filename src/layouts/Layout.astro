@@ -9,8 +9,7 @@ interface Props {
 
 const { title = 'unbeholden.dev', description, image } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-// Both, or the page ships a script tag pointing at a proxy that 404s every load.
-const websiteId = import.meta.env.UMAMI_URL && import.meta.env.UMAMI_WEBSITE_ID;
+const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 ---
 
 <!doctype html>

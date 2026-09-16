@@ -33,13 +33,16 @@ buttons, a hosted analytics script, a webfont CDN — is out of scope by default
 ADR revisited rather than a pull request.
 
 The proxy is the one thing on the site that must run rather than be served, so the build now
-emits a Node server and every page is prerendered into it. Two variables configure it at
-build time: `UMAMI_URL`, the origin to forward to, written without a trailing slash, and
-`UMAMI_WEBSITE_ID`, which is public and rendered into the page. Leave either unset and no
-script tag is emitted at all.
+emits a Node server and every page is prerendered into it. Two variables configure it, and
+they are read at different times. `UMAMI_WEBSITE_ID` is public and rendered into the page, so
+the builder holds it and it is frozen into every prerendered file. `UMAMI_URL`, the origin to
+forward to, written without a trailing slash, is read from `process.env` by the proxy while it
+runs, and deliberately not through `import.meta.env`, which Vite would compile to a literal in
+the bundle and carry into the image. Leave the ID unset and no script tag is emitted; leave the
+URL unset and the tag is emitted and `/u/` answers 404, which the network tab shows.
 
 This moves the deployment target. `dist/` is no longer a web root: the static files are in
-`dist/client/` and the site is started with `node dist/server/entry.mjs`. The site is reached
+`dist/client/` and the site is started with `bun run dist/server/entry.mjs`. The site is reached
 through Pangolin, so the box publishes no port of its own and the Newt tunnel is the only
 route in; bind the server to whatever address Newt can reach rather than to loopback by
 reflex, since the two differ when Newt runs in a container.

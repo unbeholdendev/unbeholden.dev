@@ -104,8 +104,8 @@
 
   .article :not(pre) > code {
     font-family: var(--font-mono);
-    font-size: 0.84em;
-    color: var(--dim);
+    font-size: 0.88em;
+    color: var(--fg);
   }
 
   .article pre {

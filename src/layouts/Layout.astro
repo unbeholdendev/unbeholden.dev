@@ -59,7 +59,9 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 	</head>
 	<body>
 		<div class="mx-auto max-w-[1360px] px-[clamp(24px,6vw,90px)]">
-			<header class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] pt-[clamp(28px,5vw,64px)]">
+			<header
+				class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-[26px] pt-[clamp(28px,5vw,64px)]"
+			>
 				<div class="min-w-0 flex-1 basis-[480px]">
 					<a
 						href="/"
@@ -77,8 +79,8 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 							class="meta hover:text-accent cursor-pointer tracking-[0.18em]"></button>
 					</nav>
 				</div>
-				<p class="meta min-w-0 flex-1 basis-[260px] self-end text-[13px] leading-[1.9]">
-					Digital sovereignty<br />in practice
+				<p class="meta min-w-0 flex-1 basis-[300px] self-end text-[clamp(11px,3vw,13px)] tracking-[0.08em] text-nowrap">
+					Digital sovereignty in practice
 				</p>
 			</header>
 			<main class="py-[clamp(50px,9vw,120px)]"><slot /></main>

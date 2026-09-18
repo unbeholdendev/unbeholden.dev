@@ -37,7 +37,7 @@ const { entries } = Astro.props;
 						<Image
 							src={entry.data.poster.src}
 							alt={entry.data.poster.alt}
-							widths={[320, 640]}
+							widths={[320, 640, 960, 1280]}
 							sizes="(min-width: 640px) 320px, 100vw"
 							class="border-rule bg-bg2 aspect-video w-full border object-cover"
 							loading="lazy"

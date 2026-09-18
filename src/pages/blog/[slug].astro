@@ -19,7 +19,7 @@ const PosterFrame = video ? 'a' : 'div';
 ---
 
 <Layout title={`${title} · Unbeholden`} description={summary} image={social.src}>
-	<article class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-12">
+	<article class="flex flex-wrap-reverse gap-x-[clamp(24px,5vw,72px)] gap-y-12">
 		<div class="min-w-0 flex-1 basis-[480px]">
 			<h1
 				class="title mb-[clamp(28px,4vw,44px)] max-w-[660px] text-[clamp(32px,4.4vw,54px)] leading-[1.04]"
@@ -33,7 +33,7 @@ const PosterFrame = video ? 'a' : 'div';
 		</div>
 
 		<aside
-			class="text-dim min-w-0 flex-1 basis-[260px] font-mono text-[12px] leading-[1.9] tracking-[0.06em] sm:max-w-[300px]"
+			class="text-dim min-w-0 flex-1 basis-[260px] font-mono text-[12px] leading-[1.9] tracking-[0.06em] min-[900px]:max-w-[300px]"
 		>
 			<figure class="mb-[26px]">
 				<PosterFrame
@@ -43,8 +43,8 @@ const PosterFrame = video ? 'a' : 'div';
 					<Image
 						src={poster.src}
 						alt={poster.alt}
-						widths={[300, 600]}
-						sizes="300px"
+						widths={[300, 600, 900, 1200]}
+						sizes="(min-width: 900px) 300px, 100vw"
 						class="bg-bg2 aspect-video w-full object-cover"
 					/>
 				</PosterFrame>

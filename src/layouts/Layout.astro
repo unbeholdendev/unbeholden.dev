@@ -60,28 +60,28 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 	<body>
 		<div class="mx-auto max-w-[1360px] px-[clamp(24px,6vw,90px)]">
 			<header
-				class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-[26px] pt-[clamp(28px,5vw,64px)]"
+				class="grid gap-x-[clamp(24px,5vw,72px)] gap-y-[clamp(20px,3vw,38px)] pt-[clamp(28px,5vw,64px)] min-[940px]:grid-cols-[1.4fr_1fr]"
 			>
-				<div class="min-w-0 flex-1 basis-[480px]">
-					<a
-						href="/"
-						class="font-display block text-[clamp(44px,9vw,124px)] leading-[0.86] font-medium tracking-[0.02em] uppercase"
-						>Unbeholden</a
-					>
-					<nav class="meta mt-[clamp(20px,3vw,38px)] flex flex-wrap gap-5 tracking-[0.18em]">
-						<a href="/blog/">Blog</a>
-						<a href="/about">About</a>
-						<a href="/feed.xml" class="text-accent">RSS</a>
-						<button
-							id="mode-toggle"
-							type="button"
-							aria-label="Switch colour mode"
-							class="meta hover:text-accent cursor-pointer tracking-[0.18em]"></button>
-					</nav>
-				</div>
-				<p class="meta min-w-0 flex-1 basis-[300px] self-end text-[clamp(11px,3vw,13px)] tracking-[0.08em] text-nowrap">
+				<a
+					href="/"
+					class="font-display block min-w-0 text-[clamp(44px,9vw,124px)] leading-[0.86] font-medium tracking-[0.02em] uppercase"
+					>Unbeholden</a
+				>
+				<p
+					class="meta min-w-0 self-end text-[clamp(11px,3vw,13px)] tracking-[0.08em] text-nowrap min-[940px]:row-span-2"
+				>
 					Digital sovereignty in practice
 				</p>
+				<nav class="meta flex flex-wrap gap-5 tracking-[0.18em]">
+					<a href="/blog/">Blog</a>
+					<a href="/about">About</a>
+					<a href="/feed.xml" class="text-accent">RSS</a>
+					<button
+						id="mode-toggle"
+						type="button"
+						aria-label="Switch colour mode"
+						class="meta hover:text-accent cursor-pointer tracking-[0.18em]"></button>
+				</nav>
 			</header>
 			<main class="py-[clamp(50px,9vw,120px)]"><slot /></main>
 			<footer

@@ -20,8 +20,8 @@
   --bg: light-dark(oklch(0.974 0.010 85), oklch(0.145 0.008 40));
   --bg2: light-dark(oklch(0.938 0.012 85), oklch(0.19 0.010 40));
   --fg: light-dark(oklch(0.185 0.012 40), oklch(0.945 0.014 85));
-  --dim: light-dark(oklch(0.40 0.014 45), oklch(0.72 0.014 70));
-  --faint: light-dark(oklch(0.50 0.014 50), oklch(0.60 0.014 60));
+  --dim: light-dark(oklch(0.36 0.014 45), oklch(0.78 0.014 70));
+  --faint: light-dark(oklch(0.44 0.014 50), oklch(0.68 0.014 60));
   --rule: light-dark(oklch(0.85 0.012 60), oklch(0.28 0.012 50));
   --accent: light-dark(oklch(0.47 0.15 28), oklch(0.66 0.145 28));
 }
@@ -67,17 +67,17 @@
   .article h2,
   .article h3 {
     font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 400;
-    letter-spacing: 0.18em;
-    line-height: 1.9;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    line-height: 1.7;
     text-transform: uppercase;
     color: var(--accent);
     margin-top: clamp(40px, 6vw, 64px);
   }
 
   .article :is(h2, h3) + * {
-    margin-top: 18px;
+    margin-top: 14px;
   }
 
   .article a {
@@ -106,6 +106,8 @@
     font-family: var(--font-mono);
     font-size: 0.88em;
     color: var(--fg);
+    background: var(--bg2);
+    padding: 0.1em 0.34em;
   }
 
   .article pre {
@@ -113,8 +115,8 @@
     border-bottom: 1px solid var(--rule);
     padding: 18px 0;
     overflow-x: auto;
-    font-size: 13px;
-    line-height: 1.8;
+    font-size: 14px;
+    line-height: 1.75;
   }
 
   .article hr {
@@ -132,10 +134,10 @@
 
 @utility meta {
   font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--dim);
 }
 
 @font-face {

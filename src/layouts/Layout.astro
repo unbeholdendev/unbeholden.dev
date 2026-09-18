@@ -8,7 +8,11 @@ interface Props {
 	image?: string;
 }
 
-const { title = 'unbeholden.dev', description, image } = Astro.props;
+const {
+	title = 'unbeholden.dev',
+	description = 'Digital sovereignty, in practice. Self-hosted services, homelab and networking, Linux, and agent tooling, run on hardware I own.',
+	image,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 ---
@@ -40,8 +44,8 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 		/>
 		<meta property="og:title" content={title} />
 		<meta property="og:url" content={canonical} />
-		{description && <meta name="description" content={description} />}
-		{description && <meta property="og:description" content={description} />}
+		<meta name="description" content={description} />
+		<meta property="og:description" content={description} />
 		{image && <meta property="og:image" content={new URL(image, Astro.site)} />}
 		<!-- Rerun: a view transition swaps the root attributes, dropping data-theme. -->
 		<script is:inline data-astro-rerun>

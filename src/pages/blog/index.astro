@@ -5,7 +5,10 @@ import { listEntries, articleStats, day } from '../../lib/entries';
 const entries = await listEntries();
 ---
 
-<Layout title="Blog · unbeholden.dev">
+<Layout
+	title="Blog · unbeholden.dev"
+	description="Every entry: self-hosted services, homelab and networking, Linux, agent tooling, and the small configurations that make daily work less annoying."
+>
 	<section class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-10">
 		<div class="min-w-0 flex-1 basis-[480px]">
 			<p class="meta mb-[clamp(30px,4vw,50px)] tracking-[0.18em]">Blog</p>

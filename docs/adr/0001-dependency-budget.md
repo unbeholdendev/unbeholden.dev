@@ -52,14 +52,22 @@ instead of reading the whole site as one visitor in the country of the box. A br
 straight to Umami gets this for free, because the reverse proxy in front of Umami writes
 `X-Forwarded-For` from the connecting address. Ours is a server posting on the reader's behalf,
 so that same proxy writes our own address and every reader lands wherever the site is hosted.
-Umami reads `X-Real-IP` before `X-Forwarded-For` and a reverse proxy rewrites both, so the
-address travels in `X-Reader-IP`, which no proxy on the way knows to touch, and Umami is told to
-read it with `CLIENT_IP_HEADER=x-reader-ip`. The proxy strips any inbound `X-Reader-IP` before
-setting its own, so the value is whatever Pangolin's Traefik wrote and not what a reader asked
-for. The address is therefore only as honest as that Traefik, which drops an inbound
-`X-Forwarded-For` and writes its own from the connecting address — unless
-`forwardedHeaders.trustedIPs` on the entrypoint is set wide enough to trust readers, which would
-let one choose their own session and country.
+Umami reads `X-Real-IP` before `X-Forwarded-For`, a reverse proxy rewrites both, and no header
+survives at all: Umami takes the country from a provider header such as `cf-ipcountry` before it
+consults its own database, and the proxy in front of Umami writes that header from whoever opened
+the connection too. So the address is written into the collect payload as `payload.ip`, which
+Umami reads ahead of every header and which also turns the provider country headers off, leaving
+the database to place the visit. The value is the first entry of the inbound `X-Forwarded-For`,
+and it overwrites any `ip` a reader put in the payload. The address is therefore only as honest
+as Pangolin's Traefik, which drops an inbound `X-Forwarded-For` and writes its own from the
+connecting address — unless `forwardedHeaders.trustedIPs` on the entrypoint is set wide enough to
+trust readers, which would let one choose their own session and country.
+
+The request carries three headers onward and no more. Everything Umami records comes from the
+payload except the device, which it reads from `User-Agent`; `Content-Type` and `X-Umami-Cache`
+are the other two. Forwarding a header is what would let a reader set one, and stripping the
+awkward ones was never the alternative it looked like, since `fetch` writes its own `Host`,
+`Connection`, `Content-Length` and `Accept-Encoding` whatever is deleted first.
 
 Three things would undo the disguise, and none of them is visible from this repo. Setting
 `COLLECT_API_HOST` on the Umami build bakes an absolute origin into the tracker, which then

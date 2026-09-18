@@ -18,7 +18,7 @@
   color-scheme: dark;
 
   --bg: light-dark(oklch(0.974 0.010 85), oklch(0.145 0.008 40));
-  --bg2: light-dark(oklch(0.938 0.012 85), oklch(0.19 0.010 40));
+  --bg2: light-dark(oklch(0.925 0.012 85), oklch(0.25 0.010 40));
   --fg: light-dark(oklch(0.185 0.012 40), oklch(0.945 0.014 85));
   --dim: light-dark(oklch(0.36 0.014 45), oklch(0.78 0.014 70));
   --faint: light-dark(oklch(0.44 0.014 50), oklch(0.68 0.014 60));

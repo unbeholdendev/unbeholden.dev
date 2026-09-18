@@ -47,12 +47,19 @@ through Pangolin, so the box publishes no port of its own and the Newt tunnel is
 route in; bind the server to whatever address Newt can reach rather than to loopback by
 reflex, since the two differ when Newt runs in a container.
 
-Request headers pass through to Umami, `X-Forwarded-For` among them, which is what lets Umami
-hash a session per reader instead of reading the whole site as one visitor. The address is
-therefore only as honest as Pangolin's Traefik, which drops an inbound `X-Forwarded-For` and
-writes its own from the connecting address — unless `forwardedHeaders.trustedIPs` on the
-entrypoint is set wide enough to trust readers, which would let one choose their own session
-and country.
+The reader's address is what lets Umami hash a session per reader and place a visit on a map,
+instead of reading the whole site as one visitor in the country of the box. A browser posting
+straight to Umami gets this for free, because the reverse proxy in front of Umami writes
+`X-Forwarded-For` from the connecting address. Ours is a server posting on the reader's behalf,
+so that same proxy writes our own address and every reader lands wherever the site is hosted.
+Umami reads `X-Real-IP` before `X-Forwarded-For` and a reverse proxy rewrites both, so the
+address travels in `X-Reader-IP`, which no proxy on the way knows to touch, and Umami is told to
+read it with `CLIENT_IP_HEADER=x-reader-ip`. The proxy strips any inbound `X-Reader-IP` before
+setting its own, so the value is whatever Pangolin's Traefik wrote and not what a reader asked
+for. The address is therefore only as honest as that Traefik, which drops an inbound
+`X-Forwarded-For` and writes its own from the connecting address — unless
+`forwardedHeaders.trustedIPs` on the entrypoint is set wide enough to trust readers, which would
+let one choose their own session and country.
 
 Three things would undo the disguise, and none of them is visible from this repo. Setting
 `COLLECT_API_HOST` on the Umami build bakes an absolute origin into the tracker, which then

@@ -10,7 +10,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, date, summary, topic, poster, video, stats, notes } = entry.data;
+const { title, date, summary, topic, poster, video } = entry.data;
 const { Content } = await render(entry);
 const { words, minutes } = articleStats(entry);
 
@@ -56,34 +56,9 @@ const PosterFrame = video ? 'a' : 'div';
 					)
 				}
 			</figure>
-			<p class="mb-[22px]">
+			<p>
 				{day(date)}<br />{minutes} min · {words.toLocaleString('en-GB')} words<br />{topic}
 			</p>
-			{
-				stats && (
-					<p class="text-dim mb-[22px]">
-						{stats.map((stat) => (
-							<Fragment>
-								{stat}
-								<br />
-							</Fragment>
-						))}
-					</p>
-				)
-			}
-			{
-				notes && (
-					<p>
-						{notes.map((note, i) => (
-							<Fragment>
-								<span class="text-accent">{i + 1} </span>
-								{note}
-								<br />
-							</Fragment>
-						))}
-					</p>
-				)
-			}
 		</aside>
 	</article>
 </Layout>

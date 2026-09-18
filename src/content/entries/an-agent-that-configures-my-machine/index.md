@@ -2,15 +2,10 @@
 title: An agent that configures my machine without touching it
 date: 2026-09-18
 summary: I set up the same Linux desktop by hand twice in a few months, refused to do it a third time, and then had an agent write the configuration from a container that has never seen the machine.
-topic: Agents / NixOS
+topic: Agents / Linux
 poster:
   src: ./poster.jpg
   alt: A black ThinkPad open on a dark wooden desk, its screen filled with amber terminal text. Behind it, out of focus in the dark, a rack unit with green indicator lights.
-stats:
-  - 1 flake · 3 profiles
-  - T460s · NixOS + niri
-notes:
-  - Nothing graphical can be tested from a container, so the niri and noctalia parts of this configuration were reviewed by eye and applied by hand.
 draft: false
 ---
 

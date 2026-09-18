@@ -21,8 +21,6 @@ const entries = defineCollection({
 					duration: z.string(),
 				})
 				.optional(),
-			stats: z.array(z.string()).optional(),
-			notes: z.array(z.string()).optional(),
 			draft: z.boolean().default(false),
 		}),
 });

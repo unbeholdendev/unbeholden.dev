@@ -1,0 +1,175 @@
+---
+title: An agent that configures my machine without touching it
+date: 2026-09-18
+summary: I set up the same Linux desktop by hand twice in a few months, refused to do it a third time, and then had an agent write the configuration from a container that has never seen the machine.
+topic: Agents / Linux
+poster:
+  src: ./poster.jpg
+  alt: A black ThinkPad open on a dark wooden desk, its screen filled with amber terminal text. Behind it, out of focus in the dark, a rack unit with green indicator lights.
+draft: false
+---
+
+import Architecture from './architecture.svg';
+
+I moved off macOS recently and put Fedora on a laptop, configured by hand, the way everyone
+does it the first time. Then that laptop turned out to be broken. I sent it back and fell back
+to an old ThinkPad from a drawer.
+
+The second install went faster, because I had dotfiles: shell, editor and configuration files
+in place within minutes. Then I spent the rest of the day on everything else. Dotfiles stop at
+`$HOME`, and every change below that line, the packages, the services, the mounts, the things I
+had fixed once and forgotten, existed nowhere but on a laptop I had already posted back. So I
+did it again from memory, badly.
+
+Sitting there I decided there would not be a third time. Not because a third machine was
+likely, but because the part of my computer I cared about was the part I had never recorded.
+So everything is declared now. What I did not expect is that I would write almost none of it.
+
+## Two machines
+
+The laptop is that ThinkPad, a T460s, running NixOS with niri and noctalia. It is a thin
+client: the work happens on a host in the cupboard, and the agent has never logged into the
+laptop.
+
+<figure><Architecture /></figure>
+
+There is nothing to enforce there. A dev container holds no credential for the laptop and no
+route to it. Handed a change to my window manager, the only thing it can do is commit it.
+Forgejo is another LXC on the same host, so a branch never leaves the box, and the only thing
+that crosses back to the laptop is me running one command.
+
+Three things hold, and none of them depends on the agent behaving: it is on a different
+machine, it gets one container per repository, and it pushes as an identity that cannot merge.
+
+The whole repository was written this way. Rather than learn Nix a module at a time, I had the
+agent write the configuration and I read what came back: the disk layout, the window manager,
+the shell, the module that installs the command I use to apply any of it.
+
+## One repository, three profiles
+
+If you have not met these: a Nix flake defines a system with its inputs pinned, so the same
+definition produces the same result later. Home-manager owns the `$HOME` half and runs on its
+own on a distribution that is not NixOS. The system half is NixOS itself, the part my Fedora
+dotfiles could never have carried.
+
+The flake holds one `nixosConfigurations.t460s` and three `homeConfigurations`: `pycan@t460s`,
+`root@deb-agent` for the LXC that runs the dev containers, and one `container` profile for any
+container at all, because a container's hostname is an id nobody chose. Home-manager runs
+standalone on the last two, so Debian stays Debian.
+
+The shell I get on the laptop is the shell I get over SSH on the box and the shell the agent
+gets inside a container, because one file builds all three.
+
+## Why an agent is safe to point at this
+
+Its output is a diff.
+
+It edits Nix files in a clone, commits, and pushes a branch to my own Forgejo. Nothing it wrote
+is running anywhere.
+
+The token belongs to an agent user that can push a branch and open a pull request on any of my
+repositories, and can merge to main on none of them. That is set on the Forgejo side, where the
+agent has no reach, so it is a fact about the server and not a rule it is trusted to keep.
+
+So I run it with permissions off and no prompts. A prompt asks whether to let the agent do
+something; here nothing is being done, only a file written in a container with nowhere to
+reach, so approving or refusing would be theatre. The review happens once, on the diff.
+
+The containers reach the internet freely. They need package registries and documentation, and
+the only secret in one is a token that cannot merge anything.
+
+Applying is mine. One command, `dots`, a three-line script the repository installs into itself:
+
+```bash
+git -C "$dotfiles" switch main
+git -C "$dotfiles" pull --rebase --autostash
+sudo nixos-rebuild switch --flake "$dotfiles#t460s"
+```
+
+On the laptop that last line is a `nixos-rebuild`; on the LXC it is a `home-manager switch`,
+because that host has no system half. If the result is wrong the previous generation is still
+in the boot menu.
+
+## It tests its own environment
+
+An agent that can only guess whether its change works has written you a suggestion.
+
+The container profile is the environment the agent is standing in, so it applies its change to
+itself:
+
+```bash
+./install.sh container   # and again: it has to be idempotent
+zsh -ic exit             # has to be silent
+```
+
+Break the shell and it is the agent's own shell that breaks, immediately, in a container that
+costs nothing to throw away.
+
+The system half is checked without a NixOS machine anywhere:
+
+```bash
+nix eval .#nixosConfigurations.t460s.config.system.build.toplevel.drvPath
+```
+
+That evaluates the whole configuration of a machine the container has never seen. A malformed
+module, an option that does not exist, a package renamed upstream: all of it fails there, on
+Debian, minutes before I would have found out by rebooting into it.
+
+## What it cannot test
+
+The graphical half. There is no Wayland session in a dev container, so niri cannot run, and
+everything downstream of it is reasoning rather than evidence.
+
+My best example is a dictation tool called handy, which recorded, transcribed, and pasted
+nothing at all. niri strips `DISPLAY` from what it spawns when no X server is running, handy's
+input library then fails to construct, and handy 0.9.1 reads that handle before it dispatches,
+so every paste died on `Enigo state not initialized` and never reached the `wtype` it would
+otherwise have used. The fix is an `xwayland-satellite` that exists for handy alone and for no
+X11 app at all. Upstream moved that read in a later release, so it stops being necessary
+whenever nixpkgs catches up.
+
+Reading the issue tracker, finding the commit that moved the read, writing the module: an agent
+can do all of that from a container. Watching the paste land it cannot, so I do that bit.
+
+## What the shape buys
+
+The dev containers are long running. They are kept in herdr, a multiplexer whose sidebar tracks
+which agent is in which pane and what state it is in. Several agents at a time, on different
+repositories, none able to reach another's files.
+
+I close the lid whenever. Nothing stops. I ssh back in, attach to herdr, and it is all where I
+left it, including whatever ran while the laptop was shut. I have read the tail of a long run
+from a phone on a train.
+
+The ThinkPad was supposed to be a stopgap. Because the work happens on the other machine it has
+become the laptop I use, and a faster one would not make anything I do faster.
+
+## What it costs
+
+The box in the cupboard is a dependency of my working day now. My power and my uplink are in
+the path of everything. And a long-running container is a pet: it drifts from its definition
+quietly, and you find out what you were leaning on the day you rebuild it.
+
+Nix is a large thing to ask of anyone. Most of what is good here follows from being declarative
+rather than from Nix, but Nix is what I use and the ramp is not gentle.
+
+Secrets want care instead of convenience. A container gets one credential, a Forgejo token, by
+my answering a prompt when it is created. Never inside a remote URL, because that writes it
+into `.git/config` where a push can carry it back out. My wifi key lives in a mode 600 file
+outside the repository, because NixOS renders profile definitions into the store and the store
+is world readable.
+
+The traps are peculiar. A flake reads tracked files alone, so a new module wants `git add`
+before a switch or it may as well not exist. Home-manager refuses to write over a file already
+at the path it wants, which is correct, and is the error I see most. Anything an application
+rewrites for itself cannot live in the read-only store, so it gets a symlink out to the clone,
+and ordinary use of it then dirties the repository.
+
+## Whether it holds
+
+The T460s is the first machine I put NixOS on, and I will replace it eventually. That install is
+the test of all of this: a disk, a flake, one command, and then I find out whether I have kept
+the repository honest.
+
+What I did not plan was the agent part. It fell out of a decision I made because I could not
+face another afternoon of remembering what I had done to a computer that no longer existed.

@@ -65,6 +65,23 @@
     margin-top: 1.5em;
   }
 
+  .article > * {
+    max-width: 620px;
+  }
+
+  /* The diagram needs the whole column: at the prose measure its labels fall
+     below 10px. Narrower than 800px it scrolls rather than shrinks further. */
+  .article > figure {
+    --amber: light-dark(oklch(0.48 0.115 72), oklch(0.7 0.125 80));
+    max-width: none;
+    overflow-x: auto;
+  }
+
+  .article > figure svg {
+    display: block;
+    min-width: 800px;
+  }
+
   .article h2,
   .article h3 {
     font-family: var(--font-mono);

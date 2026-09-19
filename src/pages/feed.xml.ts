@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { render } from 'astro:content';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import { loadRenderers } from 'astro:container';
+import { getContainerRenderer } from '@astrojs/mdx';
 import { listEntries } from '../lib/entries';
 
 const escape = (text: string) => text.replace(/[<>&'"]/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -19,7 +21,10 @@ export const GET: APIRoute = async ({ site }) => {
 	const origin = new URL(site).origin;
 	const url = (path: string) => new URL(path, site).href;
 
-	const container = await AstroContainer.create();
+	// An entry is MDX, so the container needs the renderer that turns it into HTML.
+	const container = await AstroContainer.create({
+		renderers: await loadRenderers([getContainerRenderer()]),
+	});
 	const entries = (await listEntries()).filter(({ data }) => !data.draft);
 
 	const items = await Promise.all(

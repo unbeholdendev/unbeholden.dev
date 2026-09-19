@@ -16,6 +16,8 @@ export async function listEntries() {
 export function articleStats(entry: CollectionEntry<'entries'>) {
 	const prose = (entry.body ?? '')
 		.replace(/```[\s\S]*?```/g, '')
+		.replace(/^import .*$/gm, '')
+		.replace(/<[^>]*>/g, ' ')
 		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
 		.replace(/^\s*(#{1,6}|[-*+]|>|\d+\.)\s+/gm, '')
 		.replace(/[`*_~]/g, '');

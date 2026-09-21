@@ -39,7 +39,11 @@ _Avoid_: writing, journal, archive.
 ### Presentation
 
 **Masthead**:
-The block at the top of every page: the wordmark, the navigation row, and the tagline.
+The row at the top of every page, sitting on a rule: the wordmark left, the navigation right.
+
+**Statement**:
+The opening sentence of the front page and the About page, set large in the display face.
+_Avoid_: hero, tagline, strapline.
 
 **Dependency budget**:
 The rule governing which network requests a page is permitted to make. See ADR-0001.

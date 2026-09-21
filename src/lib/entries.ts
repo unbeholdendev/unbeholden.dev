@@ -4,9 +4,12 @@ const WORDS_PER_MINUTE = 220;
 
 export const day = new Intl.DateTimeFormat('en-GB', {
 	day: 'numeric',
-	month: 'short',
+	month: 'long',
 	year: 'numeric',
 }).format;
+
+export const readTime = (minutes: number) =>
+	`${minutes} minute${minutes === 1 ? '' : 's'}`;
 
 export async function listEntries() {
 	const entries = await getCollection('entries', ({ data }) => import.meta.env.DEV || !data.draft);

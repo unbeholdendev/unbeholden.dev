@@ -15,6 +15,9 @@ const {
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
+const here = Astro.url.pathname;
+const current = (section: string) =>
+	here.startsWith(section) ? 'text-fg' : 'text-faint';
 ---
 
 <!doctype html>
@@ -22,12 +25,12 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
-		<link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<link
 			rel="preload"
-			href="/fonts/bodoni-moda-latin.woff2"
+			href="/fonts/spectral-400-latin.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
@@ -58,37 +61,32 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 		}
 	</head>
 	<body>
-		<div class="mx-auto max-w-[1360px] px-[clamp(24px,6vw,90px)]">
+		<div
+			class="flex min-h-screen flex-col px-[clamp(24px,6vw,64px)] py-[clamp(28px,4vw,48px)]"
+		>
 			<header
-				class="grid gap-x-[clamp(24px,5vw,72px)] gap-y-[clamp(20px,3vw,38px)] pt-[clamp(28px,5vw,64px)] min-[940px]:grid-cols-[1.4fr_1fr]"
+				class="border-fg mx-auto flex w-full max-w-column flex-wrap items-baseline justify-between gap-x-6 gap-y-4 border-b pb-[18px]"
 			>
-				<a
-					href="/"
-					class="font-display block min-w-0 text-[clamp(44px,9vw,124px)] leading-[0.86] font-medium tracking-[0.02em] uppercase"
-					>Unbeholden</a
-				>
-				<p
-					class="meta min-w-0 self-end text-[clamp(11px,3vw,13px)] tracking-[0.08em] text-nowrap min-[940px]:row-span-2"
-				>
-					Digital sovereignty in practice
-				</p>
-				<nav class="meta flex flex-wrap gap-5 tracking-[0.18em]">
-					<a href="/blog/">Blog</a>
-					<a href="/about">About</a>
+				<a href="/" class="font-display text-wordmark uppercase">Unbeholden</a>
+				<nav class="flex flex-wrap gap-x-[clamp(16px,3vw,28px)] text-nav italic">
+					<a href="/blog/" class={current('/blog')}>Blog</a>
+					<a href="/about" class={current('/about')}>About</a>
 					<a href="/feed.xml" class="text-accent">RSS</a>
 					<button
 						id="mode-toggle"
 						type="button"
 						aria-label="Switch colour mode"
-						class="meta hover:text-accent cursor-pointer tracking-[0.18em]"></button>
+						class="text-faint hover:text-accent cursor-pointer italic"></button>
 				</nav>
 			</header>
-			<main class="py-[clamp(50px,9vw,120px)]"><slot /></main>
+			<main class="mx-auto w-full max-w-column flex-1"><slot /></main>
 			<footer
-				class="meta border-rule flex flex-wrap gap-5 border-t pt-5 pb-9 tracking-[0.18em]"
+				class="meta mx-auto flex w-full max-w-column flex-wrap justify-between gap-x-6 gap-y-2 pt-[clamp(64px,9vw,96px)]"
 			>
-				<a href="mailto:hello@unbeholden.dev">hello@unbeholden.dev</a>
-				<a href="/feed.xml" class="text-accent">RSS</a>
+				<slot name="footer">
+					<span>unbeholden.dev</span>
+					<span>Written and hosted on hardware I own and a VPS I pay for.</span>
+				</slot>
 			</footer>
 		</div>
 		<!-- Rerun: the swapped-in button carries no listener. -->
@@ -99,7 +97,7 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 				const dark = () =>
 					root.dataset.theme
 						? root.dataset.theme === 'dark'
-						: !matchMedia('(prefers-color-scheme: light)').matches;
+						: matchMedia('(prefers-color-scheme: dark)').matches;
 				const label = () => (button.textContent = dark() ? 'Light' : 'Dark');
 				button.addEventListener('click', () => {
 					root.dataset.theme = dark() ? 'light' : 'dark';

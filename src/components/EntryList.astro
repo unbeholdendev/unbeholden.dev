@@ -1,7 +1,6 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import { articleStats, day } from '../lib/entries';
+import { articleStats, day, readTime } from '../lib/entries';
 
 interface Props {
 	entries: CollectionEntry<'entries'>[];
@@ -10,41 +9,29 @@ interface Props {
 const { entries } = Astro.props;
 ---
 
-<ul class="flex flex-col gap-[clamp(36px,5vw,60px)]">
+<div class="border-rule border-t">
 	{
 		entries.map((entry) => {
 			const href = `/blog/${entry.id}`;
 			return (
-				<li class="flex flex-wrap items-start gap-x-[clamp(24px,5vw,72px)] gap-y-4">
-					<div class="min-w-0 flex-1 basis-[420px]">
-						<h2 class="title max-w-[660px] text-[clamp(28px,3.4vw,42px)] leading-[1.06]">
-							<a href={href}>{entry.data.title}</a>
-						</h2>
-						<p class="text-dim mt-3 max-w-[520px] text-pretty">{entry.data.summary}</p>
-						<p class="meta mt-3.5 flex flex-wrap gap-x-[22px] gap-y-2">
-							<span>{day(entry.data.date)}</span>
-							<a href={href} class="text-accent">
-								Read · {articleStats(entry).minutes} min
-							</a>
-							{entry.data.video && (
-								<a href={href} class="text-dim">
-									Watch · {entry.data.video.duration}
+				<article class="border-rule py-post border-b">
+					<p class="meta mb-2.5">
+						{day(entry.data.date)} · {readTime(articleStats(entry).minutes)}
+						{entry.data.video && (
+							<Fragment>
+								{' · '}
+								<a href={href} class="text-accent">
+									Video, {entry.data.video.duration}
 								</a>
-							)}
-						</p>
-					</div>
-					<a href={href} class="block min-w-0 flex-1 basis-[240px] sm:max-w-[320px]">
-						<Image
-							src={entry.data.poster.src}
-							alt={entry.data.poster.alt}
-							widths={[320, 640, 960, 1280]}
-							sizes="(min-width: 640px) 320px, 100vw"
-							class="border-rule bg-bg2 aspect-video w-full border object-cover"
-							loading="lazy"
-						/>
+							</Fragment>
+						)}
+					</p>
+					<a href={href}>
+						<h2 class="font-display text-h2 mb-3 text-balance">{entry.data.title}</h2>
 					</a>
-				</li>
+					<p class="text-dim max-w-summary text-small text-pretty">{entry.data.summary}</p>
+				</article>
 			);
 		})
 	}
-</ul>
+</div>

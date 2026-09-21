@@ -2,63 +2,65 @@
 import { render } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
-import { listEntries, articleStats, day } from '../../lib/entries';
+import { listEntries, articleStats, day, readTime } from '../../lib/entries';
 
 export async function getStaticPaths() {
 	const entries = await listEntries();
-	return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+	return entries.map((entry, i) => ({
+		params: { slug: entry.id },
+		props: { entry, older: entries[i + 1] },
+	}));
 }
 
-const { entry } = Astro.props;
+const { entry, older } = Astro.props;
 const { title, date, summary, topic, poster, video } = entry.data;
 const { Content } = await render(entry);
-const { words, minutes } = articleStats(entry);
+const { minutes } = articleStats(entry);
 
 const social = await getImage({ src: poster.src, format: 'jpg', width: 1200, height: 675 });
 const PosterFrame = video ? 'a' : 'div';
 ---
 
 <Layout title={`${title} · Unbeholden`} description={summary} image={social.src}>
-	<article class="flex flex-wrap-reverse gap-x-[clamp(24px,5vw,72px)] gap-y-12">
-		<div class="min-w-0 flex-1 basis-[480px]">
-			<h1
-				class="title mb-[clamp(28px,4vw,44px)] max-w-[660px] text-[clamp(32px,4.4vw,54px)] leading-[1.04]"
-			>
-				{title}
-			</h1>
-			<div class="article text-[19px] leading-[1.8]">
-				<p class="text-dim text-[20px]">{summary}</p>
-				<Content />
-			</div>
-		</div>
-
-		<aside
-			class="text-dim min-w-0 flex-1 basis-[260px] font-mono text-[12px] leading-[1.9] tracking-[0.06em] min-[900px]:max-w-[300px]"
-		>
-			<figure class="mb-[26px]">
-				<PosterFrame
-					href={video && `https://www.youtube.com/watch?v=${video.id}`}
-					class="border-rule block border"
-				>
-					<Image
-						src={poster.src}
-						alt={poster.alt}
-						widths={[300, 600, 900, 1200]}
-						sizes="(min-width: 900px) 300px, 100vw"
-						class="bg-bg2 aspect-video w-full object-cover"
-					/>
-				</PosterFrame>
-				{
-					video && (
-						<figcaption class="text-dim mt-2.5 leading-[1.7] tracking-[0.14em] uppercase">
-							Watch instead — {video.duration}
-						</figcaption>
-					)
-				}
-			</figure>
-			<p>
-				{day(date)}<br />{minutes} min · {words.toLocaleString('en-GB')} words<br />{topic}
+	<article class="text-article">
+		<header class="mt-masthead mb-[60px] text-center">
+			<p class="meta mb-5">{topic} · {day(date)} · {readTime(minutes)}</p>
+			<h1 class="font-display text-h1 mb-[22px] font-light text-balance">{title}</h1>
+			<p class="font-display text-lede text-dim max-w-lede mx-auto font-light text-pretty">
+				{summary}
 			</p>
-		</aside>
+			{
+				video && (
+					<p class="text-nav mt-[26px] italic">
+						<a href={`https://www.youtube.com/watch?v=${video.id}`} class="text-accent">
+							Watch the video, {video.duration} →
+						</a>
+					</p>
+				)
+			}
+			<div class="bg-fg mx-auto mt-10 h-px w-10"></div>
+		</header>
+
+		<figure class="mb-12">
+			<PosterFrame
+				href={video && `https://www.youtube.com/watch?v=${video.id}`}
+				class="border-rule block border"
+			>
+				<Image
+					src={poster.src}
+					alt={poster.alt}
+					widths={[580, 1160]}
+					sizes="580px"
+					class="bg-bg2 aspect-video w-full object-cover"
+				/>
+			</PosterFrame>
+		</figure>
+
+		<div class="article"><Content /></div>
 	</article>
+
+	<Fragment slot="footer">
+		{older ? <a href={`/blog/${older.id}`}>← {older.data.title}</a> : <span />}
+		<a href="/blog/">All entries →</a>
+	</Fragment>
 </Layout>

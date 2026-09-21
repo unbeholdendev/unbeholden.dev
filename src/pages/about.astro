@@ -6,35 +6,35 @@ import Layout from '../layouts/Layout.astro';
 	title="About · unbeholden.dev"
 	description="Who runs Unbeholden, what it runs on, and why the data stays here."
 >
-	<section class="flex flex-wrap gap-x-[clamp(24px,5vw,72px)] gap-y-12">
-		<div class="min-w-0 flex-1 basis-[480px] sm:max-w-[620px] text-[19px] leading-[1.8]">
-			<p class="meta mb-[clamp(28px,4vw,44px)] tracking-[0.18em]">About</p>
-			<p>
-				I'm Jakub. I keep my own data and run open source where there is a version worth running. I
-				have never had a good answer to why I would hand a company my photos and my mail when I do
-				not have to. Convenience is the honest answer, and doing it myself has cost less than I
-				assumed.
-			</p>
-			<p class="text-dim mt-[26px]">
-				This runs on hardware I own and a VPS I pay for. I do keep analytics, because I would rather
-				know which posts were worth writing, but it is Umami on my own box: no cookies, and nothing
-				about you leaves it.
-			</p>
-			<p class="text-dim mt-[26px]">
-				When the thing I need doesn't exist, or exists only as a service someone else can withdraw, I
-				write it and publish it here. Usually small, usually specific to one problem.
-			</p>
-			<p class="text-dim mt-[26px]">Prose is CC BY 4.0. Code is CC0/MIT.</p>
-		</div>
-		<div
-			class="text-dim flex min-w-0 flex-1 basis-[260px] flex-col gap-4 font-mono text-[12px] leading-[1.9] tracking-[0.05em] sm:max-w-[240px]"
+	<p class="meta mt-masthead">About</p>
+	<p class="font-display text-statement mt-5 mb-10 font-light text-pretty">
+		I'm Jakub. I keep my own data and run open source where there is a version worth running.
+	</p>
+	<div class="text-article">
+		<p>
+			I have never had a good answer to why I would hand a company my photos and my mail when I do
+			not have to. Convenience is the honest answer, and doing it myself has cost less than I
+			assumed.
+		</p>
+		<p class="text-dim mt-6">
+			This runs on hardware I own and a VPS I pay for. I do keep analytics, because I would rather
+			know which posts were worth writing, but it is Umami on my own box: no cookies, and nothing
+			about you leaves it.
+		</p>
+		<p class="text-dim mt-6">
+			When the thing I need doesn't exist, or exists only as a service someone else can withdraw, I
+			write it and publish it here. Usually small, usually specific to one problem.
+		</p>
+		<p class="text-dim mt-6 mb-12">Prose is CC BY 4.0. Code is CC0/MIT.</p>
+	</div>
+	<div
+		class="border-rule text-nav grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-8 border-t leading-[1.7]"
+	>
+		<a href="mailto:hello@unbeholden.dev" class="border-rule border-b py-4"
+			>Email<br /><span class="text-faint italic">hello@unbeholden.dev</span></a
 		>
-			<a href="mailto:hello@unbeholden.dev"
-				>Email<br /><span class="text-faint">hello@unbeholden.dev</span></a
-			>
-			<a href="/feed.xml" class="text-accent"
-				>RSS<br /><span class="text-faint">unbeholden.dev/feed.xml</span></a
-			>
-		</div>
-	</section>
+		<a href="/feed.xml" class="border-rule text-accent border-b py-4"
+			>Feed<br /><span class="text-faint italic">unbeholden.dev/feed.xml</span></a
+		>
+	</div>
 </Layout>

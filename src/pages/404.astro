@@ -3,8 +3,13 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Not found · Unbeholden" description="Nothing lives at this address.">
-	<p class="text-dim max-w-[620px] text-[19px] leading-[1.8]">
-		Nothing lives at this address. It may have moved, or it may never have existed.
+	<p class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+		Nothing lives at this address.
 	</p>
-	<p class="meta mt-8"><a href="/">Back to the front page</a></p>
+	<p class="text-dim max-w-lede text-small mt-[26px]">
+		It may have moved, or it may never have existed.
+	</p>
+	<p class="text-nav mt-7 italic">
+		<a href="/" class="text-accent">Back to the front page →</a>
+	</p>
 </Layout>

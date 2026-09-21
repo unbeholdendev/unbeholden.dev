@@ -1,7 +1,7 @@
 ---
 title: An agent that configures my machine without touching it
 date: 2026-09-18
-summary: I set up the same Linux desktop by hand twice in a few months, refused to do it a third time, and then had an agent write the configuration from a container that has never seen the machine.
+summary: I set up the same Linux desktop by hand twice in a few months, refused to do it a third time, and pointed the agents I already run at the machine itself, from a container that has never seen it.
 topic: Agents / Linux
 poster:
   src: ./poster.jpg
@@ -13,7 +13,7 @@ import Architecture from './architecture.svg';
 
 I moved off macOS recently and put Fedora on a laptop, configured by hand, the way everyone
 does it the first time. Then that laptop turned out to be broken. I sent it back and fell back
-to an old ThinkPad from a drawer.
+to an old ThinkPad I had in a drawer.
 
 The second install went faster, because I had dotfiles: shell, editor and configuration files
 in place within minutes. Then I spent the rest of the day on everything else. Dotfiles stop at
@@ -23,23 +23,17 @@ did it again from memory, badly.
 
 Sitting there I decided there would not be a third time. Not because a third machine was
 likely, but because the part of my computer I cared about was the part I had never recorded.
-So everything is declared now. What I did not expect is that I would write almost none of it.
+
+So everything is declared now, and almost none of it is in my handwriting. An agent in a
+container was already doing the work on my other repositories. This one only had to become
+another.
 
 ## Two machines
 
-The laptop is that ThinkPad, a T460s, running NixOS with niri and noctalia. It is a thin
-client: the work happens on a host in the cupboard, and the agent has never logged into the
-laptop.
-
-<figure><Architecture /></figure>
-
-There is nothing to enforce there. A dev container holds no credential for the laptop and no
-route to it. Handed a change to my window manager, the only thing it can do is commit it.
-Forgejo is another LXC on the same host, so a branch never leaves the box, and the only thing
-that crosses back to the laptop is me running one command.
-
-Three things hold, and none of them depends on the agent behaving: it is on a different
-machine, it gets one container per repository, and it pushes as an identity that cannot merge.
+The laptop is that ThinkPad, a T460s, running [NixOS](https://nixos.org) with
+[niri](https://github.com/niri-wm/niri) and [noctalia](https://github.com/noctalia-dev/noctalia).
+It is a thin client: the work happens on a host in the cupboard, and the agent has never
+logged into the laptop.
 
 The whole repository was written this way. Rather than learn Nix a module at a time, I had the
 agent write the configuration and I read what came back: the disk layout, the window manager,
@@ -47,10 +41,11 @@ the shell, the module that installs the command I use to apply any of it.
 
 ## One repository, three profiles
 
-If you have not met these: a Nix flake defines a system with its inputs pinned, so the same
-definition produces the same result later. Home-manager owns the `$HOME` half and runs on its
-own on a distribution that is not NixOS. The system half is NixOS itself, the part my Fedora
-dotfiles could never have carried.
+If you have not met these: a [Nix flake](https://nix.dev/concepts/flakes.html) defines a
+system with its inputs pinned, so the same definition produces the same result later.
+[Home-manager](https://github.com/nix-community/home-manager) owns the `$HOME` half and runs
+on its own on a distribution that is not NixOS. The system half is NixOS itself, the part my
+Fedora dotfiles could never have carried.
 
 The flake holds one `nixosConfigurations.t460s` and three `homeConfigurations`: `pycan@t460s`,
 `root@deb-agent` for the LXC that runs the dev containers, and one `container` profile for any
@@ -64,8 +59,12 @@ gets inside a container, because one file builds all three.
 
 Its output is a diff.
 
-It edits Nix files in a clone, commits, and pushes a branch to my own Forgejo. Nothing it wrote
-is running anywhere.
+<figure><Architecture /></figure>
+
+A dev container holds no credential for the laptop and no route to it. The only thing it can
+do is commit and push: it edits Nix files in a clone and pushes a branch to my own
+[Forgejo](https://forgejo.org), another LXC on the same host. Nothing it wrote is running
+anywhere, and a branch never leaves the box.
 
 The token belongs to an agent user that can push a branch and open a pull request on any of my
 repositories, and can merge to main on none of them. That is set on the Forgejo side, where the
@@ -78,7 +77,7 @@ reach, so approving or refusing would be theatre. The review happens once, on th
 The containers reach the internet freely. They need package registries and documentation, and
 the only secret in one is a token that cannot merge anything.
 
-Applying is mine. One command, `dots`, a three-line script the repository installs into itself:
+Applying the changes is on me. One command, `dots`, a three-line script the repository installs into itself:
 
 ```bash
 git -C "$dotfiles" switch main
@@ -115,27 +114,11 @@ That evaluates the whole configuration of a machine the container has never seen
 module, an option that does not exist, a package renamed upstream: all of it fails there, on
 Debian, minutes before I would have found out by rebooting into it.
 
-## What it cannot test
-
-The graphical half. There is no Wayland session in a dev container, so niri cannot run, and
-everything downstream of it is reasoning rather than evidence.
-
-My best example is a dictation tool called handy, which recorded, transcribed, and pasted
-nothing at all. niri strips `DISPLAY` from what it spawns when no X server is running, handy's
-input library then fails to construct, and handy 0.9.1 reads that handle before it dispatches,
-so every paste died on `Enigo state not initialized` and never reached the `wtype` it would
-otherwise have used. The fix is an `xwayland-satellite` that exists for handy alone and for no
-X11 app at all. Upstream moved that read in a later release, so it stops being necessary
-whenever nixpkgs catches up.
-
-Reading the issue tracker, finding the commit that moved the read, writing the module: an agent
-can do all of that from a container. Watching the paste land it cannot, so I do that bit.
-
 ## What the shape buys
 
-The dev containers are long running. They are kept in herdr, a multiplexer whose sidebar tracks
-which agent is in which pane and what state it is in. Several agents at a time, on different
-repositories, none able to reach another's files.
+The dev containers are long running. They are kept in [herdr](https://herdr.dev), a
+multiplexer whose sidebar tracks which agent is in which pane and what state it is in.
+Several agents at a time, on different repositories, none able to reach another's files.
 
 I close the lid whenever. Nothing stops. I ssh back in, attach to herdr, and it is all where I
 left it, including whatever ran while the laptop was shut. I have read the tail of a long run
@@ -171,5 +154,6 @@ The T460s is the first machine I put NixOS on, and I will replace it eventually.
 the test of all of this: a disk, a flake, one command, and then I find out whether I have kept
 the repository honest.
 
-What I did not plan was the agent part. It fell out of a decision I made because I could not
-face another afternoon of remembering what I had done to a computer that no longer existed.
+The agent part was never the surprise. That arrangement was already running for everything
+else I work on. The reinstall only decided that the machine I type on should be one more
+thing it configures.

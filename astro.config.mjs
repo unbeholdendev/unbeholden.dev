@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 // Colours are CSS custom properties, not hex, so one build serves both modes.
@@ -23,7 +24,7 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   // MDX so an entry can import its diagram. Astro inlines an imported SVG, and
   // only an inlined one reads the page's colour mode.
-  integrations: [mdx()],
+  integrations: [mdx(), sitemap()],
   markdown: {
     shikiConfig: { theme: shikiTheme },
   },

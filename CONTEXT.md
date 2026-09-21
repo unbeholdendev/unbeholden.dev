@@ -39,7 +39,8 @@ _Avoid_: writing, journal, archive.
 ### Presentation
 
 **Masthead**:
-The row at the top of every page, sitting on a rule: the wordmark left, the navigation right.
+The row at the top of every page, sitting on a rule: the wordmark and, beneath it, the
+tagline, left; the navigation right.
 
 **Statement**:
 The opening sentence of the front page and the About page, set large in the display face.

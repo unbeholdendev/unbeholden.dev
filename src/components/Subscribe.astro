@@ -1,0 +1,65 @@
+<aside
+	id="subscribe"
+	class="border-fg mx-auto mt-[clamp(64px,9vw,96px)] flex w-full max-w-column flex-wrap items-start gap-x-10 gap-y-5 border-t pt-[22px]"
+>
+	<div class="min-w-0 flex-[1_1_200px]">
+		<p class="meta mb-1.5">New entries by email</p>
+		<p class="text-dim text-[15px] leading-[1.6] text-pretty">
+			A mail when I publish, and nothing else. The list runs on the same box as this site.
+		</p>
+	</div>
+	<div class="min-w-0 flex-[1_1_240px]">
+		<div data-ask>
+			<form
+				method="post"
+				action="/subscribe"
+				class="border-rule flex items-baseline gap-4 border-b pb-2"
+			>
+				<input
+					type="email"
+					name="email"
+					required
+					autocomplete="email"
+					placeholder="you@example.org"
+					aria-label="Email address"
+					class="text-fg placeholder:text-faint text-small min-w-0 flex-auto bg-transparent leading-[1.6] outline-none placeholder:italic"
+				/>
+				<input type="text" name="website" hidden autocomplete="off" tabindex="-1" />
+				<button type="submit" class="text-accent text-nav cursor-pointer whitespace-nowrap italic"
+					>Subscribe →</button
+				>
+			</form>
+			<p class="text-faint mt-2 text-[12px] leading-[1.7] italic">
+				Double opt-in. Unsubscribe in every mail. Or use the <a href="/feed.xml" class="text-accent"
+					>feed</a
+				>.
+			</p>
+		</div>
+		<div data-done hidden>
+			<p class="meta text-accent mb-1.5">One more step</p>
+			<p class="text-dim text-[15px] leading-[1.6]">
+				I sent a confirmation to <span data-email></span>. Nothing is kept until you click it.
+			</p>
+		</div>
+	</div>
+</aside>
+
+<!-- Rerun: the swapped-in form carries no listener. -->
+<script is:inline data-astro-rerun>
+	(() => {
+		const aside = document.getElementById('subscribe');
+		const form = aside?.querySelector('form');
+		if (!form) return;
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			const sent = await fetch('/subscribe', { method: 'POST', body: new FormData(form) }).catch(
+				() => null,
+			);
+			// Where the reader lands with no JavaScript, so it also says what went wrong.
+			if (!sent?.ok) return form.submit();
+			aside.querySelector('[data-email]').textContent = form.email.value;
+			aside.querySelector('[data-ask]').hidden = true;
+			aside.querySelector('[data-done]').hidden = false;
+		});
+	})();
+</script>

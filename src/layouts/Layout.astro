@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import Subscribe from '../components/Subscribe.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -16,6 +17,7 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 const here = Astro.url.pathname;
+const asks = here !== '/subscribe';
 const current = (section: string) =>
 	here.startsWith(section) ? 'text-fg' : 'text-faint';
 ---
@@ -83,8 +85,12 @@ const current = (section: string) =>
 				</nav>
 			</header>
 			<main class="mx-auto w-full max-w-column flex-1"><slot /></main>
+			{asks && <Subscribe />}
 			<footer
-				class="meta mx-auto flex w-full max-w-column flex-wrap justify-between gap-x-6 gap-y-2 pt-[clamp(64px,9vw,96px)]"
+				class:list={[
+					'meta mx-auto flex w-full max-w-column flex-wrap justify-between gap-x-6 gap-y-2',
+					asks ? 'pt-7' : 'pt-[clamp(64px,9vw,96px)]',
+				]}
 			>
 				<slot name="footer">
 					<span>unbeholden.dev</span>

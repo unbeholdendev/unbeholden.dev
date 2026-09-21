@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = false;
+
+// Read at runtime, not through import.meta.env, which Vite would freeze into the build.
+const upstream = process.env.LISTMONK_URL;
+const list = Number(process.env.LISTMONK_LIST_ID);
+const user = process.env.LISTMONK_API_USER;
+const token = process.env.LISTMONK_API_TOKEN;
+
+if (Astro.request.method !== 'POST') return Astro.redirect('/', 303);
+
+const form = await Astro.request.formData();
+const email = String(form.get('email') ?? '').trim();
+
+// A bot fills the hidden field. Tell it yes and send nothing.
+let ok = String(form.get('website') ?? '') !== '';
+
+if (!ok && email && upstream && list && user && token) {
+	try {
+		const sent = await fetch(`${upstream}/api/subscribers`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+				authorization: `Basic ${btoa(`${user}:${token}`)}`,
+			},
+			// The opt-in mail greets by name, and the form asks for an address and nothing else.
+			body: JSON.stringify({
+				email,
+				name: email.split('@')[0],
+				status: 'enabled',
+				lists: [list],
+			}),
+			signal: AbortSignal.timeout(5000),
+		});
+		// Already on the list is not a failure, and saying it was would disclose who is on it.
+		ok = sent.ok || sent.status === 409;
+	} catch {
+		ok = false;
+	}
+}
+
+if (!ok) Astro.response.status = 400;
+---
+
+<Layout title="Subscribe · unbeholden.dev" description="One mail when I publish.">
+	{
+		ok ? (
+			<Fragment>
+				<p class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+					Check your mail.
+				</p>
+				<p class="text-dim max-w-lede text-small mt-[26px] text-pretty">
+					I sent a confirmation to {email}. Nothing is kept until you click it, and the link
+					expires on its own if you don't.
+				</p>
+			</Fragment>
+		) : (
+			<Fragment>
+				<p class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+					That didn't go through.
+				</p>
+				<p class="text-dim max-w-lede text-small mt-[26px] text-pretty">
+					Nothing was sent and nothing was kept. Try again, or write to
+					<a href="mailto:hello@unbeholden.dev" class="text-accent">hello@unbeholden.dev</a> and I'll
+					add you by hand.
+				</p>
+			</Fragment>
+		)
+	}
+	<p class="text-nav mt-7 italic">
+		<a href="/" class="text-accent">Back to the front page →</a>
+	</p>
+</Layout>

@@ -46,6 +46,12 @@ tagline, left; the navigation right.
 The opening sentence of the front page and the About page, set large in the display face.
 _Avoid_: hero, tagline, strapline.
 
+**Subscription**:
+A reader's standing request to be mailed when an entry is published, confirmed by clicking a
+link before anything is kept. See ADR-0003.
+_Avoid_: newsletter for the thing a reader joins; a newsletter is what gets sent, a
+subscription is what they have. Also avoid signup and lead.
+
 **Dependency budget**:
 The rule governing which network requests a page is permitted to make. See ADR-0001.
 _Avoid_: privacy policy — the budget is a construction constraint, not a disclosure.

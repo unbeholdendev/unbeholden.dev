@@ -28,6 +28,11 @@ export default defineConfig({
   markdown: {
     shikiConfig: { theme: shikiTheme },
   },
+  // Unset, `X-Forwarded-Proto` is ignored, so behind Traefik the server reads its own
+  // request as http and rejects the subscribe form for crossing origins.
+  security: {
+    allowedDomains: [{ hostname: 'unbeholden.dev', protocol: 'https' }],
+  },
   vite: {
     plugins: [tailwindcss()],
   },

@@ -55,7 +55,7 @@
   --dim: light-dark(oklch(0.440 0.012 60), oklch(0.740 0.018 75));
   --faint: light-dark(oklch(0.550 0.014 65), oklch(0.630 0.018 70));
   --rule: light-dark(oklch(0.860 0.016 80), oklch(0.300 0.012 60));
-  --accent: light-dark(oklch(0.450 0.160 275), oklch(0.760 0.110 275));
+  --accent: light-dark(oklch(0.430 0.130 32), oklch(0.800 0.105 42));
 }
 
 @media (prefers-color-scheme: dark) {

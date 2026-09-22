@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="96" fill="#4a45a8"/>
-  <text x="256" y="388" text-anchor="middle" font-family="Spectral,'Times New Roman',Georgia,serif" font-weight="700" font-size="378" fill="#f8f4ec">U</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <rect width="160" height="160" fill="#f8f4ec"/>
+  <path d="M28 28H132V80H80V132H28Z" fill="#2a2622"/>
+  <rect x="94" y="94" width="48" height="48" fill="#892c1c"/>
 </svg>

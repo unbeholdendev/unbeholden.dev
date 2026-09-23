@@ -68,7 +68,7 @@ jobs:
             curl -fsS https://unbeholden.dev/sitemap-0.xml | cmp -s - sitemap.built && break
             sleep 10
           done
-          URLS=$(grep -o "<loc>[^<]*</loc>" sitemap.built | sed -e "s|</*loc>||g" -e "s|.*|\\"&\\"|" | paste -sd,)
+          URLS=$(grep -o '<loc>[^<]*</loc>' sitemap.built | sed -e 's|</*loc>||g' -e 's|.*|"&"|' | paste -sd,)
           curl -fsS -X POST https://api.indexnow.org/IndexNow \
             -H "Content-Type: application/json" \
             -d "{\"host\":\"unbeholden.dev\",\"key\":\"$KEY\",\"keyLocation\":\"https://unbeholden.dev/$KEY.txt\",\"urlList\":[$URLS]}"

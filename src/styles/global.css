@@ -87,7 +87,7 @@
 
   ::selection {
     background: var(--accent);
-    color: oklch(0.97 0 0);
+    color: var(--bg);
   }
 }
 

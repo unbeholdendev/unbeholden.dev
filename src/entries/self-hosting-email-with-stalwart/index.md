@@ -6,7 +6,6 @@ topic: Self-hosting / Email
 poster:
   src: ./poster.jpg
   alt: A worn brass letterbox set into a dark painted door, lit warm from one side, with an indigo light glowing from the gap behind the flap.
-draft: true
 ---
 
 Everyone tells you not to self-host email. Deliverability is impossible, the big providers will bin everything you send, you will spend

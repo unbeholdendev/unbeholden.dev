@@ -30,7 +30,7 @@ const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
 const here = Astro.url.pathname;
 const asks = here !== '/subscribe';
 const current = (section: string) =>
-	here.startsWith(section) ? 'text-fg' : 'text-faint';
+	here.startsWith(section) ? 'text-fg' : 'text-dim';
 ---
 
 <!doctype html>
@@ -41,13 +41,16 @@ const current = (section: string) =>
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 		<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<!-- Two of the twelve faces: the light display every statement and post
+		     title is set in, and the body roman under all of it. -->
 		<link
 			rel="preload"
-			href="/fonts/spectral-400-latin.woff2"
+			href="/fonts/spectral-300-latin.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
 		/>
+		<link rel="preload" href="/fonts/lora-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<meta name="generator" content={Astro.generator} />
 		<ClientRouter />
 		<title>{title}</title>
@@ -123,7 +126,7 @@ const current = (section: string) =>
 						id="mode-toggle"
 						type="button"
 						aria-label="Switch colour mode"
-						class="text-faint hover:text-accent cursor-pointer italic"></button>
+						class="text-dim hover:text-accent cursor-pointer italic"></button>
 				</nav>
 			</header>
 			<main class="mx-auto w-full max-w-column flex-1"><slot /></main>

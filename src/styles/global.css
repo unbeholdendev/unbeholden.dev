@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-display: Spectral, 'Times New Roman', serif;
-  --font-body: Lora, Georgia, serif;
+  --font-display: Spectral, 'Spectral on Times', 'Spectral on Noto', 'Times New Roman', serif;
+  --font-body: Lora, 'Lora on Georgia', 'Lora on Noto', Georgia, serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   --color-bg: var(--bg);
@@ -53,7 +53,7 @@
   --bg2: light-dark(oklch(0.935 0.018 85), oklch(0.210 0.010 50));
   --fg: light-dark(oklch(0.240 0.010 50), oklch(0.920 0.016 85));
   --dim: light-dark(oklch(0.440 0.012 60), oklch(0.740 0.018 75));
-  --faint: light-dark(oklch(0.550 0.014 65), oklch(0.630 0.018 70));
+  --faint: light-dark(oklch(0.490 0.014 65), oklch(0.670 0.018 70));
   --rule: light-dark(oklch(0.860 0.016 80), oklch(0.300 0.012 60));
   --accent: light-dark(oklch(0.430 0.130 32), oklch(0.800 0.105 42));
 }
@@ -280,6 +280,47 @@
   font-display: swap;
   src: url('/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Each fallback is given the metrics of the face it stands in for, so the swap
+   changes the letterforms and not the space they occupy. Every ratio is the
+   webfont's own metric over that fallback's, per @capsizecss/metrics. Two
+   fallbacks each because Android and most Linux carry neither Times nor
+   Georgia, and an unresolved local() drops through to the next family. */
+@font-face {
+  font-family: 'Spectral on Times';
+  src: local('Times New Roman');
+  size-adjust: 109.8%;
+  ascent-override: 96.5%;
+  descent-override: 42.2%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Spectral on Noto';
+  src: local('Noto Serif');
+  size-adjust: 92.7%;
+  ascent-override: 114.2%;
+  descent-override: 49.9%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Lora on Georgia';
+  src: local('Georgia');
+  size-adjust: 105%;
+  ascent-override: 95.8%;
+  descent-override: 26.1%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Lora on Noto';
+  src: local('Noto Serif');
+  size-adjust: 97.3%;
+  ascent-override: 103.4%;
+  descent-override: 28.2%;
+  line-gap-override: 0%;
 }
 
 @font-face {

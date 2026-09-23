@@ -13,15 +13,21 @@ export async function getStaticPaths() {
 }
 
 const { entry, older } = Astro.props;
-const { title, date, summary, topic, poster, video } = entry.data;
+const { title, date, summary, topic, poster, video, updated } = entry.data;
 const { Content } = await render(entry);
 const { minutes } = articleStats(entry);
 
-const social = await getImage({ src: poster.src, format: 'jpg', width: 1200, height: 675 });
+// 1.91:1, the ratio every card is laid out at, cropped from the 16:9 poster.
+const social = await getImage({ src: poster.src, format: 'jpg', width: 1200, height: 630 });
 const PosterFrame = video ? 'a' : 'div';
 ---
 
-<Layout title={`${title} · Unbeholden`} description={summary} image={social.src}>
+<Layout
+	title={`${title} · Unbeholden`}
+	description={summary}
+	image={{ src: social.src, alt: poster.alt, width: 1200, height: 630 }}
+	article={{ published: date, updated }}
+>
 	<article class="text-article">
 		<header class="mt-masthead mb-[60px] text-center">
 			<p class="meta mb-5">{topic} · {day(date)} · {readTime(minutes)}</p>

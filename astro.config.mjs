@@ -40,7 +40,9 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   // MDX so an entry can import its diagram. Astro inlines an imported SVG, and
   // only an inlined one reads the page's colour mode.
-  integrations: [mdx(), sitemap()],
+  // /subscribe is where the form posts. A reader arriving by GET is sent to the front
+  // page, so announcing it as a page of the site announces a redirect.
+  integrations: [mdx(), sitemap({ filter: (page) => !page.endsWith('/subscribe') })],
   markdown: {
     shikiConfig: { theme: shikiTheme },
     processor: satteri({ hastPlugins: [linksInNewTab] }),

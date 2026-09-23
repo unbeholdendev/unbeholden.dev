@@ -36,12 +36,12 @@
   --text-meta: 15px;
   --text-nav: 16px;
 
-  --container-column: 580px;
+  --container-column: 820px;
   --container-statement: 560px;
   --container-summary: 500px;
   --container-lede: 460px;
 
-  --spacing-masthead: clamp(64px, 10vw, 118px);
+  --spacing-masthead: clamp(40px, 5vw, 64px);
   --spacing-section: clamp(64px, 9vw, 104px);
   --spacing-post: 40px;
 }

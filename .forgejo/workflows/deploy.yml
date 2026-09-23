@@ -54,3 +54,21 @@ jobs:
             -H "x-api-key: $DOKPLOY_TOKEN" \
             -H "Content-Type: application/json" \
             -d "{\"applicationId\":\"$APP_ID\"}"
+
+      - name: Tell IndexNow what is live
+        env:
+          KEY: cb53de48ad0c6cf78d3f313f4578f0a4
+          TAG: ${{ steps.meta.outputs.version }}
+        run: |
+          set -euo pipefail
+          docker run --rm "$IMAGE:$TAG" cat dist/client/sitemap-0.xml > sitemap.built
+          # Deploying returns before Dokploy has swapped the container, so submitting
+          # straight away would announce the URLs the old build served.
+          for _ in $(seq 9); do
+            curl -fsS https://unbeholden.dev/sitemap-0.xml | cmp -s - sitemap.built && break
+            sleep 10
+          done
+          URLS=$(grep -o "<loc>[^<]*</loc>" sitemap.built | sed -e "s|</*loc>||g" -e "s|.*|\\"&\\"|" | paste -sd,)
+          curl -fsS -X POST https://api.indexnow.org/IndexNow \
+            -H "Content-Type: application/json" \
+            -d "{\"host\":\"unbeholden.dev\",\"key\":\"$KEY\",\"keyLocation\":\"https://unbeholden.dev/$KEY.txt\",\"urlList\":[$URLS]}"

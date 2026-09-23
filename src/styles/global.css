@@ -36,7 +36,7 @@
   --text-meta: 15px;
   --text-nav: 16px;
 
-  --container-column: 820px;
+  --container-column: 640px;
   --container-statement: 560px;
   --container-summary: 500px;
   --container-lede: 460px;
@@ -100,10 +100,17 @@
     margin-top: 24px;
   }
 
-  /* Narrower than 800px the diagram's labels fall below 10px, so it scrolls
-     rather than shrinks further. */
+  /* The column is a reading measure, and the diagram is the one thing that does
+     not fit it: narrower than 800px its labels fall below 10px. So it breaks out
+     of the column rather than the column widening to meet it. 100cqw is the
+     frame's content box, so the breakout can never push the page sideways;
+     under 800px the figure still scrolls rather than shrinking further. */
   .article > figure {
     --amber: light-dark(oklch(0.48 0.115 72), oklch(0.7 0.125 80));
+    position: relative;
+    left: 50%;
+    translate: -50%;
+    width: min(820px, 100cqw);
     overflow-x: auto;
   }
 

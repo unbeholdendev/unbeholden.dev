@@ -42,6 +42,22 @@ trailing slash, `LISTMONK_LIST_ID`, the numeric id of the list, and `LISTMONK_AP
 `LISTMONK_API_TOKEN`, created under API users in Listmonk. Leave any of them unset and the
 form renders, the post fails, and the reader is told nothing was sent.
 
+A successful create also pushes a notification to ntfy, because a list I do not watch is a
+list I find out about a week late. Three more variables configure it, read the same way and on
+the same terms: `NTFY_URL`, the origin, without a trailing slash, `NTFY_TOPIC`, and
+`NTFY_TOKEN`, an access token sent as a bearer. Leave the origin or the topic unset and no
+push is attempted and nothing else changes. The push carries the address itself, which is the
+only thing that makes it worth reading, and that is a deliberate exception to keeping the list
+inside Listmonk: it puts a reader's address on a lock screen, so the topic belongs on my own
+ntfy instance and is not one to share with anyone. The request is made by the server on its own
+behalf, so ADR-0001 is untouched: no browser talks to ntfy. It is started and not waited for,
+so a slow ntfy cannot sit between the reader and the page telling them to check their mail, and
+a push that times out or is refused is swallowed rather than surfaced, since a notification that
+did not arrive has changed nothing about the subscription and telling the reader it failed
+because my phone did not ring would be a lie. Only a create is worth a
+push; the conflict that answers a second subscribe is not news, and a bot caught by the honeypot
+never reaches Listmonk at all.
+
 The opt-in mail is Listmonk's to send: the subscriber is created without
 `preconfirm_subscriptions`, so a double opt-in list mails the confirmation and the row stays
 unconfirmed until it is clicked. An address already on the list comes back as a conflict and

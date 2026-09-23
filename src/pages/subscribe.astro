@@ -8,6 +8,29 @@ const upstream = process.env.LISTMONK_URL;
 const list = Number(process.env.LISTMONK_LIST_ID);
 const user = process.env.LISTMONK_API_USER;
 const token = process.env.LISTMONK_API_TOKEN;
+const ntfy = process.env.NTFY_URL;
+const topic = process.env.NTFY_TOPIC;
+const ntfyToken = process.env.NTFY_TOKEN;
+
+// A push to my own phone, which the reader has no stake in.
+async function notify(address: string) {
+	if (!ntfy || !topic) return;
+	try {
+		await fetch(`${ntfy}/${topic}`, {
+			method: 'POST',
+			headers: {
+				title: 'New subscriber',
+				tags: 'envelope',
+				...(ntfyToken ? { authorization: `Bearer ${ntfyToken}` } : {}),
+			},
+			body: address,
+			signal: AbortSignal.timeout(3000),
+		});
+	} catch {
+		// Bounded and swallowed: a push that never arrives has changed nothing about the
+		// subscription, so it is not something to answer the reader with.
+	}
+}
 
 if (Astro.request.method !== 'POST') return Astro.redirect('/', 303);
 
@@ -36,6 +59,10 @@ if (!ok && email && upstream && list && user && token) {
 		});
 		// Already on the list is not a failure, and saying it was would disclose who is on it.
 		ok = sent.ok || sent.status === 409;
+		// Started and not waited for, so the reader's answer never waits on my phone. A conflict
+		// is someone re-subscribing, so it is not news, and a bot tripping the honeypot above
+		// never reaches this branch at all.
+		if (sent.ok) void notify(email);
 	} catch {
 		ok = false;
 	}

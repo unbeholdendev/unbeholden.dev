@@ -12,6 +12,11 @@ const ntfy = process.env.NTFY_URL;
 const topic = process.env.NTFY_TOPIC;
 const ntfyToken = process.env.NTFY_TOKEN;
 
+// ntfy takes an access token as a bearer, and a username and password as Basic. A value that
+// already names its scheme is sent exactly as it is written; a bare one is an access token.
+const credential =
+	ntfyToken && (/^(Basic|Bearer) /i.test(ntfyToken) ? ntfyToken : `Bearer ${ntfyToken}`);
+
 // A push to my own phone, which the reader has no stake in.
 async function notify(address: string) {
 	if (!ntfy || !topic) return;
@@ -21,7 +26,7 @@ async function notify(address: string) {
 			headers: {
 				title: 'New subscriber',
 				tags: 'envelope',
-				...(ntfyToken ? { authorization: `Bearer ${ntfyToken}` } : {}),
+				...(credential ? { authorization: credential } : {}),
 			},
 			body: address,
 			signal: AbortSignal.timeout(3000),

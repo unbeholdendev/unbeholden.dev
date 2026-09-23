@@ -45,7 +45,12 @@ form renders, the post fails, and the reader is told nothing was sent.
 A successful create also pushes a notification to ntfy, because a list I do not watch is a
 list I find out about a week late. Three more variables configure it, read the same way and on
 the same terms: `NTFY_URL`, the origin, without a trailing slash, `NTFY_TOPIC`, and
-`NTFY_TOKEN`, an access token sent as a bearer. Leave the origin or the topic unset and no
+`NTFY_TOKEN`, the credential. ntfy
+takes an access token as a bearer and a username and password as Basic, so the variable holds
+either: a value that already names its scheme is sent exactly as it is written, and a bare one
+is an access token and is given `Bearer`. A scoped token is the better thing to put there,
+because it can be revoked and confined to the one topic where an account password cannot, but
+the site does not get to insist on that. Leave the origin or the topic unset and no
 push is attempted and nothing else changes. The push carries the address itself, which is the
 only thing that makes it worth reading, and that is a deliberate exception to keeping the list
 inside Listmonk: it puts a reader's address on a lock screen, so the topic belongs on my own

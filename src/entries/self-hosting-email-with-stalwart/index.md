@@ -1,82 +1,76 @@
 ---
-title: 'Owning your email: self-hosting with Stalwart in 2026'
+title: Self-hosting my email with Stalwart
 date: 2026-09-20
-summary: Everyone says not to self-host email. I ran a mail server anyway, found most of the received wisdom either outdated or solvable.
+summary: Everyone says don't self-host email. I did it anyway, and most of the warnings turned out to be out of date or fixable.
 topic: Self-hosting / Email
 poster:
   src: ./poster.jpg
   alt: A worn brass letterbox set into a dark painted door, lit warm from one side, with an indigo light glowing from the gap behind the flap.
 ---
 
-Everyone tells you not to self-host email. Deliverability is impossible, the big providers will bin everything you send, you will spend
-your weekends fighting spam filters. I ran a mail server anyway. It took one long day, most of
-the received wisdom turned out to be either outdated or solvable, and I now run email for
-multiple domains and family members on a small VPS.
+The standard advice is not to self-host email. Nothing you send will get delivered, the big
+providers will bin it, and you'll lose your weekends to spam filters. I did it anyway. It took
+one long day, and most of those warnings turned out to be out of date or fixable. I now run
+mail for several domains and a few family members on a small VPS.
 
-This post is about why, what it actually costs, and the three sharp edges I ran into.
+Here's why I bothered, what it costs, and the three problems that ate most of that day.
 
 ## Why bother
 
-The usual arguments for self-hosting email are weak. Limited inbox size, no custom domains,
-ads in your mail client: all of that is solved by paying Fastmail or Migadu a few euro a
-month. If that were the whole case, I wouldn't have done this.
+Most of the usual reasons aren't very good. Small inboxes, no custom domains, ads in the web
+client: Fastmail or Migadu fix all of that for a few euros a month. If that were all, I'd have
+just paid.
 
-The real argument is that email is the root of your digital identity. Every password reset,
-every account recovery, every "verify your identity" flow terminates in your inbox. If you
-rent that inbox, someone else holds the master key to everything you do online, and they can
-revoke it. Not out of malice, usually. An automated system flags your account, an appeal form
-goes nowhere, and suddenly you are locked out of your bank, your registrar, your government
-portal, all at once. People this has happened to write about it with a specific kind of shell
-shock. The probability is low. The blast radius is total.
+What got me is that every account recovery ends up in your inbox. Password resets, "verify it's
+you" links, all of it. If you rent that inbox, whoever you rent it from holds the keys to
+everything else, and they can take them back. Usually not on purpose: an automated system flags
+your account, the appeal form goes nowhere, and you're locked out of your bank, your registrar
+and your tax account at the same time. The write-ups from people it has happened to are grim
+reading. It's unlikely, but if it happens it takes everything with it.
 
-There is also the quieter issue that the dominant free providers read your mail as a business
-model, and the practical one that no provider at any price gives you what a server of your own
-does: unlimited domains, unlimited addresses, a catch-all per domain so you can invent a fresh
-address for every service on the spot, and calendar, contacts and file sync thrown in.
+Then there's the big free providers scanning your mail as part of the business, and a more
+practical point: no provider, at any price, gives you what your own server does. Unlimited
+domains and addresses, a catch-all on each domain so you can make up a new address for every
+sign-up, plus calendar, contacts and file sync.
 
-## What it costs, honestly
+## What it costs
 
-Before any config files, the ledger. Self-hosting email costs you:
+**An outbound relay, and the metadata that comes with it.** I send through SMTP2Go rather than
+straight from the VPS. It's the one real compromise here, so it's worth explaining. Getting mail
+from port 25 delivered comes down to reputation, which takes years to build and favours the big
+players. A fresh VPS IP starts out somewhere between suspicious and blocked. SMTP2Go's free tier
+covers personal volume, and the price is that one company sees my outbound metadata: who I
+write to and how often. Incoming mail, which is most of it, never goes near them. It's also
+reversible. Sending directly is a config change, not a rebuild, if I ever want to spend months
+warming up an IP.
 
-**An outbound relay, and the metadata that goes with it.** I send through SMTP2Go rather than
-directly from my VPS. This is the one real compromise in the setup, so let me defend it
-properly. Outbound deliverability on port 25 is a reputation game measured in years and rigged
-toward incumbents; a fresh VPS IP starts somewhere between suspicious and blocked. A relay
-buys you out of that war for free (their tier covers personal volume) at the price of one
-company seeing your outbound metadata: who you write to, how often. Inbound mail, which is
-most mail, never touches them. And the arrangement is reversible: direct sending is a config
-change, not a rebuild, if I ever decide the IP warming game is worth playing.
+**You're the ops team.** Backups, updates, and the chance something breaks while you're up a
+mountain. That's less scary than it sounds, because sending servers retry for days. If mine is
+down, mail arrives late, not never.
 
-**Being your own ops team.** Backups, updates, and the possibility that something breaks while
-you are on a mountain somewhere. Softened considerably by the fact that sending servers retry
-for days, so a down mail server loses nothing, it just delays.
+**A long day.** Mine was about fourteen hours, and most of it went on the three problems below.
+Knowing them in advance, I reckon it'd take two.
 
-**One long day.** Mine took about fourteen hours, most of it spent discovering the three
-pitfalls below. With this post in hand, I would estimate two.
+## The setup
 
-## The architecture
+The pieces:
 
-Five components, each doing one job:
+- A VPS from a provider that allows mail traffic. Its firewall is the outer boundary.
+- [Stalwart](https://stalw.art), a mail server written in Rust. SMTP, IMAP, JMAP, spam
+  filtering, a web admin and CalDAV/CardDAV, in one binary. Having used it, I wouldn't bother
+  wiring Postfix, Dovecot and Rspamd together for a personal server.
+- Dokploy with Traefik, already on the box, owning ports 80 and 443 and handling TLS for the
+  web side (admin UI, client autodiscovery).
+- SMTP2Go for outbound, set up as an MTA route in Stalwart.
+- An API token for my registrar, so Stalwart manages each mail domain's DNS records itself,
+  including DKIM keys and the TXT records for its own certificates.
 
-- **A VPS** with a provider that allows mail traffic, with the provider-level firewall as the
-  hard outer boundary.
-- **Stalwart**, a modern all-in-one mail server written in Rust: SMTP, IMAP, JMAP, spam
-  filtering, web admin, CalDAV/CardDAV, all in one binary. After this experience I would not
-  consider the traditional Postfix/Dovecot/Rspamd assembly for a personal server.
-- **Dokploy with Traefik** already running on the box, owning ports 80/443 and terminating TLS
-  for the web side (admin UI, client autodiscovery).
-- **SMTP2Go** as the outbound relay, wired in as an MTA route inside Stalwart.
-- **DNS automation**: Stalwart holds an API token for my registrar and manages each mail
-  domain's records itself, including the DKIM keys and the TXT challenges for its own TLS
-  certificates.
+The decision that mattered most was keeping the mail ports away from the proxy. Ports 25, 465,
+587 and 993 go straight from the container to the host, and only HTTP goes through Traefik.
+SPF checks, rate limiting and IP bans all need the real IP of whoever's connecting, and a proxy
+hides it. That heads off a whole class of problems and causes one, which I'll get to.
 
-The decision that matters most: **mail ports bypass the proxy entirely**. Ports 25, 465, 587
-and 993 are published straight from the container to the host, while only HTTP goes through
-Traefik. This is not laziness. SPF checks, rate limiting and IP banning all need to see the
-real IP of whoever is connecting, and a proxy erases that. This single choice prevents an
-entire category of problems, and causes exactly one, which we will get to.
-
-The firewall, at the provider level, is just four inbound rules:
+The provider firewall has four inbound rules:
 
 ```
 TCP 25   from anywhere   (SMTP, other servers delivering to you)
@@ -85,82 +79,67 @@ TCP 587  from anywhere   (submission, STARTTLS)
 TCP 993  from anywhere   (IMAPS)
 ```
 
-TLS ends up split in two, and this confused me initially: Traefik gets certificates for
-the web hostnames the normal way, and Stalwart gets its own certificate for the mail ports via
-the DNS-01 challenge, writing the validation record through the registrar API. Two
-independent, self-renewing chains, neither needing manual attention again.
+TLS is split in two, which confused me at first. Traefik gets certificates for the web
+hostnames the usual way. Stalwart gets its own for the mail ports with the DNS-01 challenge,
+writing the validation record through the registrar API. Both renew on their own.
 
-Everything else is pleasantly boring. You create one account for yourself, attach as many
-addresses across as many domains as you like, switch on a catch-all per domain, and every
-client from Thunderbird to a phone autodetects the settings from the DNS records Stalwart
-published. Adding email domain number two is: one Domain object, one registrar API token if it
-lives elsewhere, one SPF edit, done.
+The rest is uneventful. You create one account, add as many addresses on as many domains as you
+want, turn on a catch-all per domain, and everything from Thunderbird to a phone picks up the
+settings from the DNS records Stalwart published. Adding a second domain is one Domain object,
+a registrar API token if it's registered elsewhere, and an SPF edit.
 
-## The three sharp edges
+## Three things that cost me hours
 
-This is the section I wish had existed last week. Each of these cost me hours.
+### 1. The proxy gets itself banned
 
-### 1. Your proxy will ban itself
+Stalwart bans IPs automatically, and it's good at it. Brute-force a login or scan ports and your
+IP gets dropped at the socket. The trouble is that every HTTP request through a reverse proxy
+arrives from the proxy's internal IP. So the proxy takes the blame for the whole internet and
+eventually gets banned itself. When that happens, everything behind it goes down together:
+admin UI, autodiscovery, the lot. The docs warn about exactly this, in a paragraph I only read
+afterwards. In my case the ban even survived deleting the blocked IP entry, and the only fix
+that worked was moving the proxy to a different internal address.
 
-Stalwart ships with automatic IP banning, and it is good: brute-force an account or scan ports
-and your IP gets dropped at the socket. But every HTTP request arriving through a reverse
-proxy carries the proxy's internal IP, so the proxy accumulates the whole internet's sins and
-eventually gets banned for them. When that happens, everything behind it dies at once: admin
-UI, autodiscovery, all of it. The docs warn about exactly this, in a paragraph I read only
-after living it. Worse, in my case the ban state outlived deleting the blocked IP entry, and
-the only thing that worked was moving the proxy to a different internal address.
+IP-based security only works where the real IPs are visible. The mail ports see them, so bans
+there hit actual attackers. The HTTP side doesn't, so exempt it: put your Docker subnets on
+Stalwart's allowed IP list on day one.
 
-The rule underneath: IP-keyed security must run where real IPs are visible. Mail ports,
-published directly, ban real attackers correctly. The HTTP path has no usable source IPs, so
-exempt it: add your Docker subnets to Stalwart's allowed IP list on day one, before anything
-forces you to learn why.
+### 2. Two ACME clients can't share port 80
 
-### 2. Two ACME clients cannot share port 80
+Traefik uses the HTTP challenge, so it owns `/.well-known/acme-challenge/` on the whole
+entrypoint. When Stalwart tried to get a certificate the same way, Traefik caught the
+validation requests and returned 404 for tokens it didn't know. Its log says so plainly:
+`Cannot retrieve the ACME challenge for mail.unbeholden.dev`. So Stalwart has to use DNS-01,
+which doesn't need any ports.
 
-Traefik gets its certificates via the HTTP challenge, which means it owns
-`/.well-known/acme-challenge/` on the entire entrypoint. When Stalwart later tried to get its
-own certificate the same way, Traefik intercepted the validation requests and returned 404 for
-tokens it didn't recognise. Traefik's log even says so, politely: `Cannot retrieve the ACME
-challenge for mail.unbeholden.dev`. Stalwart's certificates must therefore use the DNS-01
-challenge, which touches no ports at all.
+It goes the other way too. Stalwart publishes CAA records tied to its own ACME account, which
+quietly stops *Traefik* issuing anything for that domain. I had to loosen the record and tell
+Stalwart to stop republishing it.
 
-Related trap: Stalwart publishes CAA records pinned to its own ACME account, which silently
-blocks *Traefik* from issuing anything for that domain until you loosen the record and tell
-Stalwart to stop republishing it. Two certificate clients on one box means their authorisation
-worlds collide in both directions.
+### 3. Declare the network in compose
 
-### 3. Declared networking beats dynamic networking
+Dokploy attaches Traefik to your app's Docker network on the fly when you add a domain. That
+works until Traefik restarts and the connection drops. Then you get Bad Gateway, a perfectly
+healthy container, and nothing in any log. The fix is one block in the compose file, straight
+from Dokploy's docs, attaching the service to the shared `dokploy-network` explicitly. Any
+Dokploy compose app with a domain needs it.
 
-Dokploy connects its Traefik to your app's Docker network dynamically when you add a domain.
-This works until a Traefik restart drops the connection, at which point you get Bad Gateway
-with a perfectly healthy container and nothing in any log. The fix is one block in the compose
-file, straight from Dokploy's own documentation, attaching the service to the shared
-`dokploy-network` explicitly. Every Dokploy compose app with a domain needs it. Runtime state
-that nothing declares is state you will one day debug at midnight.
+## Where it ended up
 
-## What you get
+It scored 10/10 on mail-tester the first time I ran it. SPF, DKIM and DMARC all pass and align.
+I've got as many addresses on as many domains as I like, a catch-all so each service gets its
+own address, server-side filtering, and calendar, contacts and file sync over CalDAV, CardDAV
+and WebDAV, which my clients picked up during autodiscovery without me asking. Running cost: a
+VPS I already had, the domains, and no subscriptions.
 
-At the end: my own mail server, scoring 10/10 on mail-tester on its first graded run. SPF,
-DKIM and DMARC all pass and align. Unlimited addresses across unlimited domains, a catch-all
-so every service gets its own disposable address, server-side filtering, and, unexpectedly,
-calendar, contacts and file sync over CalDAV/CardDAV/WebDAV that my clients picked up during
-the same autodiscovery pass. Total running cost: a VPS I already had, a domain, and zero
-subscriptions.
-
-And the thing that is harder to screenshot: the root of my digital identity now runs on
-hardware I control, from a config file I can read, with no account manager anywhere who can
-switch it off.
+More to the point, the inbox every other account falls back to now runs on a server I control,
+from config I can read, and there's no account manager anywhere who can switch it off.
 
 ## Should you?
 
-If you have never run a server, no. Start with something whose failure costs you nothing.
+If you've never run a server, no. Start with something that doesn't hurt when it breaks.
 
-If you already operate your own infrastructure, patch your own boxes, and the identity-root
-argument resonates, then the honest answer is that self-hosted email in 2026 is much more
-tractable than its reputation. Stalwart collapsed the historically awful part (integrating
-five daemons) into one coherent system, the relay collapses the deliverability war into one
-acceptable compromise, and the remaining difficulty is exactly the three patterns above, which
-you now know in advance.
-
-The advice not to self-host email was written about a different decade's software. The blast
-radius argument for doing it was not.
+If you already run your own infrastructure and keep it patched, and the account-recovery
+argument lands, self-hosted email in 2026 is far more manageable than its reputation. Stalwart
+turns five daemons into one, the relay handles deliverability for the price of some metadata,
+and what's left is the three problems above, which you now know about.

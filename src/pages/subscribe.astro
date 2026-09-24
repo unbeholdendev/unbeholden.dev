@@ -76,7 +76,7 @@ if (!ok && email && upstream && list && user && token) {
 if (!ok) Astro.response.status = 400;
 ---
 
-<Layout title="Subscribe · unbeholden.dev" description="One mail when I publish.">
+<Layout title="Subscribe · unbeholden.dev" description="An email when I publish.">
 	{
 		ok ? (
 			<Fragment>
@@ -84,8 +84,8 @@ if (!ok) Astro.response.status = 400;
 					Check your mail.
 				</p>
 				<p class="text-dim max-w-lede text-small mt-[26px] text-pretty">
-					I sent a confirmation to {email}. Nothing is kept until you click it, and the link
-					expires on its own if you don't.
+					I've sent a confirmation link to {email}. I don't keep anything until you click it, and
+					if you don't, the link just expires.
 				</p>
 			</Fragment>
 		) : (
@@ -94,7 +94,7 @@ if (!ok) Astro.response.status = 400;
 					That didn't go through.
 				</p>
 				<p class="text-dim max-w-lede text-small mt-[26px] text-pretty">
-					Nothing was sent and nothing was kept. Try again, or write to
+					Nothing was sent or saved. Try again, or write to
 					<a href="mailto:hello@unbeholden.dev" class="text-accent">hello@unbeholden.dev</a> and I'll
 					add you by hand.
 				</p>

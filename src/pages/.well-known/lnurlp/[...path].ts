@@ -11,7 +11,7 @@ export const GET: APIRoute = async ({ url }) => {
 		// The raw pathname, not the decoded param, so an encoded `../` stays inside the name.
 		return await fetch(`${upstream}${url.pathname}${url.search}`, {
 			// fetch unzips the body but keeps the upstream's content-encoding, which would reach the wallet.
-			headers: { 'accept-encoding': 'identity' },
+			headers: { 'accept-encoding': 'identity', 'x-forwarded-host': url.host },
 			signal: AbortSignal.timeout(10000),
 		});
 	} catch (error) {

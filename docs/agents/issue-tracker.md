@@ -1,7 +1,7 @@
 # Issue tracker: Forgejo (via MCP)
 
 Issues and specs for this repo live as Forgejo issues at
-`https://git.home.unbeholden.dev/unbeholden/unbeholden.dev`.
+`https://git.unbeholden.dev/pycan/unbeholden.dev`.
 
 Neither `gh` nor `glab` applies, and no Forgejo CLI is installed. **Use the `forgejo` MCP
 tools for every operation.** Their schemas are deferred, so load them first, e.g.

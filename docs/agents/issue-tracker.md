@@ -1,7 +1,7 @@
 # Issue tracker: Forgejo (via MCP)
 
 Issues and specs for this repo live as Forgejo issues at
-`https://git.unbeholden.dev/pycan/unbeholden.dev`.
+`https://git.unbeholden.dev/unbeholden/unbeholden.dev`.
 
 Neither `gh` nor `glab` applies, and no Forgejo CLI is installed. **Use the `forgejo` MCP
 tools for every operation.** Their schemas are deferred, so load them first, e.g.
@@ -9,7 +9,7 @@ tools for every operation.** Their schemas are deferred, so load them first, e.g
 
 Every tool takes `owner` and `repo`, which are not inferred from `git remote`:
 
-- `owner`: `pycan`
+- `owner`: `unbeholden`
 - `repo`: `unbeholden.dev`
 
 ## Conventions
@@ -30,7 +30,7 @@ Every tool takes `owner` and `repo`, which are not inferred from `git remote`:
   username from `mcp__forgejo__get_my_user_info`.
 - **Labels**: `mcp__forgejo__list_repo_labels` must be called with
   `include_org_labels: false`. The token lacks the `read:organization` scope, so the
-  default (`true`) fails with a 403 on the `pycan` org.
+  default (`true`) fails with a 403 on the `unbeholden` org.
 - **Create a label**: `mcp__forgejo__create_repo_label` with `name` and a 6-digit hex
   `color`.
 

@@ -6,7 +6,6 @@ topic: Self-hosting / Bitcoin / Finance
 poster:
   src: ./poster.jpg
   alt: An old wooden chest bound in worn brass, on dark stone, its lid lifted slightly and an open padlock hanging from the hasp, lit warm from one side, with indigo showing through the gap.
-draft: true
 ---
 
 Every payment you make through a bank is one the bank agreed to. It can hold a transfer for

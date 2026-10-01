@@ -126,4 +126,4 @@ up, it's very doable. It needs some capital for channels, and the LNURL part is 
 looks.
 
 [MiniBolt](https://github.com/minibolt-guide/minibolt) walks through the whole stack on an
-ordinary PC, and [RaspiBolt](https://raspibolt.org) does the same on a Raspberry Pi. If you'd like a hand with yours, [get in touch](/about).
+ordinary PC, and [RaspiBolt](https://raspibolt.org) does the same on a Raspberry Pi. If you'd like a hand with yours, [get in touch](/contact).

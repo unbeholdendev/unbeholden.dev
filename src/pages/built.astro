@@ -4,14 +4,26 @@ import Layout from '../layouts/Layout.astro';
 
 const things: { name: string; description: string; link?: string; code?: string }[] = [
 	{
-		name: 'Skorpik',
-		description: 'An office prediction league on real matches. No money, no stakes, no odds.',
-		link: 'https://skorpik.app',
+		name: 'AI PR reviewer',
+		description:
+			'A code review bot for Forgejo. It reviews pull requests with Claude Code and answers questions in the comments.',
+		code: 'https://git.unbeholden.dev/unbeholden/reviewer',
 	},
 	{
 		name: 'Unbeholden',
 		description: 'This site. Astro, served from my own hardware and a rented VPS.',
 		link: 'https://unbeholden.dev',
+	},
+	{
+		name: 'Skorpik',
+		description: 'An office prediction league on real matches. No money, no stakes, no odds.',
+		link: 'https://skorpik.app',
+	},
+	{
+		name: 'lnurl-server',
+		description:
+			'A small Lightning Address server in Go. Payments to you@yourdomain are invoiced by your own LND node.',
+		code: 'https://git.unbeholden.dev/unbeholden/lnurl-server',
 	},
 ];
 
@@ -25,25 +37,42 @@ const image = (link?: string) =>
 
 <Layout
 	title="Built · Unbeholden"
-	description="Everything I've built, with a link and the source where it's public."
+	description="Things I've built, with a link and the source where it's public."
 >
-	<p class="meta mt-masthead">Everything I've built</p>
-	<ul class="border-rule mt-7 border-t">
+	<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+		Things I've built.
+	</h1>
+	<ul class="mt-10 grid gap-8 sm:grid-cols-2">
 		{
 			things.map((thing) => {
 				const src = image(thing.link);
+				const href = thing.link ?? thing.code;
+				const external = { target: '_blank', rel: 'noopener noreferrer' };
 				return (
-					<li class="border-rule border-b py-5">
-						{/* Empty alt: the card repeats the name and description beside it. Add one if it says more. */}
-						{src && <Image src={src} alt="" widths={[640, 1280]} sizes="640px" class="mb-4" />}
-						<p class="font-display text-h3">{thing.name}</p>
-						<p class="text-dim max-w-summary mt-1 text-pretty">{thing.description}</p>
-						{(thing.link || thing.code) && (
-							<p class="text-nav mt-2 flex gap-5 italic">
-								{thing.link && <a href={thing.link} class="text-accent">Visit</a>}
-								{thing.code && <a href={thing.code} class="text-accent">Code</a>}
-							</p>
+					<li class="border-rule hover:border-dim relative border transition-colors duration-300">
+						{src ? (
+							/* Empty alt: the card repeats the name and description beside it. Add one if it says more. */
+							<Image
+								src={src}
+								alt=""
+								widths={[320, 640, 1280]}
+								sizes="(min-width: 640px) 304px, 100vw"
+								class="aspect-[40/21] object-cover"
+							/>
+						) : (
+							<div class="bg-bg2 aspect-[40/21]" />
 						)}
+						<div class="p-5">
+							<a href={href} {...external} class="font-display text-h3 block after:absolute after:inset-0">
+								{thing.name}
+							</a>
+							<p class="text-dim mt-1 text-pretty">{thing.description}</p>
+							{thing.link && thing.code && (
+								<p class="text-nav relative mt-2 italic">
+									<a href={thing.code} {...external} class="text-accent">Code</a>
+								</p>
+							)}
+						</div>
 					</li>
 				);
 			})

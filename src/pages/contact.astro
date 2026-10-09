@@ -73,9 +73,9 @@ const field =
 	{
 		state === 'sent' ? (
 			<Fragment>
-				<p class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
 					Got it.
-				</p>
+				</h1>
 				<p class="text-dim max-w-lede mt-[26px] text-pretty">
 					It's on my phone. If you left a way to reach you, I'll reply there.
 				</p>
@@ -85,13 +85,13 @@ const field =
 			</Fragment>
 		) : (
 			<Fragment>
-				<p class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
 					{state === 'failed'
 						? "That didn't go through."
 						: state === 'limited'
 							? 'Too many messages right now.'
 							: 'Write to me.'}
-				</p>
+				</h1>
 				<p class="text-dim max-w-lede mt-[26px] text-pretty">
 					{state === 'failed'
 						? "It didn't reach my phone. Your message is still below, so try again, or send it from your own mail."

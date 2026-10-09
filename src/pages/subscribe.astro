@@ -53,9 +53,9 @@ if (!ok) Astro.response.status = 400;
 	{
 		ok ? (
 			<Fragment>
-				<p class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
 					Check your mail.
-				</p>
+				</h1>
 				<p class="text-dim max-w-lede text-small mt-[26px] text-pretty">
 					I've sent a confirmation link to {email}. I don't keep anything until you click it, and
 					if you don't, the link just expires.
@@ -63,9 +63,9 @@ if (!ok) Astro.response.status = 400;
 			</Fragment>
 		) : (
 			<Fragment>
-				<p class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
 					That didn't go through.
-				</p>
+				</h1>
 				<p class="text-dim max-w-lede text-small mt-[26px] text-pretty">
 					Nothing was sent or saved. Try again, or write to
 					<a href="mailto:hello@unbeholden.dev" class="text-accent">hello@unbeholden.dev</a> and I'll

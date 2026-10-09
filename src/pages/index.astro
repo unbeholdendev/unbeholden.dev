@@ -15,7 +15,8 @@ const latest = (await listEntries()).slice(0, 3);
 		of config that make daily work less annoying. When the tool I need doesn't exist, I build it
 		and put it here.
 	</p>
-	<div class="mt-section">
+	<div class="mt-section [&_h2]:text-h3">
+		<p class="meta mb-3">Latest entries</p>
 		<EntryList entries={latest} />
 		<p class="text-nav mt-7 italic">
 			<a href="/blog" class="text-accent">All entries →</a>

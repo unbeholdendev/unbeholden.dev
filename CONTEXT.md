@@ -36,6 +36,10 @@ _Avoid_: tag, category.
 Every entry, and the section of the site they live in.
 _Avoid_: writing, journal, archive.
 
+**Built**:
+The page listing everything I've made: a name and description, with a link and source where public.
+_Avoid_: projects, portfolio, work.
+
 ### Presentation
 
 **Masthead**:

@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+
+const things: { name: string; description: string; link?: string; code?: string }[] = [
+	{
+		name: 'Skorpik',
+		description: 'An office prediction league on real matches. No money, no stakes, no odds.',
+		link: 'https://skorpik.app',
+	},
+	{
+		name: 'Unbeholden',
+		description: 'This site. Astro, served from my own hardware and a rented VPS.',
+		link: 'https://unbeholden.dev',
+	},
+];
+
+// Committed, not fetched at build, per ADR-0001. Add one with `bun scripts/og-image.ts <link>`.
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/built/*', { eager: true });
+const image = (link?: string) =>
+	link &&
+	Object.entries(images).find(([path]) => path.includes(`/${new URL(link).hostname}.`))?.[1]
+		.default;
+---
+
+<Layout
+	title="Built · Unbeholden"
+	description="Everything I've built, with a link and the source where it's public."
+>
+	<p class="meta mt-masthead">Everything I've built</p>
+	<ul class="border-rule mt-7 border-t">
+		{
+			things.map((thing) => {
+				const src = image(thing.link);
+				return (
+					<li class="border-rule border-b py-5">
+						{/* Empty alt: the card repeats the name and description beside it. Add one if it says more. */}
+						{src && <Image src={src} alt="" widths={[640, 1280]} sizes="640px" class="mb-4" />}
+						<p class="font-display text-h3">{thing.name}</p>
+						<p class="text-dim max-w-summary mt-1 text-pretty">{thing.description}</p>
+						{(thing.link || thing.code) && (
+							<p class="text-nav mt-2 flex gap-5 italic">
+								{thing.link && <a href={thing.link} class="text-accent">Visit</a>}
+								{thing.code && <a href={thing.code} class="text-accent">Code</a>}
+							</p>
+						)}
+					</li>
+				);
+			})
+		}
+	</ul>
+</Layout>

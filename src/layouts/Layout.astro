@@ -137,14 +137,38 @@ const current = (section: string) =>
 			>
 				{asks && <Subscribe />}
 				<nav aria-label="Elsewhere" class="flex-[1_1_160px]">
-					<p class="meta mb-1.5">Elsewhere</p>
-					<ul class="text-dim text-[15px] leading-[1.8]">
-						<li><a href="https://git.unbeholden.dev/unbeholden" class="hover:text-accent">Forgejo</a></li>
-						<li><a href="https://njump.me/npub1awq28saxmfuk88je4uvecljfpeydnj7tdueu4lay8xqv6xkn0c5q69qwgl" class="hover:text-accent">Nostr</a></li>
-						<li><a href="https://x.com/unbeholdendev" class="hover:text-accent">X</a></li>
-						<li><a href="lightning:jakub@unbeholden.dev" class="hover:text-accent">Lightning</a> <span class="text-faint italic">jakub@unbeholden.dev</span></li>
-						<li><a href="/feed.xml" class="hover:text-accent">Feed</a></li>
-						<li><a href="mailto:hello@unbeholden.dev" class="hover:text-accent">Email</a></li>
+					<p class="meta mb-2.5">Elsewhere</p>
+					<ul class="text-dim flex flex-wrap gap-4 [&_a]:block [&_a:hover]:text-accent [&_svg]:size-5">
+						<li>
+							<a href="https://git.unbeholden.dev/unbeholden" aria-label="Forgejo" title="Forgejo" target="_blank" rel="noopener noreferrer">
+								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.7773 0c1.6018 0 2.9004 1.2986 2.9004 2.9005s-1.2986 2.9004-2.9004 2.9004c-1.0854 0-2.0315-.596-2.5288-1.4787H12.91c-2.3322 0-4.2272 1.8718-4.2649 4.195l-.0007 2.1175a7.0759 7.0759 0 0 1 4.148-1.4205l.1176-.001 1.3385.0002c.4973-.8827 1.4434-1.4788 2.5288-1.4788 1.6018 0 2.9004 1.2986 2.9004 2.9005s-1.2986 2.9004-2.9004 2.9004c-1.0854 0-2.0315-.596-2.5288-1.4787H12.91c-2.3322 0-4.2272 1.8718-4.2649 4.195l-.0007 2.319c.8827.4973 1.4788 1.4434 1.4788 2.5287 0 1.602-1.2986 2.9005-2.9005 2.9005-1.6018 0-2.9004-1.2986-2.9004-2.9005 0-1.0853.596-2.0314 1.4788-2.5287l-.0002-9.9831c0-3.887 3.1195-7.0453 6.9915-7.108l.1176-.001h1.3385C14.7458.5962 15.692 0 16.7773 0ZM7.2227 19.9052c-.6596 0-1.1943.5347-1.1943 1.1943s.5347 1.1943 1.1943 1.1943 1.1944-.5347 1.1944-1.1943-.5348-1.1943-1.1944-1.1943Zm9.5546-10.4644c-.6596 0-1.1944.5347-1.1944 1.1943s.5348 1.1943 1.1944 1.1943c.6596 0 1.1943-.5347 1.1943-1.1943s-.5347-1.1943-1.1943-1.1943Zm0-7.7346c-.6596 0-1.1944.5347-1.1944 1.1943s.5348 1.1943 1.1944 1.1943c.6596 0 1.1943-.5347 1.1943-1.1943s-.5347-1.1943-1.1943-1.1943Z" /></svg>
+							</a>
+						</li>
+						<li>
+							<a href="https://njump.me/npub1awq28saxmfuk88je4uvecljfpeydnj7tdueu4lay8xqv6xkn0c5q69qwgl" aria-label="Nostr" title="Nostr" target="_blank" rel="noopener noreferrer">
+								<svg viewBox="40 40 184 184" fill="currentColor"><path d="M210.8 199.4c0 3.1-2.5 5.7-5.7 5.7h-68c-3.1 0-5.7-2.5-5.7-5.7v-15.5c.3-19 2.3-37.2 6.5-45.5 2.5-5 6.7-7.7 11.5-9.1 9.1-2.7 24.9-.9 31.7-1.2 0 0 20.4.8 20.4-10.7s-9.1-8.6-9.1-8.6c-10 .3-17.7-.4-22.6-2.4-8.3-3.3-8.6-9.2-8.6-11.2-.4-23.1-34.5-25.9-64.5-20.1-32.8 6.2.4 53.3.4 116.1v8.4c0 3.1-2.6 5.6-5.7 5.6H57.7c-3.1 0-5.7-2.5-5.7-5.7v-144c0-3.1 2.5-5.7 5.7-5.7h31.7c3.1 0 5.7 2.5 5.7 5.7 0 4.7 5.2 7.2 9 4.5 11.4-8.2 26-12.5 42.4-12.5 36.6 0 64.4 21.4 64.4 68.7v83.2ZM150 99.3c0-6.7-5.4-12.1-12.1-12.1s-12.1 5.4-12.1 12.1 5.4 12.1 12.1 12.1S150 106 150 99.3Z" /></svg>
+							</a>
+						</li>
+						<li>
+							<a href="https://x.com/unbeholdendev" aria-label="X" title="X" target="_blank" rel="noopener noreferrer">
+								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z" /></svg>
+							</a>
+						</li>
+						<li>
+							<a href="lightning:jakub@unbeholden.dev" aria-label="Lightning: jakub@unbeholden.dev" title="jakub@unbeholden.dev">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></svg>
+							</a>
+						</li>
+						<li>
+							<a href="/feed.xml" aria-label="Feed" title="Feed">
+								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z" /></svg>
+							</a>
+						</li>
+						<li>
+							<a href="mailto:hello@unbeholden.dev" aria-label="Email: hello@unbeholden.dev" title="hello@unbeholden.dev">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" /><rect x="2" y="4" width="20" height="16" rx="2" /></svg>
+							</a>
+						</li>
 					</ul>
 				</nav>
 			</div>

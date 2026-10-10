@@ -132,12 +132,24 @@ const current = (section: string) =>
 				</nav>
 			</header>
 			<main class="mx-auto w-full max-w-column flex-1"><slot /></main>
-			{asks && <Subscribe />}
+			<div
+				class="border-fg mx-auto mt-[clamp(64px,9vw,96px)] flex w-full max-w-column flex-wrap items-start gap-x-10 gap-y-5 border-t pt-[22px]"
+			>
+				{asks && <Subscribe />}
+				<nav aria-label="Elsewhere" class="flex-[1_1_160px]">
+					<p class="meta mb-1.5">Elsewhere</p>
+					<ul class="text-dim text-[15px] leading-[1.8]">
+						<li><a href="https://git.unbeholden.dev/unbeholden" class="hover:text-accent">Forgejo</a></li>
+						<li><a href="https://njump.me/npub1awq28saxmfuk88je4uvecljfpeydnj7tdueu4lay8xqv6xkn0c5q69qwgl" class="hover:text-accent">Nostr</a></li>
+						<li><a href="https://x.com/unbeholdendev" class="hover:text-accent">X</a></li>
+						<li><a href="lightning:jakub@unbeholden.dev" class="hover:text-accent">Lightning</a> <span class="text-faint italic">jakub@unbeholden.dev</span></li>
+						<li><a href="/feed.xml" class="hover:text-accent">Feed</a></li>
+						<li><a href="mailto:hello@unbeholden.dev" class="hover:text-accent">Email</a></li>
+					</ul>
+				</nav>
+			</div>
 			<footer
-				class:list={[
-					'meta mx-auto flex w-full max-w-column flex-wrap justify-between gap-x-6 gap-y-2',
-					asks ? 'pt-7' : 'pt-[clamp(64px,9vw,96px)]',
-				]}
+				class="meta mx-auto flex w-full max-w-column flex-wrap justify-between gap-x-6 gap-y-2 pt-7"
 			>
 				<slot name="footer">
 					<span>unbeholden.dev</span>

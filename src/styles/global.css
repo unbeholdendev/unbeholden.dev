@@ -30,6 +30,9 @@
   --text-h3: clamp(20px, 2vw, 24px);
   --text-h3--line-height: 1.25;
   --text-h3--letter-spacing: -0.01em;
+  --text-standfirst: clamp(21px, 2.2vw, 26px);
+  --text-standfirst--line-height: 1.32;
+  --text-standfirst--letter-spacing: -0.01em;
   --text-lede: 19px;
   --text-lede--line-height: 1.55;
   --text-article: 18px;
@@ -51,16 +54,15 @@
 :root {
   color-scheme: light;
 
-  --bg: light-dark(#cfe2f3, #0b1626);
-  --bg2: light-dark(#f2f7fc, #0e1c30);
-  --panel: light-dark(#ffffff, #13233a);
-  --key: light-dark(#111418, #dbe6f1);
-  --fg: light-dark(#111418, #e9eff6);
-  --dim: light-dark(#3c4650, #b9c6d3);
-  --faint: light-dark(#5b6773, #8d9cab);
-  --mid: light-dark(#4a78a6, #7fa6cf);
-  --accent: light-dark(#c10e10, #ff6a5a);
-  --yellow: #f5c400;
+  --bg: light-dark(#e9dec6, #1a1712);
+  --bg2: light-dark(#f7f1e3, #211d17);
+  --panel: light-dark(#fffbf2, #28231c);
+  --key: light-dark(#1c1915, #e8dfcf);
+  --fg: light-dark(#1c1915, #f1e9db);
+  --dim: light-dark(#4a4238, #c9bca6);
+  --faint: light-dark(#675d51, #a19580);
+  --mid: light-dark(#b0551c, #e48d4c);
+  --accent: light-dark(#1d5aa0, #86b6ee);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -103,8 +105,8 @@
   }
 
   ::selection {
-    background: var(--yellow);
-    color: #111418;
+    background: color-mix(in srgb, var(--mid) 50%, var(--panel));
+    color: var(--fg);
   }
 }
 
@@ -139,6 +141,30 @@
   .chip[aria-current] {
     background: var(--key);
     color: var(--panel);
+  }
+
+  .row {
+    position: relative;
+    display: grid;
+    gap: 16px;
+    padding-block: 24px;
+  }
+
+  .row + .row {
+    border-top: 2px solid var(--key);
+  }
+
+  @media (min-width: 1024px) {
+    .row {
+      grid-template-columns: 200px 1fr 288px;
+      gap: 32px;
+      padding-block: 40px;
+    }
+
+    .row + .row {
+      border-top: 0;
+      background: linear-gradient(var(--key), var(--key)) 200px 0 / 100% 2px no-repeat;
+    }
   }
 
   .gnum {

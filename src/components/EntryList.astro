@@ -14,7 +14,7 @@ const { entries, total } = Astro.props;
 <ul class="callout px-5 lg:pr-8 lg:pl-0">
 	{
 		entries.map((entry, i) => (
-			<li class="group border-key relative grid gap-4 py-6 not-first:border-t-2 lg:grid-cols-[200px_1fr_288px] lg:gap-8 lg:py-10 lg:not-first:border-t-0 lg:not-first:bg-[linear-gradient(var(--key),var(--key))] lg:not-first:bg-[length:100%_2px] lg:not-first:bg-[position:200px_0] lg:not-first:bg-no-repeat">
+			<li class="group row">
 				<p class="gnum group-hover:text-accent" aria-hidden="true">{total - i}</p>
 				<div>
 					<h2 class="font-display text-h2 font-bold text-balance">

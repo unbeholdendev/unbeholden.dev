@@ -42,15 +42,14 @@ const image = (link?: string) =>
 	<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
 		Things I've built.
 	</h1>
-	<ul class="callout mt-section px-5 lg:pr-8 lg:pl-0">
+	<ul class="callout mt-section px-5 lg:px-8">
 		{
-			things.map((thing, i) => {
+			things.map((thing) => {
 				const src = image(thing.link);
 				const away = (href: string) =>
 					new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 				return (
-					<li class="border-key relative grid gap-4 py-6 not-first:border-t-2 lg:grid-cols-[200px_1fr_288px] lg:gap-8 lg:py-10 lg:not-first:border-t-0 lg:not-first:bg-[linear-gradient(var(--key),var(--key))] lg:not-first:bg-[length:100%_2px] lg:not-first:bg-[position:200px_0] lg:not-first:bg-no-repeat">
-						<p class="gnum" aria-hidden="true">{i + 1}</p>
+					<li class="row lg:grid-cols-[1fr_288px] lg:bg-left-top">
 						<div class:list={{ 'lg:col-span-2': !src }}>
 							<h2 class="font-display text-h2 font-bold">{thing.name}</h2>
 							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>

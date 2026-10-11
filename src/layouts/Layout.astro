@@ -170,7 +170,7 @@ const current = (section: string) => (here.startsWith(section) ? 'page' : undefi
 					root.dataset.theme
 						? root.dataset.theme === 'dark'
 						: matchMedia('(prefers-color-scheme: dark)').matches;
-				const label = () => button.setAttribute('aria-pressed', String(dark()));
+				const label = () => (button.textContent = dark() ? 'Light mode' : 'Dark mode');
 				button.addEventListener('click', () => {
 					root.dataset.theme = dark() ? 'light' : 'dark';
 					localStorage.setItem('theme', root.dataset.theme);

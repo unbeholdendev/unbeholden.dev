@@ -32,7 +32,7 @@
   --text-h3--letter-spacing: -0.01em;
   --text-lede: 19px;
   --text-lede--line-height: 1.55;
-  --text-article: 17px;
+  --text-article: 18px;
   --text-article--line-height: 1.7;
   --text-body: 17px;
   --text-body--line-height: 1.65;
@@ -116,6 +116,10 @@
   }
 
   .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--text-nav);
@@ -127,7 +131,11 @@
     cursor: pointer;
   }
 
-  .chip:hover,
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
   .chip[aria-current] {
     background: var(--key);
     color: var(--panel);

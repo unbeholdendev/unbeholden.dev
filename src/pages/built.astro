@@ -42,37 +42,33 @@ const image = (link?: string) =>
 	<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
 		Things I've built.
 	</h1>
-	<ul class="mt-10 grid gap-8 sm:grid-cols-2">
+	<ul class="callout mt-section px-5 lg:pr-8 lg:pl-0">
 		{
-			things.map((thing) => {
+			things.map((thing, i) => {
 				const src = image(thing.link);
-				const href = thing.link ?? thing.code;
-				const external = { target: '_blank', rel: 'noopener noreferrer' };
+				const away = (href: string) =>
+					new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 				return (
-					<li class="callout hover:border-accent relative overflow-hidden">
-						{src ? (
-							/* Empty alt: the card repeats the name and description beside it. Add one if it says more. */
+					<li class="border-key relative grid gap-4 py-6 not-first:border-t-2 lg:grid-cols-[200px_1fr_288px] lg:gap-8 lg:py-10 lg:not-first:border-t-0 lg:not-first:bg-[linear-gradient(var(--key),var(--key))] lg:not-first:bg-[length:100%_2px] lg:not-first:bg-[position:200px_0] lg:not-first:bg-no-repeat">
+						<p class="gnum" aria-hidden="true">{i + 1}</p>
+						<div class:list={{ 'lg:col-span-2': !src }}>
+							<h2 class="font-display text-h2 font-bold">{thing.name}</h2>
+							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
+							<p class="mt-4 flex flex-wrap gap-2">
+								{thing.link && <a href={thing.link} {...away(thing.link)} class="chip no-underline">{new URL(thing.link).hostname}</a>}
+								{thing.code && <a href={thing.code} {...away(thing.code)} class="chip no-underline">Source</a>}
+							</p>
+						</div>
+						{src && (
+							/* Empty alt: the row repeats the name and description beside it. Add one if it says more. */
 							<Image
 								src={src}
 								alt=""
-								widths={[320, 640, 1280]}
-								sizes="(min-width: 640px) 304px, 100vw"
-								class="border-key aspect-[40/21] border-b-2 object-cover"
+								widths={[320, 640]}
+								sizes="(min-width: 1024px) 288px, 100vw"
+								class="border-key -order-1 aspect-[40/21] w-full rounded-lg border-2 object-cover lg:order-none"
 							/>
-						) : (
-							<div class="bg-bg2 border-key aspect-[40/21] border-b-2" />
 						)}
-						<div class="p-5">
-							<a href={href} {...external} class="font-display text-h2 block font-bold no-underline after:absolute after:inset-0">
-								{thing.name}
-							</a>
-							<p class="text-dim mt-1 text-pretty">{thing.description}</p>
-							{thing.link && thing.code && (
-								<p class="meta relative mt-3">
-									<a href={thing.code} {...external} class="text-accent">Code</a>
-								</p>
-							)}
-						</div>
 					</li>
 				);
 			})

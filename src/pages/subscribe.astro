@@ -49,7 +49,7 @@ if (!ok && email && upstream && list && user && token) {
 if (!ok) Astro.response.status = 400;
 ---
 
-<Layout title="Subscribe · unbeholden.dev" description="An email when I publish.">
+<Layout title="Subscribe · Unbeholden" description="An email when I publish.">
 	{
 		ok ? (
 			<Fragment>
@@ -75,6 +75,6 @@ if (!ok) Astro.response.status = 400;
 		)
 	}
 	<p class="mt-8">
-		<a href="/" class="chip inline-block no-underline">Back to the front page</a>
+		<a href="/" class="chip no-underline">Back to the front page</a>
 	</p>
 </Layout>

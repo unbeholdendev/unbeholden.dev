@@ -66,40 +66,40 @@ if (state === 'failed') Astro.response.status = 400;
 if (state === 'limited') Astro.response.status = 429;
 
 const field =
-	'border-rule text-fg placeholder:text-faint w-full border-b bg-transparent pb-2 outline-none placeholder:italic';
+	'border-key bg-panel placeholder:text-faint w-full rounded-lg border-2 px-3 py-2';
 ---
 
 <Layout title="Contact · Unbeholden" description="Write to me.">
 	{
 		state === 'sent' ? (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
 					Got it.
 				</h1>
-				<p class="text-dim max-w-lede mt-[26px] text-pretty">
+				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
 					It's on my phone. If you left a way to reach you, I'll reply there.
 				</p>
-				<p class="text-nav mt-7 italic">
-					<a href="/" class="text-accent">Back to the front page →</a>
+				<p class="mt-8">
+					<a href="/" class="chip inline-block no-underline">Back to the front page</a>
 				</p>
 			</Fragment>
 		) : (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
 					{state === 'failed'
 						? "That didn't go through."
 						: state === 'limited'
 							? 'Too many messages right now.'
 							: 'Write to me.'}
 				</h1>
-				<p class="text-dim max-w-lede mt-[26px] text-pretty">
+				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
 					{state === 'failed'
 						? "It didn't reach my phone. Your message is still below, so try again, or send it from your own mail."
 						: state === 'limited'
 							? 'The form takes ten an hour and this one is full. Try again later, or send it from your own mail.'
 							: 'A question about a post, a correction, something you built. It comes straight to my phone, through my own server.'}
 				</p>
-				<form method="post" action="/contact" class="mt-section flex flex-col gap-8">
+				<form method="post" action="/contact" class="callout mt-section flex max-w-[720px] flex-col gap-8 p-5 sm:p-8">
 					<label class="flex flex-col gap-2">
 						<span class="meta">Name (optional)</span>
 						<input type="text" name="name" autocomplete="name" maxlength="100" value={name} class={field} />
@@ -115,7 +115,7 @@ const field =
 							value={email}
 							class={field}
 						/>
-						<span class="text-faint text-[13px] leading-[1.7] italic">
+						<span class="meta">
 							Fill this in if you'd like a reply, or put another way to reach you in the message.
 						</span>
 					</label>
@@ -127,8 +127,8 @@ const field =
 					</label>
 					<input type="text" name="website" hidden autocomplete="off" tabindex="-1" />
 					<div class="flex flex-col items-end gap-2">
-						<button type="submit" class="text-accent text-nav cursor-pointer italic">Send →</button>
-						<span class="text-faint text-[13px] leading-[1.7] italic">
+						<button type="submit" class="chip">Send</button>
+						<span class="meta">
 							Or write to <a href="mailto:hello@unbeholden.dev" class="text-accent">hello@unbeholden.dev</a>
 						</span>
 					</div>

@@ -8,11 +8,11 @@ export async function getStaticPaths() {
 	const entries = await listEntries();
 	return entries.map((entry, i) => ({
 		params: { slug: entry.id },
-		props: { entry, older: entries[i + 1] },
+		props: { entry, n: entries.length - i, newer: entries[i - 1], older: entries[i + 1] },
 	}));
 }
 
-const { entry, older } = Astro.props;
+const { entry, n, newer, older } = Astro.props;
 const { title, date, summary, topic, poster, video, updated } = entry.data;
 const { Content } = await render(entry);
 const { minutes } = articleStats(entry);
@@ -20,6 +20,7 @@ const { minutes } = articleStats(entry);
 // 1.91:1, the ratio every card is laid out at, cropped from the 16:9 poster.
 const social = await getImage({ src: poster.src, format: 'jpg', width: 1200, height: 630 });
 const PosterFrame = video ? 'a' : 'div';
+const watch = video && `https://www.youtube.com/watch?v=${video.id}`;
 ---
 
 <Layout
@@ -28,45 +29,59 @@ const PosterFrame = video ? 'a' : 'div';
 	image={{ src: social.src, alt: poster.alt, width: 1200, height: 630 }}
 	article={{ published: date, updated }}
 >
-	<article class="text-article">
-		<header class="mt-masthead mb-[60px] text-center">
-			<p class="meta mb-5">{topic} · {day(date)} · {readTime(minutes)}</p>
-			<h1 class="font-display text-h1 mb-[22px] font-light text-balance">{title}</h1>
-			<p class="font-display text-lede text-dim max-w-lede mx-auto font-light text-pretty">
-				{summary}
+	<article
+		class="callout text-article mt-12 px-5 pt-6 pb-12 [--gap:40px] [--gutter:176px] lg:grid lg:grid-cols-[var(--gutter)_min(68ch,100%)] lg:justify-center lg:gap-x-(--gap) lg:px-12 lg:pt-14 lg:pb-20"
+		style={`--n: "${n}."`}
+	>
+		<p class="gnum mb-4 lg:mb-0" aria-hidden="true">{n}</p>
+		<header class="min-w-0">
+			<h1 class="font-display text-h1 font-extrabold text-balance">{title}</h1>
+			<p class="text-dim text-lede mt-5 text-pretty">{summary}</p>
+			<p class="meta mt-5">
+				{topic} · {day(date)} · {readTime(minutes)}
+				{updated && ` · Updated ${day(updated)}`}
+				{watch && (
+					<Fragment>
+						{' · '}
+						<a href={watch} class="text-accent">Video, {video.duration}</a>
+					</Fragment>
+				)}
 			</p>
-			{
-				video && (
-					<p class="text-nav mt-[26px] italic">
-						<a href={`https://www.youtube.com/watch?v=${video.id}`} class="text-accent">
-							Watch the video, {video.duration} →
-						</a>
-					</p>
-				)
-			}
-			<div class="bg-fg mx-auto mt-10 h-px w-10"></div>
 		</header>
 
-		<figure class="mb-12">
-			<PosterFrame
-				href={video && `https://www.youtube.com/watch?v=${video.id}`}
-				class="border-rule block border"
-			>
+		<figure class="mt-10 min-w-0 lg:col-start-2">
+			<PosterFrame href={watch} class="block">
 				<Image
 					src={poster.src}
 					alt={poster.alt}
-					widths={[640, 1280]}
-					sizes="640px"
-					class="bg-bg2 aspect-video w-full object-cover"
+					widths={[720, 1440]}
+					sizes="(min-width: 1024px) 680px, 100vw"
+					class="border-key bg-bg2 aspect-video w-full rounded-lg border-2 object-cover"
 				/>
 			</PosterFrame>
 		</figure>
 
-		<div class="article"><Content /></div>
+		<div class="article mt-12 min-w-0 lg:col-start-2"><Content /></div>
 	</article>
 
-	<Fragment slot="footer">
-		{older ? <a href={`/blog/${older.id}`}>← {older.data.title}</a> : <span />}
-		<a href="/blog">All entries →</a>
-	</Fragment>
+	<nav aria-label="Other entries" class="mt-6 grid gap-4 md:grid-cols-2">
+		{
+			older ? (
+				<a href={`/blog/${older.id}`} class="callout grid gap-2 px-5 py-4 no-underline hover:text-fg">
+					<span class="meta">← Older</span>
+					<span class="font-display text-h3 font-bold">{older.data.title}</span>
+				</a>
+			) : (
+				<span />
+			)
+		}
+		{
+			newer && (
+				<a href={`/blog/${newer.id}`} class="callout grid gap-2 px-5 py-4 text-right no-underline hover:text-fg">
+					<span class="meta">Newer →</span>
+					<span class="font-display text-h3 font-bold">{newer.data.title}</span>
+				</a>
+			)
+		}
+	</nav>
 </Layout>

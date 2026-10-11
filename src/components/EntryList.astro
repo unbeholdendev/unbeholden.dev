@@ -1,37 +1,41 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import { articleStats, day, readTime } from '../lib/entries';
 
 interface Props {
 	entries: CollectionEntry<'entries'>[];
+	total: number;
 }
 
-const { entries } = Astro.props;
+const { entries, total } = Astro.props;
 ---
 
-<div class="border-rule border-t">
+<ul class="callout px-5 lg:pr-8 lg:pl-0">
 	{
-		entries.map((entry) => {
-			const href = `/blog/${entry.id}`;
-			return (
-				<article class="border-rule py-post border-b">
-					<p class="meta mb-2.5">
+		entries.map((entry, i) => (
+			<li class="group border-key relative grid gap-4 py-6 not-first:border-t-2 lg:grid-cols-[200px_1fr_288px] lg:gap-8 lg:py-10 lg:not-first:border-t-0 lg:not-first:bg-[linear-gradient(var(--key),var(--key))] lg:not-first:bg-[length:100%_2px] lg:not-first:bg-[position:200px_0] lg:not-first:bg-no-repeat">
+				<p class="gnum group-hover:text-accent" aria-hidden="true">{total - i}</p>
+				<div>
+					<h2 class="font-display text-h2 font-bold text-balance">
+						<a href={`/blog/${entry.id}`} class="no-underline group-hover:text-fg group-hover:underline group-hover:decoration-accent group-hover:decoration-2 after:absolute after:inset-0">
+							{entry.data.title}
+						</a>
+					</h2>
+					<p class="text-dim max-w-summary mt-3 text-pretty">{entry.data.summary}</p>
+					<p class="meta mt-4">
 						{day(entry.data.date)} · {readTime(articleStats(entry).minutes)}
-						{entry.data.video && (
-							<Fragment>
-								{' · '}
-								<a href={href} class="text-accent">
-									Video, {entry.data.video.duration}
-								</a>
-							</Fragment>
-						)}
+						{entry.data.video && ` · Video, ${entry.data.video.duration}`}
 					</p>
-					<a href={href}>
-						<h2 class="font-display text-h2 mb-3 text-balance">{entry.data.title}</h2>
-					</a>
-					<p class="text-dim max-w-summary text-pretty">{entry.data.summary}</p>
-				</article>
-			);
-		})
+				</div>
+				<Image
+					src={entry.data.poster.src}
+					alt=""
+					widths={[320, 640]}
+					sizes="(min-width: 1024px) 288px, 100vw"
+					class="border-key group-hover:border-accent -order-1 aspect-[2/1] w-full rounded-lg border-2 object-cover lg:order-none lg:aspect-[3/2]"
+				/>
+			</li>
+		))
 	}
-</div>
+</ul>

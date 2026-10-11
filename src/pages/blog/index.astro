@@ -10,13 +10,13 @@ const entries = await listEntries();
 	title="Blog · Unbeholden"
 	description="Everything I've written about self-hosting, homelab and networking, Linux, agent tooling, and the small bits of config that make daily work less annoying."
 >
-	<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+	<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
 		Everything I've written.
 	</h1>
 	<p class="meta mt-4">
 		Newest first, in full at <a href="/feed.xml" class="text-accent">feed.xml</a>
 	</p>
-	<div class="mt-7">
-		<EntryList entries={entries} />
+	<div class="mt-section">
+		<EntryList entries={entries} total={entries.length} />
 	</div>
 </Layout>

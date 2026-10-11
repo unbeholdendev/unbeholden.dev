@@ -1,5 +1,5 @@
 <aside id="subscribe" class="min-w-0 flex-[2_1_320px]">
-	<p class="meta mb-1.5">New posts by email</p>
+	<p class="font-display text-h3 mb-1.5 font-bold">New entries by email</p>
 	<p class="text-dim mb-4 text-[15px] leading-[1.6] text-pretty">
 		An email when I publish something, or now and then when I have something worth saying. No spam,
 		and the list runs on my own server.
@@ -8,7 +8,7 @@
 		<form
 			method="post"
 			action="/subscribe"
-			class="border-rule flex items-baseline gap-4 border-b pb-2"
+			class="flex flex-wrap gap-2"
 		>
 			<input
 				type="email"
@@ -17,19 +17,19 @@
 				autocomplete="email"
 				placeholder="you@example.org"
 				aria-label="Email address"
-				class="text-fg placeholder:text-faint min-w-0 flex-auto bg-transparent text-[15px] leading-[1.6] outline-none placeholder:italic"
+				class="border-key bg-panel placeholder:text-faint min-w-0 flex-[1_1_220px] rounded-lg border-2 px-3 py-2 text-[15px]"
 			/>
 			<input type="text" name="website" hidden autocomplete="off" tabindex="-1" />
-			<button type="submit" class="text-accent text-nav cursor-pointer whitespace-nowrap italic"
-				>Subscribe →</button
+			<button type="submit" class="chip"
+				>Subscribe</button
 			>
 		</form>
-		<p class="text-faint mt-2 text-[13px] leading-[1.7] italic">
+		<p class="meta mt-2">
 			Double opt-in. Unsubscribe link in every email.
 		</p>
 	</div>
 	<div data-done hidden>
-		<p class="meta text-accent mb-1.5">One more step</p>
+		<p class="font-display text-h3 mb-1.5 font-bold">One more step</p>
 		<p class="text-dim text-[15px] leading-[1.6]">
 			I've sent a confirmation link to <span data-email></span>. I don't keep anything until you click it.
 		</p>

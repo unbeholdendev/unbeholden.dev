@@ -39,7 +39,7 @@ const image = (link?: string) =>
 	title="Built · Unbeholden"
 	description="Things I've built, with a link and the source where it's public."
 >
-	<h1 class="font-display text-statement mt-masthead max-w-statement font-light text-pretty">
+	<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
 		Things I've built.
 	</h1>
 	<ul class="mt-10 grid gap-8 sm:grid-cols-2">
@@ -49,7 +49,7 @@ const image = (link?: string) =>
 				const href = thing.link ?? thing.code;
 				const external = { target: '_blank', rel: 'noopener noreferrer' };
 				return (
-					<li class="border-rule hover:border-dim relative border transition-colors duration-300">
+					<li class="callout hover:border-accent relative overflow-hidden">
 						{src ? (
 							/* Empty alt: the card repeats the name and description beside it. Add one if it says more. */
 							<Image
@@ -57,18 +57,18 @@ const image = (link?: string) =>
 								alt=""
 								widths={[320, 640, 1280]}
 								sizes="(min-width: 640px) 304px, 100vw"
-								class="aspect-[40/21] object-cover"
+								class="border-key aspect-[40/21] border-b-2 object-cover"
 							/>
 						) : (
-							<div class="bg-bg2 aspect-[40/21]" />
+							<div class="bg-bg2 border-key aspect-[40/21] border-b-2" />
 						)}
 						<div class="p-5">
-							<a href={href} {...external} class="font-display text-h3 block after:absolute after:inset-0">
+							<a href={href} {...external} class="font-display text-h2 block font-bold no-underline after:absolute after:inset-0">
 								{thing.name}
 							</a>
 							<p class="text-dim mt-1 text-pretty">{thing.description}</p>
 							{thing.link && thing.code && (
-								<p class="text-nav relative mt-2 italic">
+								<p class="meta relative mt-3">
 									<a href={thing.code} {...external} class="text-accent">Code</a>
 								</p>
 							)}

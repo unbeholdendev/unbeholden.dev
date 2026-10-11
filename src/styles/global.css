@@ -1,62 +1,66 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-display: Spectral, 'Spectral on Times', 'Spectral on Noto', 'Spectral on DejaVu',
-    'Times New Roman', serif;
-  --font-body: Lora, 'Lora on Georgia', 'Lora on Noto', 'Lora on DejaVu', Georgia, serif;
+  --font-display: Rubik, system-ui, sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   --color-bg: var(--bg);
   --color-bg2: var(--bg2);
+  --color-panel: var(--panel);
+  --color-key: var(--key);
   --color-fg: var(--fg);
   --color-dim: var(--dim);
   --color-faint: var(--faint);
-  --color-rule: var(--rule);
+  --color-mid: var(--mid);
   --color-accent: var(--accent);
 
-  --text-wordmark: 20px;
-  --text-wordmark--letter-spacing: 0.16em;
-  --text-statement: clamp(34px, 4.2vw, 46px);
-  --text-statement--line-height: 1.18;
-  --text-statement--letter-spacing: -0.012em;
-  --text-h1: clamp(38px, 5vw, 56px);
-  --text-h1--line-height: 1.08;
-  --text-h1--letter-spacing: -0.018em;
-  --text-h2: clamp(28px, 3.4vw, 36px);
-  --text-h2--line-height: 1.15;
-  --text-h2--letter-spacing: -0.012em;
-  --text-h3: clamp(26px, 2.8vw, 30px);
-  --text-h3--line-height: 1.2;
-  --text-h3--letter-spacing: -0.012em;
-  --text-lede: 23px;
-  --text-lede--line-height: 1.4;
-  --text-article: 18px;
-  --text-article--line-height: 1.75;
+  --text-wordmark: clamp(32px, 6vw, 48px);
+  --text-wordmark--line-height: 1;
+  --text-wordmark--letter-spacing: -0.02em;
+  --text-statement: clamp(36px, 5.6vw, 72px);
+  --text-statement--line-height: 1.02;
+  --text-statement--letter-spacing: -0.03em;
+  --text-h1: clamp(32px, 4.4vw, 52px);
+  --text-h1--line-height: 1.06;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h2: clamp(22px, 2.4vw, 30px);
+  --text-h2--line-height: 1.18;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h3: clamp(20px, 2vw, 24px);
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.01em;
+  --text-lede: 19px;
+  --text-lede--line-height: 1.55;
+  --text-article: 17px;
+  --text-article--line-height: 1.7;
   --text-body: 17px;
-  --text-body--line-height: 1.7;
-  --text-meta: 15px;
-  --text-nav: 16px;
+  --text-body--line-height: 1.65;
+  --text-meta: 14px;
+  --text-nav: 15px;
 
-  --container-column: 720px;
-  --container-statement: 560px;
-  --container-summary: 500px;
-  --container-lede: 460px;
+  --container-page: 1200px;
+  --container-statement: 18ch;
+  --container-summary: 60ch;
+  --container-lede: 60ch;
 
-  --spacing-masthead: clamp(40px, 5vw, 64px);
-  --spacing-section: clamp(64px, 9vw, 104px);
-  --spacing-post: 40px;
+  --spacing-masthead: 64px;
+  --spacing-section: clamp(48px, 7vw, 64px);
 }
 
 :root {
   color-scheme: light;
 
-  --bg: light-dark(oklch(0.968 0.014 85), oklch(0.170 0.008 50));
-  --bg2: light-dark(oklch(0.935 0.018 85), oklch(0.210 0.010 50));
-  --fg: light-dark(oklch(0.240 0.010 50), oklch(0.920 0.016 85));
-  --dim: light-dark(oklch(0.440 0.012 60), oklch(0.740 0.018 75));
-  --faint: light-dark(oklch(0.490 0.014 65), oklch(0.670 0.018 70));
-  --rule: light-dark(oklch(0.860 0.016 80), oklch(0.300 0.012 60));
-  --accent: light-dark(oklch(0.430 0.130 32), oklch(0.800 0.105 42));
+  --bg: light-dark(#cfe2f3, #0b1626);
+  --bg2: light-dark(#f2f7fc, #0e1c30);
+  --panel: light-dark(#ffffff, #13233a);
+  --key: light-dark(#111418, #dbe6f1);
+  --fg: light-dark(#111418, #e9eff6);
+  --dim: light-dark(#3c4650, #b9c6d3);
+  --faint: light-dark(#5b6773, #8d9cab);
+  --mid: light-dark(#4a78a6, #7fa6cf);
+  --accent: light-dark(#c10e10, #ff6a5a);
+  --yellow: #f5c400;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -76,43 +80,94 @@
 @layer base {
   body {
     background-color: var(--bg);
+    background-image: radial-gradient(circle, color-mix(in srgb, var(--key) 9%, transparent) 1px, transparent 1.5px);
+    background-size: 24px 24px;
     color: var(--fg);
     font-family: var(--font-body);
     font-size: var(--text-body);
     line-height: var(--text-body--line-height);
   }
 
+  a {
+    text-underline-offset: 3px;
+  }
+
   a:hover {
     color: var(--accent);
   }
 
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
   ::selection {
-    background: var(--accent);
-    color: var(--bg);
+    background: var(--yellow);
+    color: #111418;
   }
 }
 
 @layer components {
+  .callout {
+    background: var(--panel);
+    border: 2px solid var(--key);
+    border-radius: 8px;
+  }
+
+  .chip {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-nav);
+    line-height: 1;
+    padding: 10px 16px;
+    background: var(--panel);
+    border: 2px solid var(--key);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .chip:hover,
+  .chip[aria-current] {
+    background: var(--key);
+    color: var(--panel);
+  }
+
+  .gnum {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 56px;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: var(--mid);
+  }
+
+  @media (min-width: 1024px) {
+    .gnum {
+      font-size: 112px;
+      text-align: right;
+    }
+  }
+
   .article {
     counter-reset: section;
   }
 
   .article > * + * {
-    margin-top: 24px;
+    margin-top: 20px;
   }
 
-  /* The column is a reading measure, and the diagram is the one thing that does
-     not fit it: narrower than 800px its labels fall below 10px. So it breaks out
-     of the column rather than the column widening to meet it. 100cqw is the
-     frame's content box, so the breakout can never push the page sideways;
-     under 800px the figure still scrolls rather than shrinking further. */
+  /* The diagram is the one thing narrower than its labels allow: under 800px
+     they fall below 10px. So it takes the gutter too, and scrolls below that. */
   .article > figure {
-    --amber: light-dark(oklch(0.48 0.115 72), oklch(0.7 0.125 80));
-    position: relative;
-    left: 50%;
-    translate: -50%;
-    width: min(820px, 100cqw);
+    --amber: light-dark(#8a5a00, #e7b04a);
     overflow-x: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .article > figure {
+      margin-left: calc(-1 * (var(--gutter) + var(--gap)));
+    }
   }
 
   .article > figure svg {
@@ -123,26 +178,54 @@
   .article h2,
   .article h3 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 700;
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+    text-wrap: balance;
+    margin-top: 72px;
+  }
+
+  .article h3 {
     font-size: var(--text-h3);
-    line-height: var(--text-h3--line-height);
-    letter-spacing: var(--text-h3--letter-spacing);
-    margin-top: 56px;
+    margin-top: 40px;
+  }
+
+  .article h2 {
+    position: relative;
   }
 
   .article h2::before {
     counter-increment: section;
-    content: counter(section) '. ';
-    font-style: italic;
-    color: var(--accent);
+    content: var(--n) counter(section);
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: var(--mid);
+  }
+
+  @media (min-width: 1024px) {
+    .article h2::before {
+      position: absolute;
+      right: calc(100% + var(--gap));
+      top: 0;
+      width: var(--gutter);
+      margin: 0;
+      font-size: 64px;
+      text-align: right;
+    }
   }
 
   .article :is(h2, h3) + * {
-    margin-top: 18px;
+    margin-top: 16px;
   }
 
   .article a {
-    color: var(--accent);
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
   }
 
   .article ul,
@@ -155,190 +238,114 @@
   .article li + li { margin-top: 0.5em; }
 
   .article strong {
-    font-weight: 500;
+    font-weight: 700;
   }
 
   .article blockquote {
-    border-left: 1px solid var(--rule);
-    padding-left: 1.4em;
+    padding: 16px 20px;
+    border: 2px solid var(--key);
+    border-radius: 8px;
     color: var(--dim);
-    font-style: italic;
+  }
+
+  .article code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
   }
 
   .article :not(pre) > code {
-    font-family: var(--font-mono);
-    font-size: 0.82em;
-    color: var(--dim);
+    padding: 1px 5px;
+    border: 1px solid color-mix(in srgb, var(--key) 30%, transparent);
+    border-radius: 4px;
+    background: var(--bg2);
+    overflow-wrap: anywhere;
   }
 
   .article pre {
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    padding: 16px 0;
+    padding: 16px 20px;
+    border: 2px solid var(--key);
+    border-radius: 8px;
+    background: var(--bg2) !important;
     overflow-x: auto;
     font-size: 15px;
-    line-height: 1.7;
-    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  .article pre code {
+    font-size: 1em;
+    color: var(--fg);
+  }
+
+  .article img {
+    border-radius: 8px;
   }
 
   .article hr {
     border: 0;
-    border-top: 1px solid var(--rule);
+    border-top: 2px solid var(--key);
   }
 }
 
 @utility meta {
+  font-family: var(--font-display);
+  font-weight: 500;
   font-size: var(--text-meta);
-  font-style: italic;
-  color: var(--faint);
+  line-height: 1.4;
+  color: var(--dim);
 }
 
 @font-face {
-  font-family: 'Spectral';
+  font-family: 'Rubik';
   font-style: normal;
-  font-weight: 300;
+  font-weight: 500 800;
   font-display: swap;
-  src: url('/fonts/spectral-300-latin.woff2') format('woff2');
+  src: url('/fonts/rubik-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Spectral';
+  font-family: 'Rubik';
   font-style: normal;
-  font-weight: 300;
+  font-weight: 500 800;
   font-display: swap;
-  src: url('/fonts/spectral-300-latin-ext.woff2') format('woff2');
+  src: url('/fonts/rubik-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
-  font-family: 'Spectral';
+  font-family: 'Nunito Sans';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('/fonts/spectral-400-latin.woff2') format('woff2');
+  src: url('/fonts/nunito-sans-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Spectral';
+  font-family: 'Nunito Sans';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('/fonts/spectral-400-latin-ext.woff2') format('woff2');
+  src: url('/fonts/nunito-sans-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
 @font-face {
-  font-family: 'Spectral';
+  font-family: 'Nunito Sans';
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/spectral-italic-400-latin.woff2') format('woff2');
+  src: url('/fonts/nunito-sans-italic-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Spectral';
+  font-family: 'Nunito Sans';
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/spectral-italic-400-latin-ext.woff2') format('woff2');
+  src: url('/fonts/nunito-sans-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'Lora';
-  font-style: normal;
-  font-weight: 400 500;
-  font-display: swap;
-  src: url('/fonts/lora-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Lora';
-  font-style: normal;
-  font-weight: 400 500;
-  font-display: swap;
-  src: url('/fonts/lora-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-@font-face {
-  font-family: 'Lora';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/lora-italic-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Lora';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/lora-italic-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-/* Each fallback is given the metrics of the face it stands in for, so the swap
-   changes the letterforms and not the space they occupy. Every ratio is the
-   webfont's own metric over that fallback's. An unresolved local() drops
-   through to the next family, so the chain has to name a serif each platform
-   actually ships: Times on Windows and macOS, Noto on Android, DejaVu on Linux.
-   Liberation Serif shares Times' metrics, so it shares its face. Spectral,
-   Lora and Noto are from @capsizecss/metrics; DejaVu is measured with the same
-   weighted-advance method, verified by reproducing their Noto figure.
-   size-adjust is what holds the line breaks; the two overrides only keep the
-   baseline still inside a line box every rule here already gives a height. */
-@font-face {
-  font-family: 'Spectral on Times';
-  src: local('Times New Roman'), local('Liberation Serif');
-  size-adjust: 109.8%;
-  ascent-override: 96.5%;
-  descent-override: 42.2%;
-}
-
-@font-face {
-  font-family: 'Spectral on Noto';
-  src: local('Noto Serif');
-  size-adjust: 92.7%;
-  ascent-override: 114.2%;
-  descent-override: 49.9%;
-}
-
-@font-face {
-  font-family: 'Spectral on DejaVu';
-  src: local('DejaVu Serif');
-  size-adjust: 86.3%;
-  ascent-override: 122.7%;
-  descent-override: 53.6%;
-}
-
-@font-face {
-  font-family: 'Lora on Georgia';
-  src: local('Georgia');
-  size-adjust: 105%;
-  ascent-override: 95.8%;
-  descent-override: 26.1%;
-}
-
-@font-face {
-  font-family: 'Lora on Noto';
-  src: local('Noto Serif');
-  size-adjust: 97.3%;
-  ascent-override: 103.4%;
-  descent-override: 28.2%;
-}
-
-@font-face {
-  font-family: 'Lora on DejaVu';
-  src: local('DejaVu Serif');
-  size-adjust: 90.6%;
-  ascent-override: 111%;
-  descent-override: 30.2%;
 }
 
 @font-face {
@@ -358,3 +365,4 @@
   src: url('/fonts/ibm-plex-mono-400-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
+

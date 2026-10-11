@@ -18,7 +18,7 @@ Success is reputation: the site stands as proof of Jakub's craft. Reads, subscri
 
 ## Positioning
 
-The site practises what it argues, and the claim is checkable: a reader can open devtools and see no request leave this origin (ADR-0001). It runs on Jakub's own hardware and a rented VPS. A blog on a hosted platform could not say this truthfully.
+The site practises what it argues, and the claim is checkable: a reader can open devtools and see no request leave this origin (ADR-0001). It is served from a rented VPS; the rest runs on Jakub's own hardware. A blog on a hosted platform could not say this truthfully.
 
 ## Operating Context
 

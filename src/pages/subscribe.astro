@@ -53,17 +53,16 @@ if (!ok) Astro.response.status = 400;
 	{
 		ok ? (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
 					Check your mail.
 				</h1>
 				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
-					I've sent a confirmation link to {email}. I don't keep anything until you click it, and
-					if you don't, the link just expires.
+					I've sent a confirmation link to {email}. Nothing gets mailed to you until you click it.
 				</p>
 			</Fragment>
 		) : (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
 					That didn't go through.
 				</h1>
 				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">

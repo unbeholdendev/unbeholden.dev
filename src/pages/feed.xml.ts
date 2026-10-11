@@ -33,7 +33,7 @@ export const GET: APIRoute = async ({ site }) => {
 		link: url('/'),
 		feedLinks: { atom: url('feed.xml') },
 		updated: new Date(stamps.length ? Math.max(...stamps) : 0),
-		author: { name: 'Unbeholden' },
+		author: { name: 'Jakub' },
 		copyright: 'Prose CC BY 4.0. Code CC0/MIT.',
 		generator: false,
 	});

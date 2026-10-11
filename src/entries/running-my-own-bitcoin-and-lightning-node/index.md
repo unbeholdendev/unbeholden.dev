@@ -2,7 +2,7 @@
 title: Paying without asking permission
 date: 2026-09-30
 summary: A bank decides whether your money moves. I run Bitcoin Core and LND at home and wrote my own Lightning Address server, so anyone can pay any address at this domain.
-topic: Self-hosting / Bitcoin / Finance
+topic: Self-hosting
 poster:
   src: ./poster.jpg
   alt: An old wooden chest bound in worn brass, on dark stone, its lid lifted slightly and an open padlock hanging from the hasp, lit warm from one side, with indigo showing through the gap.
@@ -80,7 +80,7 @@ along with the host that was asked for, so the invoice callback URL uses `unbeho
 That's how the address lives on the root domain while the node sits on a home connection with no
 ports forwarded.
 
-How I set up Headscale, and why I didn't just forward a port, is the next entry.
+How I set up Headscale, and why I didn't just forward a port, is a later entry.
 
 ## Why write my own LNURL server
 

@@ -73,7 +73,7 @@ const field =
 	{
 		state === 'sent' ? (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
 					Got it.
 				</h1>
 				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
@@ -85,7 +85,7 @@ const field =
 			</Fragment>
 		) : (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-balance">
+				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
 					{state === 'failed'
 						? "That didn't go through."
 						: state === 'limited'
@@ -97,7 +97,7 @@ const field =
 						? "It didn't reach my phone. Your message is still below, so try again, or send it from your own mail."
 						: state === 'limited'
 							? 'The form takes ten an hour and this one is full. Try again later, or send it from your own mail.'
-							: 'A question about a post, a correction, something you built. It comes straight to my phone, through my own server.'}
+							: 'A question about an entry, a correction, something you built. It comes straight to my phone, through my own server.'}
 				</p>
 				<form method="post" action="/contact" class="callout mt-section flex max-w-[720px] flex-col gap-8 p-5 sm:p-8">
 					<label class="flex flex-col gap-2">

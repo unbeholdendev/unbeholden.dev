@@ -1,8 +1,8 @@
 ---
 title: An agent that configures my machine without touching it
 date: 2026-09-18
-summary: I set up the same Linux laptop by hand twice in a few months. Before there was a third time, I had the agents I already run write its whole configuration, from a container that can't reach it.
-topic: Agents / Linux
+summary: I set up a Linux laptop by hand twice in a few months. Before there was a third time, I had the agents I already run write its whole configuration, from a container that can't reach it.
+topic: Agent tooling
 poster:
   src: ./poster.jpg
   alt: A black ThinkPad open on a warm wooden desk, its screen filled with amber terminal text. Behind it, out of focus, a rack unit with green indicator lights and an indigo glow.
@@ -41,13 +41,13 @@ command I use to apply it all.
 
 Quick background if you haven't used them: a [Nix flake](https://nix.dev/concepts/flakes.html)
 describes a system with its inputs pinned, so building it again later gives the same result.
-[Home-manager](https://github.com/nix-community/home-manager) handles the `$HOME` side, and
+[Home Manager](https://github.com/nix-community/home-manager) handles the `$HOME` side, and
 also runs on its own on distributions other than NixOS. The system side is NixOS itself, which
 is exactly the part my Fedora dotfiles couldn't cover.
 
 The flake has one `nixosConfigurations.t460s` and three `homeConfigurations`: `pycan@t460s` for
 the laptop, `root@deb-agent` for the LXC that runs the dev containers, and `container` for every
-container, since a container's hostname is a random ID. Home-manager runs standalone on those
+container, since a container's hostname is a random ID. Home Manager runs standalone on those
 last two, so Debian stays Debian.
 
 The upshot: I get the same shell on the laptop, over SSH on the host, and in the containers the
@@ -69,7 +69,7 @@ repos, but can't merge to main on any of them. Forgejo enforces that, and the ag
 Forgejo's settings, so I'm not relying on it to behave.
 
 Because of that I run it with permissions off and no prompts. A prompt asks me to approve an
-action, but the only action here is writing a file in a container that can't reach anything.
+action, but the only action here is writing a file in a container that can't reach the laptop.
 Clicking yes or no would be theatre. I review once, on the diff.
 
 The containers do have open internet access. They need package registries and docs, and the
@@ -139,7 +139,7 @@ push can carry it out from there. My wifi key sits in a mode 600 file outside th
 NixOS copies network profiles into the Nix store, and the store is world readable.
 
 And the traps are odd ones. A flake only sees files git tracks, so a new module needs a
-`git add` before you switch, or Nix acts as if it isn't there. Home-manager won't overwrite a
+`git add` before you switch, or Nix acts as if it isn't there. Home Manager won't overwrite a
 file that's already where it wants to put one. That's the right call, and it's also the error I
 hit most. Anything an app rewrites itself can't live in the read-only store, so it gets
 symlinked out to the clone, and then just using the app leaves the repo dirty.

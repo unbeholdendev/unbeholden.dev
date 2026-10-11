@@ -2,7 +2,7 @@
 title: Self-hosting my email with Stalwart
 date: 2026-09-20
 summary: Everyone says don't self-host email. I did it anyway, and most of the warnings turned out to be out of date or fixable.
-topic: Self-hosting / Email
+topic: Self-hosting
 poster:
   src: ./poster.jpg
   alt: A worn brass letterbox set into a dark painted door, lit warm from one side, with an indigo light glowing from the gap behind the flap.
@@ -130,7 +130,7 @@ It scored 10/10 on mail-tester the first time I ran it. SPF, DKIM and DMARC all 
 I've got as many addresses on as many domains as I like, a catch-all so each service gets its
 own address, server-side filtering, and calendar, contacts and file sync over CalDAV, CardDAV
 and WebDAV, which my clients picked up during autodiscovery without me asking. Running cost: a
-VPS I already had, the domains, and no subscriptions.
+VPS I already had, the domains, and no monthly fees.
 
 More to the point, the inbox every other account falls back to now runs on a server I control,
 from config I can read, and there's no account manager anywhere who can switch it off.
@@ -141,5 +141,5 @@ If you've never run a server, no. Start with something that doesn't hurt when it
 
 If you already run your own infrastructure and keep it patched, and the account-recovery
 argument lands, self-hosted email in 2026 is far more manageable than its reputation. Stalwart
-turns five daemons into one, the relay handles deliverability for the price of some metadata,
+turns three daemons into one, the relay handles deliverability for the price of some metadata,
 and what's left is the three problems above, which you now know about.

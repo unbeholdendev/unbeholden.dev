@@ -51,8 +51,8 @@ The opening sentence of the front page and the About page, set large in the disp
 _Avoid_: hero, tagline, strapline.
 
 **Subscription**:
-A reader's standing request to be mailed when an entry is published, confirmed by clicking a
-link before anything is kept. See ADR-0003.
+A reader's standing request to be mailed when an entry is published, stored on submit and
+mailed nothing until the reader confirms it by clicking a link. See ADR-0003.
 _Avoid_: newsletter for the thing a reader joins; a newsletter is what gets sent, a
 subscription is what they have. Also avoid signup and lead.
 

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import Forgejo from '../assets/forgejo.svg';
 
 const things: { name: string; description: string; link?: string; code?: string }[] = [
 	{
@@ -50,7 +51,7 @@ const image = (link?: string) =>
 					new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 				return (
 					<li class="row lg:grid-cols-[1fr_288px] lg:bg-left-top">
-						<div class:list={{ 'lg:col-span-2': !src }}>
+						<div>
 							<h2 class="font-display text-h2 font-bold">{thing.name}</h2>
 							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
 							<p class="mt-4 flex flex-wrap gap-2">
@@ -58,7 +59,7 @@ const image = (link?: string) =>
 								{thing.code && <a href={thing.code} {...away(thing.code)} class="chip">Source</a>}
 							</p>
 						</div>
-						{src && (
+						{src ? (
 							/* Empty alt: the row repeats the name and description beside it. Add one if it says more. */
 							<Image
 								src={src}
@@ -67,6 +68,10 @@ const image = (link?: string) =>
 								sizes="(min-width: 1024px) 288px, 100vw"
 								class="border-key -order-1 aspect-[40/21] w-full rounded border-2 object-cover lg:order-none"
 							/>
+						) : (
+							<div class="border-key -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
+								<Forgejo aria-hidden="true" class="h-1/2 w-auto" />
+							</div>
 						)}
 					</li>
 				);

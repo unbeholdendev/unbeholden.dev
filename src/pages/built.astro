@@ -54,8 +54,8 @@ const image = (link?: string) =>
 							<h2 class="font-display text-h2 font-bold">{thing.name}</h2>
 							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
 							<p class="mt-4 flex flex-wrap gap-2">
-								{thing.link && <a href={thing.link} {...away(thing.link)} class="chip no-underline">{new URL(thing.link).hostname}</a>}
-								{thing.code && <a href={thing.code} {...away(thing.code)} class="chip no-underline">Source</a>}
+								{thing.link && <a href={thing.link} {...away(thing.link)} class="chip">{new URL(thing.link).hostname}</a>}
+								{thing.code && <a href={thing.code} {...away(thing.code)} class="chip">Source</a>}
 							</p>
 						</div>
 						{src && (

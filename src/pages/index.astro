@@ -17,6 +17,6 @@ const entries = await listEntries();
 	</p>
 	<div class="mt-section">
 		<EntryList entries={entries.slice(0, 3)} total={entries.length} />
-		{entries.length > 3 && <p class="mt-6"><a href="/blog" class="chip no-underline">All entries</a></p>}
+		{entries.length > 3 && <p class="mt-6"><a href="/blog" class="chip">All entries</a></p>}
 	</div>
 </Layout>

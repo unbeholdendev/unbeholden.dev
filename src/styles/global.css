@@ -5,7 +5,6 @@
   --font-body: 'Nunito Sans', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
-  --color-bg: var(--bg);
   --color-bg2: var(--bg2);
   --color-panel: var(--panel);
   --color-key: var(--key);
@@ -61,7 +60,6 @@
   --dim: light-dark(#4a4238, #c9bca6);
   --faint: light-dark(#675d51, #a19580);
   --mid: light-dark(#b0551c, #e48d4c);
-  --accent: light-dark(#1d5aa0, #86b6ee);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -288,10 +286,6 @@
   .article ul { list-style: disc; }
   .article ol { list-style: decimal; }
   .article li + li { margin-top: 0.5em; }
-
-  .article strong {
-    font-weight: 700;
-  }
 
   .article p {
     text-wrap: pretty;

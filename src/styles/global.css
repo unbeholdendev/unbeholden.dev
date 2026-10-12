@@ -13,7 +13,6 @@
   --color-dim: var(--dim);
   --color-faint: var(--faint);
   --color-mid: var(--mid);
-  --color-accent: var(--accent);
 
   --text-wordmark: clamp(32px, 6vw, 48px);
   --text-wordmark--line-height: 1;
@@ -94,12 +93,14 @@
     text-underline-offset: 3px;
   }
 
-  a:hover {
-    color: var(--accent);
+  a,
+  button {
+    transition: color, background-color, border-color, text-decoration-color;
+    transition-duration: 150ms;
   }
 
   :focus-visible {
-    outline: 3px solid var(--accent);
+    outline: 3px solid var(--mid);
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -134,8 +135,26 @@
   }
 
   .chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    background: color-mix(in srgb, var(--mid) 14%, var(--panel));
+    color: var(--fg);
+  }
+
+  .chip:active {
+    translate: 0 1px;
+  }
+
+  .chip[type='submit'] {
+    background: var(--mid);
+    color: var(--panel);
+  }
+
+  .chip[type='submit']:hover {
+    background: color-mix(in srgb, var(--mid) 85%, var(--key));
+  }
+
+  .chip:disabled {
+    cursor: progress;
+    opacity: 0.7;
   }
 
   .chip[aria-current] {
@@ -258,8 +277,7 @@
   }
 
   .article a {
-    text-decoration-color: var(--accent);
-    text-decoration-thickness: 2px;
+    @apply link;
   }
 
   .article ul,
@@ -275,10 +293,13 @@
     font-weight: 700;
   }
 
+  .article p {
+    text-wrap: pretty;
+  }
+
   .article blockquote {
-    padding: 16px 20px;
-    border: 2px solid var(--key);
-    border-radius: 8px;
+    padding-left: 20px;
+    border-left: 4px solid var(--mid);
     color: var(--dim);
   }
 
@@ -297,8 +318,8 @@
 
   .article pre {
     padding: 16px 20px;
-    border: 2px solid var(--key);
-    border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--key) 30%, transparent);
+    border-radius: 4px;
     background: var(--bg2) !important;
     overflow-x: auto;
     font-size: 15px;
@@ -311,12 +332,23 @@
   }
 
   .article img {
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   .article hr {
     border: 0;
     border-top: 2px solid var(--key);
+  }
+}
+
+@utility link {
+  color: var(--fg);
+  text-decoration-line: underline;
+  text-decoration-color: var(--mid);
+  text-decoration-thickness: 2px;
+
+  &:hover {
+    background: color-mix(in srgb, var(--mid) 14%, transparent);
   }
 }
 

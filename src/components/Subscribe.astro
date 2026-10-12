@@ -28,7 +28,7 @@
 		</p>
 	</div>
 	<div data-done hidden>
-		<p class="font-display text-h3 mb-1.5 font-bold">One more step</p>
+		<p class="font-display text-h3 mb-1.5 font-bold" tabindex="-1">One more step</p>
 		<p class="text-dim text-[15px] leading-[1.6]">
 			I've sent a confirmation link to <span data-email></span>. Nothing gets mailed to you until you click it.
 		</p>
@@ -43,6 +43,9 @@
 		if (!form) return;
 		form.addEventListener('submit', async (event) => {
 			event.preventDefault();
+			const button = form.querySelector('button');
+			button.disabled = true;
+			button.textContent = 'Sending';
 			const sent = await fetch('/subscribe', { method: 'POST', body: new FormData(form) }).catch(
 				() => null,
 			);
@@ -51,6 +54,7 @@
 			aside.querySelector('[data-email]').textContent = form.email.value;
 			aside.querySelector('[data-ask]').hidden = true;
 			aside.querySelector('[data-done]').hidden = false;
+			aside.querySelector('[data-done] [tabindex]').focus();
 		});
 	})();
 </script>

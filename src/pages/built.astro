@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Forgejo from '../assets/forgejo.svg';
 
-const things: { name: string; description: string; link?: string; code?: string }[] = [
+const things: ({ name: string; description: string } & ({ link: string; code?: string } | { link?: undefined; code: string }))[] = [
 	{
 		name: 'AI PR reviewer',
 		description:
@@ -47,16 +47,26 @@ const image = (link?: string) =>
 		{
 			things.map((thing) => {
 				const src = image(thing.link);
+				const href = thing.link === undefined ? thing.code : thing.link;
 				const away = (href: string) =>
 					new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 				return (
-					<li class="row lg:grid-cols-[1fr_288px] lg:bg-left-top">
+					<li class="group row lg:grid-cols-[1fr_288px] lg:bg-left-top">
 						<div>
-							<h2 class="font-display text-h2 font-bold">{thing.name}</h2>
+							<h2 class="font-display text-h2 font-bold text-balance">
+								<a href={href} {...away(href)} class="group-hover:text-fg group-hover:underline group-hover:decoration-mid group-hover:decoration-2 after:absolute after:inset-0">
+									{thing.name}
+								</a>
+							</h2>
 							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
-							<p class="mt-4 flex flex-wrap gap-2">
-								{thing.link && <a href={thing.link} {...away(thing.link)} class="chip">{new URL(thing.link).hostname}</a>}
-								{thing.code && <a href={thing.code} {...away(thing.code)} class="chip">Source</a>}
+							<p class="meta mt-4 text-pretty">
+								{thing.link === undefined ? new URL(thing.code).pathname.slice(1) : new URL(thing.link).hostname}
+								{thing.link && thing.code && (
+									<>
+										{' · '}
+										<a href={thing.code} {...away(thing.code)} class="relative underline decoration-mid decoration-2 underline-offset-3 hover:text-fg">Source</a>
+									</>
+								)}
 							</p>
 						</div>
 						{src ? (
@@ -66,10 +76,10 @@ const image = (link?: string) =>
 								alt=""
 								widths={[320, 640]}
 								sizes="(min-width: 1024px) 288px, 100vw"
-								class="border-key -order-1 aspect-[40/21] w-full rounded border-2 object-cover lg:order-none"
+								class="border-key group-hover:border-mid -order-1 aspect-[40/21] w-full rounded border-2 object-cover lg:order-none"
 							/>
 						) : (
-							<div class="border-key -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
+							<div class="border-key group-hover:border-mid -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
 								<Forgejo aria-hidden="true" class="h-1/2 w-auto" />
 							</div>
 						)}

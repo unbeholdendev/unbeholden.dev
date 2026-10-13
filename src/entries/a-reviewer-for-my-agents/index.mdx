@@ -1,0 +1,203 @@
+---
+title: A code reviewer for coding agents
+date: 2026-10-13
+summary: Agents open pull requests on a self-hosted Forgejo, and a bot running Claude Code reviews each one. The agents work through the obvious problems with it first, and I take the last look before anything merges and goes to production.
+topic: Agents / Self-hosting
+poster:
+  src: ./poster.jpg
+  alt: A dark green Olympia typewriter seen from above, with the word "Review" typed on the sheet in it.
+---
+
+import Review from '../../components/Review.astro';
+
+The agents work from containers that can't reach anything important. They push a branch to a
+self-hosted [Forgejo](https://forgejo.org) and open a pull request, and none of them can merge. I wrote
+about that setup in
+[an agent that configures my machine](/blog/an-agent-that-configures-my-machine). The short
+version is that I review once, on the diff.
+
+So I built
+[reviewer](https://git.unbeholden.dev/unbeholden/reviewer), a bot that reviews each pull request
+before I get to it. It runs Claude Code against the change and posts a normal Forgejo review:
+a recommendation, a short summary, and comments on the lines it has something to say about.
+
+## What a review looks like
+
+When the [contact form](/contact) on this site went in, the first review came
+back as "nits". The form posts messages to ntfy, and the agent had capped the message by
+character count. Here's the part of the thread about that cap. The words are the bot's and the
+agent's, trimmed where you see "…".
+
+<div class="space-y-3">
+
+<Review who="reviewer" label="nits">
+
+Adds a /contact page that posts a name/email/message to ntfy … Logic for validation,
+rate-limit status codes, and the subscribe.astro refactor all check out; one real but narrow
+issue found around the message size cap.
+
+</Review>
+
+<Review
+	who="reviewer"
+	label="nit"
+	file="src/pages/contact.astro"
+	hunk={[
+		"+\t// A bot fills the hidden field. Tell it yes and send nothing.",
+		"+\tif (String(form.get('website') ?? '') !== '') state = 'sent';",
+		"+\telse if (!message || message.length > MAX) state = 'failed';",
+	]}
+>
+
+MAX (3500) is compared against message.length, which counts UTF-16 code units, not UTF-8
+bytes. … a long message in e.g. Cyrillic or CJK can be well under 3500 chars yet produce a
+JSON payload far over 4096 bytes, causing ntfy to reject it and the form to show 'failed' with
+no way to know why.
+
+</Review>
+
+<Review who="agent" reply>
+
+@reviewer both fixed in 01fbad2. … Whatever ntfy gets is cut to 3700 bytes, with a note saying
+the whole message is in the server log. … Checked: 3000 × "Ж" (6000 bytes) goes through and the
+push comes out at 3763 bytes.
+
+</Review>
+
+<Review who="reviewer" reply>
+
+Fixed in 01fbad2.
+
+</Review>
+
+<Review
+	who="reviewer"
+	label="nit"
+	file="src/pages/contact.astro"
+	hunk={[
+		"+\t\t\tconst sent = await push({",
+		"+\t\t\t\ttitle: name ? `Message from ${name}` : 'Message',",
+		"+\t\t\t\tmessage: email ? `${fit(message)}\\n\\n${email}` : fit(message),",
+	]}
+>
+
+`fit()` caps the message to 3700 bytes, but the email address is appended afterward without
+being counted against the 4096-byte ntfy cap. … This is a narrow edge case (plain-ASCII emails,
+the common case, stay well within budget) but it's the exact class of bug this commit set out to
+fix.
+
+</Review>
+
+<Review who="agent" reply>
+
+@reviewer leaving this one as it is. It only happens with a near-limit message plus an email
+address of about 100 or more multi-byte characters, which no real mailbox uses. Even then, the
+message is already in the log before the push, and the reader is told it failed and keeps their
+text.
+
+</Review>
+
+<Review who="reviewer" reply>
+
+Agreed. … Threading email length into `fit()`'s budget is real extra plumbing for a combination
+(near-max multi-byte message *and* a ~100+ char multi-byte email) that no genuine sender hits.
+Leaving it as-is is the right call.
+
+</Review>
+
+</div>
+
+The second review covered only the commit the agent had pushed. It closed its own comment, then
+found a smaller version of the same bug in the fix. The agent didn't fix that one and said why,
+and the bot checked the arithmetic and agreed. The last review on the PR, after a rename I'd
+asked for, was "looks-good".
+
+Every review starts with one of three recommendations: `blocking`, `nits` or `looks-good`. Each
+inline comment is marked `blocking` or `nit`.
+
+## What it does
+
+- Reviews a pull request when it's opened, reopened, or taken out of draft.
+- On each push, reviews only the commits since its last review, and says which of its earlier
+  comments they fix. A new push cancels a review that's still running.
+- Answers when someone mentions it in a comment, or replies in a thread it started.
+- Starts again from scratch on `@reviewer review again`.
+- Skips pull requests labelled `no-review`, and leaves lockfiles and vendored code out of the
+  diff.
+- Reacts 👀 when it starts, and posts a comment if a review fails.
+
+It reads `REVIEW.md`, `AGENTS.md` and `CLAUDE.md` from the base branch as the repository's rules.
+Reading them from the base matters: a pull request can't rewrite the rules it's reviewed by.
+
+## What I ask it for
+
+The prompt is [in the repo](https://git.unbeholden.dev/unbeholden/reviewer/src/branch/main/prompts/review.md).
+It looks for bugs, security problems and missing error handling, but it also looks for more code
+than the task needs: helpers nobody asked for, checks for cases that can't happen, comments that
+repeat the code.
+
+It only flags a problem the pull request introduced, that it can point to, and that the author
+would fix if they knew. The prompt says no findings beats weak findings.
+
+The agents read its reviews too. Their instructions say to wait for the review after they
+open a pull request, fix what's right, and reply to every comment with what they changed or why
+they didn't. A push starts another review, and they go round again until there's nothing left
+they'd change.
+
+## Running it safely
+
+A pull request is untrusted input. It's code someone else wrote, and the diff, the commits and
+the description can all contain text that reads like instructions. The bot is built on that
+assumption:
+
+- Claude runs in a checkout of the pull request with only Read, Grep and Glob. It can't run
+  commands or write files.
+- It runs with `--safe-mode`, so it doesn't load settings, hooks or skills from the checkout. A
+  pull request that adds a hook can't get it run.
+- Its environment holds the Claude token and nothing else. The Forgejo token and the webhook
+  secret stay in the server process.
+- What it returns is JSON against a schema. The server checks it, and drops inline comments on
+  lines that aren't in the diff.
+- Each run has a ten-minute timeout and a limit of 30 turns.
+
+So the worst a prompt injection can do is get a bad review posted, and I read the diff anyway.
+
+## How it's built
+
+About 600 lines of TypeScript on [Bun](https://bun.sh), plus 700 of tests. A Forgejo webhook
+hits the server, the signature is checked, and a job starts for that pull request. There's one
+job per pull request and a global limit on how many run at once, two by default.
+
+To review, it checks out the pull request head in a git worktree, builds the diff, and passes Claude
+Code the prompt, the repository's rules, the conversation so far and its own open comments.
+`claude -p` does the work. It uses a Claude subscription through `claude setup-token`, so
+there's no separate API bill.
+
+Each review ends with a hidden marker holding the commit it reviewed, and the next review reads
+that marker to know where to start the diff. Its open comments and the conversation come
+straight from Forgejo each time.
+
+It runs as one container from a compose file.
+
+## The downsides
+
+It reviews what's in the diff and the code around it. It doesn't run anything, so it can't tell
+me whether something works, only whether it reads as if it does. The tests run separately, in CI.
+
+It's still a model, and some of what it says will be wrong.
+
+## What I'd add next
+
+It only sees the repository the pull request is in. When a change leans on code in another
+repository, it can't go and read that code.
+
+It remembers nothing across pull requests. A later one touching the contact form could get
+the email nit again, and the same argument. I'd like it to know what's been discussed and decided
+already: earlier reviews, issues, and the decisions written down in the repository.
+
+## Using it
+
+The code is public:
+[unbeholden/reviewer](https://git.unbeholden.dev/unbeholden/reviewer). It needs a Forgejo user
+for the bot, a Claude token, and a webhook on each repository or on the org. The README has the
+rest.

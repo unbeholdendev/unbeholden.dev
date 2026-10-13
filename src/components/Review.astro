@@ -1,0 +1,25 @@
+---
+interface Props {
+	who: 'reviewer' | 'agent';
+	label?: string;
+	file?: string;
+	hunk?: string[];
+	reply?: boolean;
+}
+
+const { who, label, file, hunk, reply } = Astro.props;
+---
+
+<div class:list={['callout text-body overflow-hidden', reply && 'ml-6 sm:ml-10']}>
+	<p class="border-key text-meta flex flex-wrap items-baseline gap-x-3 border-b px-4 py-2 font-mono">
+		<span class:list={[who === 'reviewer' && 'text-mid']}>{who}</span>
+		{label && <span class="border-faint text-dim border px-1.5 text-[13px]">{label}</span>}
+		{file && <span class="text-faint ml-auto text-[13px]">{file}</span>}
+	</p>
+	{
+		hunk && (
+			<pre class="border-key overflow-x-auto border-b py-2 font-mono text-[13px] leading-6 [tab-size:2]">{hunk.map((line, i) => <span class:list={['block px-4', i === hunk.length - 1 ? 'bg-bg2' : 'text-dim']}>{line}</span>)}</pre>
+		)
+	}
+	<div class="space-y-3 px-4 py-3"><slot /></div>
+</div>

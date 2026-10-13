@@ -5,7 +5,7 @@ summary: A bank decides whether your money moves. I run Bitcoin Core and LND at 
 topic: Self-hosting
 poster:
   src: ./poster.jpg
-  alt: An old wooden chest bound in worn brass, on dark stone, its lid lifted slightly and an open padlock hanging from the hasp, lit warm from one side, with indigo showing through the gap.
+  alt: An old steamer trunk at night, lid open and lit from inside, overflowing with grass and pink flowers, a toy cat peeking out.
 ---
 
 Every payment you make through a bank is one the bank agreed to. It can hold a transfer for

@@ -5,7 +5,7 @@ summary: Everyone says don't self-host email. I did it anyway, and most of the w
 topic: Self-hosting
 poster:
   src: ./poster.jpg
-  alt: A worn brass letterbox set into a dark painted door, lit warm from one side, with an indigo light glowing from the gap behind the flap.
+  alt: A row of colourful mailboxes, numbered and on wooden posts, tangled in dry vines with yellow flowers behind.
 ---
 
 The standard advice is not to self-host email. Nothing you send will get delivered, the big

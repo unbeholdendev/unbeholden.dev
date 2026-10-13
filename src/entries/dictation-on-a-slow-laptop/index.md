@@ -5,7 +5,7 @@ summary: I ran speech-to-text locally with Handy, but the laptop couldn't keep u
 topic: Linux
 poster:
   src: ./poster.jpg
-  alt: A black ThinkPad open on a wooden desk at night, its screen glowing amber, with a small black microphone beside it. Thin indigo sound waves flow from the laptop off the left edge of the frame.
+  alt: A vintage silver microphone on a stand, in front of a blurred crowd under blue and amber stage lights.
 ---
 
 I press `Mod+D`, talk, press it again, and the text turns up at the cursor. Most of what I

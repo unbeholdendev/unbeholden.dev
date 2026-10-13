@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Subscribe from '../components/Subscribe.astro';
+import Logo from '../components/Logo.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -103,11 +104,7 @@ const current = (section: string) => (here.startsWith(section) ? 'page' : undefi
 		<div class="mx-auto flex min-h-screen max-w-page flex-col px-4 pt-8 pb-12 sm:px-10 sm:pt-12">
 			<header class="flex flex-wrap items-end justify-between gap-4">
 				<a href="/" class="callout hover:border-mid flex w-full items-center gap-4 px-5 pt-3 pb-4 sm:w-auto">
-					<svg viewBox="0 0 64 64" class="size-12 shrink-0 sm:size-16" aria-hidden="true">
-						<rect x="3" y="3" width="58" height="58" rx="10" fill="var(--panel)" stroke="var(--key)" stroke-width="6" />
-						<rect x="14" y="14" width="28" height="10" rx="1" fill="var(--key)" />
-						<rect x="30" y="30" width="20" height="20" rx="2" fill="var(--mid)" />
-					</svg>
+					<Logo />
 					<span>
 						<span class="font-display text-wordmark block font-extrabold">Unbeholden</span>
 						<span class="meta mt-2 block">Digital sovereignty in practice</span>

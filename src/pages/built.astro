@@ -5,6 +5,12 @@ import Forgejo from '../assets/forgejo.svg';
 
 const things: ({ name: string; description: string } & ({ link: string; code?: string } | { link?: undefined; code: string }))[] = [
 	{
+		name: 'Unbeholden Check',
+		description:
+			'Type a domain to see which services it rents from third parties, with the evidence, and the open source software that could replace each one.',
+		link: 'https://check.unbeholden.dev',
+	},
+	{
 		name: 'AI PR reviewer',
 		description:
 			'A code review bot for Forgejo. It reviews pull requests with Claude Code and answers questions in the comments.',
@@ -19,6 +25,12 @@ const things: ({ name: string; description: string } & ({ link: string; code?: s
 		name: 'Skorpik',
 		description: 'An office prediction league on real matches. No money, no stakes, no odds.',
 		link: 'https://skorpik.app',
+	},
+	{
+		name: 'Lightning payments for UCP',
+		description:
+			'A spec for paying over Lightning in the Universal Commerce Protocol. Three handlers, BOLT12, Lightning Address and an invoice API, each proven by the payment preimage.',
+		code: 'https://github.com/Musqet/ucp-lightning-spec',
 	},
 	{
 		name: 'lnurl-server',
@@ -37,8 +49,7 @@ const things: ({ name: string; description: string } & ({ link: string; code?: s
 
 // Committed, not fetched at build, per ADR-0001. Add one with `bun scripts/og-image.ts <link>`.
 const images = import.meta.glob<{ default: ImageMetadata }>('../assets/built/*', { eager: true });
-const image = (link?: string) =>
-	link &&
+const image = (link: string) =>
 	Object.entries(images).find(([path]) => path.includes(`/${new URL(link).hostname}.`))?.[1]
 		.default;
 ---
@@ -53,8 +64,8 @@ const image = (link?: string) =>
 	<ul class="callout mt-section px-5 lg:px-8">
 		{
 			things.map((thing) => {
-				const src = image(thing.link);
 				const href = thing.link === undefined ? thing.code : thing.link;
+				const src = image(href);
 				const away = (href: string) =>
 					new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 				return (

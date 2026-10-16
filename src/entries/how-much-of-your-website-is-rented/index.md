@@ -1,12 +1,12 @@
 ---
 title: How much of your website is rented?
-date: 2026-10-14
+date: 2026-10-16
 summary: I built Unbeholden Check as a small weekend project. Type a domain and it lists the services the site rents from other companies, shows the evidence for each, and names open source software that could take its place.
 topic: Self-hosting
 poster:
   src: ./poster.jpg
   alt: Rows of server racks with glowing green lights stand in the open at night, cables slung between them, and city towers rise at the far end.
-draft: true
+draft: false
 ---
 
 Most of what I write here is about moving things I depend on off services I rent and onto

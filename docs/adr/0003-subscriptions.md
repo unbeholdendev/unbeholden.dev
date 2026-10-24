@@ -31,8 +31,8 @@ The list is double opt-in. The form is open to anyone, so single opt-in would le
 put another person's address on the list, which is a harassment pattern rather than a
 hypothetical, and unconfirmed addresses are what generate the complaints and bounces that
 cost a sending domain its reputation. That domain also carries my personal mail, so the
-downside of a dirty list does not land on the newsletter. The price is the fifth or so of
-people who type an address and never click, and they were not going to read it either.
+downside of a dirty list does not land on the newsletter. People who never click the
+confirmation link stay off the mailing list.
 
 ## Consequences
 
@@ -51,10 +51,9 @@ either: a value that already names its scheme is sent exactly as it is written, 
 is an access token and is given `Bearer`. A scoped token is the better thing to put there,
 because it can be revoked and confined to the one topic where an account password cannot, but
 the site does not get to insist on that. Leave the origin or the topic unset and no
-push is attempted and nothing else changes. The push carries the address itself, which is the
-only thing that makes it worth reading, and that is a deliberate exception to keeping the list
-inside Listmonk: it puts a reader's address on a lock screen, so the topic belongs on my own
-ntfy instance and is not one to share with anyone. The request is made by the server on its own
+push is attempted and nothing else changes. The push carries the reader's email address,
+an exception to keeping the list inside Listmonk. It can put that address on a lock screen,
+so the topic must stay private on my own ntfy instance. The request is made by the server on its own
 behalf, so ADR-0001 is untouched: no browser talks to ntfy. It is started and not waited for,
 so a slow ntfy cannot sit between the reader and the page telling them to check their mail, and
 a push that times out or is refused is swallowed rather than surfaced, since a notification that

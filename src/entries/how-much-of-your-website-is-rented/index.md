@@ -71,10 +71,7 @@ comes with the record, header or bit of HTML it's based on, so you can check it 
 
 Results are cached for a day, and you can rescan a domain once an hour.
 
-## Why it ignores where a provider is based
-
-The other scanners I found score jurisdiction, EU or not, and most of them end on one vendor's
-sales page. Check doesn't look at where a company is, and it doesn't sell anything.
+Check doesn't look at where a company is, and it doesn't sell anything.
 
 ## Using it
 

@@ -13,8 +13,6 @@ providers will bin it, and you'll lose your weekends to spam filters. I did it a
 one long day, and most of those warnings turned out to be out of date or fixable. I now run
 mail for several domains and a few family members on a small VPS.
 
-Here's why I bothered, what it costs, and the three problems that ate most of that day.
-
 ## Why bother
 
 Most of the usual reasons aren't very good. Small inboxes, no custom domains, ads in the web
@@ -25,8 +23,8 @@ What got me is that every account recovery ends up in your inbox. Password reset
 you" links, all of it. If you rent that inbox, whoever you rent it from holds the keys to
 everything else, and they can take them back. Usually not on purpose: an automated system flags
 your account, the appeal form goes nowhere, and you're locked out of your bank, your registrar
-and your tax account at the same time. The write-ups from people it has happened to are grim
-reading. It's unlikely, but if it happens it takes everything with it.
+and your tax account at the same time. It's unlikely, but if it happens it takes everything
+with it.
 
 Then there's the big free providers scanning your mail as part of the business, and a more
 practical point: no provider, at any price, gives you what your own server does. Unlimited
@@ -36,7 +34,7 @@ sign-up, plus calendar, contacts and file sync.
 ## What it costs
 
 **An outbound relay, and the metadata that comes with it.** I send through SMTP2Go rather than
-straight from the VPS. It's the one real compromise here, so it's worth explaining. Getting mail
+straight from the VPS. It's the one real compromise here. Getting mail
 from port 25 delivered comes down to reputation, which takes years to build and favours the big
 players. A fresh VPS IP starts out somewhere between suspicious and blocked. SMTP2Go's free tier
 covers personal volume, and the price is that one company sees my outbound metadata: who I
@@ -140,6 +138,4 @@ from config I can read, and there's no account manager anywhere who can switch i
 If you've never run a server, no. Start with something that doesn't hurt when it breaks.
 
 If you already run your own infrastructure and keep it patched, and the account-recovery
-argument lands, self-hosted email in 2026 is far more manageable than its reputation. Stalwart
-turns three daemons into one, the relay handles deliverability for the price of some metadata,
-and what's left is the three problems above, which you now know about.
+argument lands, self-hosted email in 2026 is far more manageable than its reputation.

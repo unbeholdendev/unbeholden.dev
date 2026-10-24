@@ -28,8 +28,8 @@ only thing YouTube is good for, which is being where an audience already is.
 
 Poster images are downloaded and committed rather than hotlinked from `i.ytimg.com`, and a
 film's duration is typed into frontmatter by hand, so the build has no dependency on a
-Google API. Anything that would add a runtime dependency — an embedded comment system, share
-buttons, a hosted analytics script, a webfont CDN — is out of scope by default and needs this
+Google API. Anything that would add a runtime dependency (an embedded comment system, share
+buttons, a hosted analytics script, a webfont CDN) is out of scope by default and needs this
 ADR revisited rather than a pull request.
 
 The proxy is the one thing on the site that must run rather than be served, so the build now
@@ -60,8 +60,8 @@ Umami reads ahead of every header and which also turns the provider country head
 the database to place the visit. The value is the first entry of the inbound `X-Forwarded-For`,
 and it overwrites any `ip` a reader put in the payload. The address is therefore only as honest
 as Pangolin's Traefik, which drops an inbound `X-Forwarded-For` and writes its own from the
-connecting address — unless `forwardedHeaders.trustedIPs` on the entrypoint is set wide enough to
-trust readers, which would let one choose their own session and country.
+connecting address. Setting `forwardedHeaders.trustedIPs` on the entrypoint wide enough to
+trust readers would let one choose their own session and country.
 
 The request carries three headers onward and no more. Everything Umami records comes from the
 payload except the device, which it reads from `User-Agent`; `Content-Type` and `X-Umami-Cache`

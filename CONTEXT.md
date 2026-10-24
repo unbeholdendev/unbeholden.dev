@@ -11,7 +11,7 @@ the same standard it argues for.
 
 **Entry**:
 One published thing. An entry always has an article and may also have a video.
-_Avoid_: post, blog post. Also avoid `guide` and `note` as types — the distinction between
+_Avoid_: post, blog post. Also avoid `guide` and `note` as types. The distinction between
 a maintained entry and a dated one is carried by an `updated` date, not by a second type.
 
 **Article**:
@@ -58,4 +58,4 @@ subscription is what they have. Also avoid signup and lead.
 
 **Dependency budget**:
 The rule governing which network requests a page is permitted to make. See ADR-0001.
-_Avoid_: privacy policy — the budget is a construction constraint, not a disclosure.
+_Avoid_: privacy policy. The budget is a construction constraint, not a disclosure.

@@ -50,7 +50,7 @@ the laptop, `root@deb-agent` for the LXC that runs the dev containers, and `cont
 container, since a container's hostname is a random ID. Home Manager runs standalone on those
 last two, so Debian stays Debian.
 
-The upshot: I get the same shell on the laptop, over SSH on the host, and in the containers the
+I get the same shell on the laptop, over SSH on the host, and in the containers the
 agent works in. One file builds all three.
 
 ## Why I'm happy to point an agent at it
@@ -146,5 +146,5 @@ symlinked out to the clone, and then just using the app leaves the repo dirty.
 
 ## Will it hold up?
 
-The T460s is my first NixOS machine, and I'll replace it at some point. That install is the
-real test: a disk, a flake, one command, and then I find out whether I've kept the repo honest.
+The T460s is my first NixOS machine, and I'll replace it at some point. I haven't yet tested
+whether this configuration is enough to set up its replacement.

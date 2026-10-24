@@ -110,12 +110,6 @@ claim the sats into their own wallet, and I get a notification when they do.
 The code is public from today, MIT licensed, on my own Forgejo:
 [unbeholden/lnurl-server](https://git.unbeholden.dev/unbeholden/lnurl-server).
 
-## Where it ended up
-
-Anyone can send sats to any address at `unbeholden.dev` from any Lightning wallet. The payment
-lands in a channel on a node I run, checked against a copy of the chain I verified myself.
-Payments I make go out over the same channels.
-
 ## Should you?
 
 If you just want to hold some bitcoin, start smaller. A hardware wallet and your own full node

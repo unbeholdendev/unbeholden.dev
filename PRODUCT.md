@@ -14,7 +14,7 @@ Working engineers first: developers and sysadmins who self-host or want to, read
 
 Jakub's personal blog. It argues that software you depend on should be software you can inspect, move, and turn off, through entries on self-hosting, homelab and networking, Linux, agent tooling, and quality-of-life config, plus a Built page of things he has made.
 
-Success is reputation: the site stands as proof of Jakub's craft. Reads, subscriptions and reuse matter less than what the site says about the person who made it.
+Success is reputation. Readers should be able to check the site's dependency budget and follow the technical entries. Reads, subscriptions and reuse matter less.
 
 ## Positioning
 
@@ -48,8 +48,7 @@ Read on desktop and phone, often from a link in a feed, chat or search. Entries 
 
 1. Practise the argument. Anything the site does must survive a reader checking it.
 2. The writing is the product; design serves reading long technical prose.
-3. Craft shows in restraint and detail, not in decoration.
-4. Fewer moving parts. A feature that adds a dependency has to earn it.
+3. Fewer moving parts. A feature that adds a dependency has to earn it.
 
 ## Accessibility & Inclusion
 

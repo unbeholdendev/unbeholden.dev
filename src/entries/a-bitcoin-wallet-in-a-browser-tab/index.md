@@ -6,7 +6,6 @@ topic: Self-hosting
 poster:
   src: ./poster.jpg
   alt: Gold-coloured Bitcoin tokens resting on a black wallet, with payment cards underneath.
-draft: true
 ---
 
 I was selling some bitcoin in person, on a new Linux laptop. I opened Sparrow to send the

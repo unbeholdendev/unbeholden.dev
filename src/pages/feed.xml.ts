@@ -22,7 +22,7 @@ export const GET: APIRoute = async ({ site }) => {
 	const container = await AstroContainer.create({
 		renderers: await loadRenderers([getContainerRenderer()]),
 	});
-	const entries = (await listEntries()).filter(({ data }) => !data.draft);
+	const entries = await listEntries();
 	const stamps = entries.map(({ data }) => (data.updated ?? data.date).getTime());
 
 	const feed = new Feed({

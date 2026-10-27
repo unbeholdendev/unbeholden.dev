@@ -6,7 +6,6 @@ topic: Self-hosting
 poster:
   src: ./poster.jpg
   alt: Rows of server racks with glowing green lights stand in the open at night, cables slung between them, and city towers rise at the far end.
-draft: false
 ---
 
 Most of what I write here is about moving things I depend on off services I rent and onto

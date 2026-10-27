@@ -5,6 +5,13 @@ import Forgejo from '../assets/forgejo.svg';
 
 const things: ({ name: string; description: string } & ({ link: string; code?: string } | { link?: undefined; code: string }))[] = [
 	{
+		name: 'Unbeholden Wallet',
+		description:
+			'A watch-only Bitcoin wallet in a browser tab. It connects to a node of your choosing and never holds a private key.',
+		link: 'https://wallet.unbeholden.dev',
+		code: 'https://github.com/unbeholdendev/unbeholden-wallet',
+	},
+	{
 		name: 'Unbeholden Check',
 		description:
 			'Type a domain to see which services it rents from third parties, with the evidence, and the open source software that could replace each one.',

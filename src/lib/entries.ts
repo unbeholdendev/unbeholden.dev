@@ -12,7 +12,7 @@ export const readTime = (minutes: number) =>
 	`${minutes} minute${minutes === 1 ? '' : 's'}`;
 
 export async function listEntries() {
-	const entries = await getCollection('entries', ({ data }) => import.meta.env.DEV || !data.draft);
+	const entries = await getCollection('entries');
 	return entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 

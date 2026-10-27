@@ -21,7 +21,6 @@ const entries = defineCollection({
 					duration: z.string(),
 				})
 				.optional(),
-			draft: z.boolean().default(false),
 		}),
 });
 

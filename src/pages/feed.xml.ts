@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { render } from 'astro:content';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { loadRenderers } from 'astro:container';
-import { getContainerRenderer } from '@astrojs/mdx';
+import { getContainerRenderer } from '@astrojs/mdx/container-renderer';
 import { Feed } from 'feed';
 import { listEntries } from '../lib/entries';
 

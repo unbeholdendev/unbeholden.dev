@@ -10,7 +10,7 @@ poster:
 
 Most of what I write here is about moving things I depend on off services I rent and onto
 software I run. Mail went to [Stalwart](/blog/self-hosting-email-with-stalwart), and payments go
-through [my own Lightning node](/blog/running-my-own-bitcoin-and-lightning-node). What I didn't
+through [my Lightning node](/blog/running-my-own-bitcoin-and-lightning-node). What I didn't
 have was a quick way to see how much of a website is still rented, mine or anyone else's.
 
 So I built [Unbeholden Check](https://check.unbeholden.dev) as a small weekend project. You type a domain, without signing
@@ -25,8 +25,8 @@ This site scores 50 out of 100. Check scored four things:
   through, and Check suggests docker-mailserver, Stalwart or Mailcow in its place.
 - Spaceship DNS, rented. The nameservers are Spaceship's. The suggestions are CoreDNS,
   Technitium DNS and PowerDNS.
-- My own mail server, owned. The MX record points at `mail.unbeholden.dev`.
-- My own server, owned. The IP is in netcup's network, and the software on it is open source.
+- Mail server, owned. The MX record points at `mail.unbeholden.dev`.
+- Web server, owned. The IP is in netcup's network, and the software on it is open source.
 
 The VPS is rented hardware, so calling it owned looks odd. Check scores the software: a server
 running open source counts as owned, and a service that a company runs for the site counts as

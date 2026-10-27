@@ -18,7 +18,7 @@ const away = { target: '_blank', rel: 'noopener noreferrer', class: 'link' };
 		</p>
 		<p class="text-dim mt-6">
 			This site runs on a rented VPS. There are analytics, because I'd like to
-			know which entries people actually read, but it's <a href="https://umami.is" {...away}>Umami</a> on my own box: no
+			know which entries people actually read, but I host <a href="https://umami.is" {...away}>Umami</a>: no
 			cookies, and nothing about you leaves it.
 		</p>
 		<p class="text-dim mt-6">
@@ -32,8 +32,8 @@ const away = { target: '_blank', rel: 'noopener noreferrer', class: 'link' };
 		<h2 class="font-display text-h2 mt-12 font-bold">The setup</h2>
 		<ul class="text-dim mt-4 list-disc space-y-2 pl-6">
 			<li>A rented VPS: this site and <a href="https://stalw.art" {...away}>Stalwart</a> for mail, behind <a href="https://dokploy.com" {...away}>Dokploy</a> and <a href="https://traefik.io" {...away}>Traefik</a>. Outbound mail goes through <a href="https://www.smtp2go.com" {...away}>SMTP2Go</a>.</li>
-			<li>At home: a <a href="https://www.proxmox.com" {...away}>Proxmox</a> host with LXC containers, among them <a href="https://forgejo.org" {...away}>Forgejo</a> and the agents' dev containers, plus <a href="https://bitcoincore.org" {...away}>Bitcoin Core</a>, <a href="https://github.com/lightningnetwork/lnd" {...away}>LND</a> and my own <a href="https://git.unbeholden.dev/unbeholden/lnurl-server" {...away}>Lightning Address server</a>.</li>
-			<li>Between them, a tailnet on my own <a href="https://headscale.net" {...away}>Headscale</a>.</li>
+			<li>At home: a <a href="https://www.proxmox.com" {...away}>Proxmox</a> host with LXC containers, among them <a href="https://forgejo.org" {...away}>Forgejo</a> and the agents' dev containers, plus <a href="https://bitcoincore.org" {...away}>Bitcoin Core</a>, <a href="https://github.com/lightningnetwork/lnd" {...away}>LND</a> and the <a href="https://git.unbeholden.dev/unbeholden/lnurl-server" {...away}>Lightning Address server</a>.</li>
+			<li>Between them, a tailnet managed by <a href="https://headscale.net" {...away}>Headscale</a>.</li>
 			<li>Also mine: <a href="https://listmonk.app" {...away}>Listmonk</a> for the subscription list, <a href="https://ntfy.sh" {...away}>ntfy</a> for notifications, <a href="https://umami.is" {...away}>Umami</a> for analytics.</li>
 		</ul>
 		<p class="text-dim mt-10">Prose is CC BY 4.0. Code is CC0/MIT.</p>

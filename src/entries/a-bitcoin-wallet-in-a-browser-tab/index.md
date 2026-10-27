@@ -28,7 +28,7 @@ balance, look through history, see which coins I hold. None of that should need 
 installed on the machine in front of me.
 
 The wallets that run anywhere tend to be custodial, or tied to a company's server that sees every
-address you look up, or unable to talk to my own node. I already run
+address you look up, or unable to talk to my node. I already run
 [Bitcoin Core and Fulcrum at home](/blog/running-my-own-bitcoin-and-lightning-node), so I wanted
 a wallet that uses that and nothing else.
 
@@ -98,8 +98,8 @@ how to give your node a certificate the browser will accept.
 
 ## How it was built
 
-AI wrote the code, under my direction. Agents work on it in containers, open pull requests on my
-own Forgejo, and [a reviewer bot](/blog/a-reviewer-for-my-agents) goes through each one
+AI wrote the code, under my direction. Agents work on it in containers, open pull requests on
+Forgejo at home, and [a reviewer bot](/blog/a-reviewer-for-my-agents) goes through each one
 before I do. I decide what it does and review the work. Writing it by hand would have taken far
 longer, but you should know how it was made before you trust it with your data.
 

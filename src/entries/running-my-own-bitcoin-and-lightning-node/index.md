@@ -1,7 +1,7 @@
 ---
 title: Paying without asking permission
 date: 2026-09-30
-summary: A bank decides whether your money moves. I run Bitcoin Core and LND at home and wrote my own Lightning Address server, so anyone can pay any address at this domain.
+summary: A bank decides whether your money moves. I run Bitcoin Core and LND at home and wrote a Lightning Address server, so anyone can pay any address at this domain.
 topic: Self-hosting
 poster:
   src: ./poster.jpg
@@ -14,12 +14,12 @@ the person you're paying is too risky. It says yes most of the time, so you forg
 asking. And [1.3 billion adults](https://www.worldbank.org/en/publication/globalfindex) never
 get to ask, because nobody will open them an account.
 
-I want to move my own money without asking anyone. Bitcoin can do that, but only if you run it
+I want to move my money without asking anyone. Bitcoin can do that, but only if you run it
 yourself. Leave your coins on an exchange, or use a wallet that talks to someone else's server,
 and you've swapped one gatekeeper for another.
 
-So I run my own: Bitcoin Core and LND on a box at home, and a Lightning Address server I wrote.
-When I pay someone, it goes out over my own channels. When someone pays me, any address at this
+So I run Bitcoin Core and LND on a box at home, with a Lightning Address server I wrote.
+When I pay someone, it goes out over my channels. When someone pays me, any address at this
 domain works, `hello@unbeholden.dev` or anything else you like, and my phone buzzes when it
 lands.
 
@@ -67,11 +67,11 @@ The pieces:
 
 - An LXC at home running [Bitcoin Core](https://bitcoincore.org),
   [LND](https://github.com/lightningnetwork/lnd) and [Fulcrum](https://github.com/cculianu/Fulcrum),
-  an Electrum server, so my wallets talk to my own node.
+  an Electrum server, so my wallets use the node at home.
 - [lnurl-server](https://git.unbeholden.dev/unbeholden/lnurl-server), about 1,300 lines of Go,
   next to LND. It answers Lightning Address lookups, asks LND for invoices, and posts to ntfy.
-- My own [ntfy](https://ntfy.sh) server, for push notifications to my phone.
-- Giran, the VPS that serves this site, joined to the home box over a tailnet run by my own
+- An [ntfy](https://ntfy.sh) server, for push notifications to my phone.
+- Giran, the VPS that serves this site, joined to the home box over a tailnet managed by
   [Headscale](https://github.com/juanfont/headscale).
 
 Nothing at home is open to the internet. A wallet looking up `hello@unbeholden.dev` asks this
@@ -97,7 +97,7 @@ A `*` entry in the config makes the server answer for any name. Named entries ta
 I want one with its own description or limits. It talks to LND with an
 invoice-only macaroon, so it can create invoices but can't move funds or read my channels.
 
-Since it's my own code, adding notifications was just two hooks:
+I added notifications with two hooks:
 
 1. When the callback creates an invoice, the server posts to ntfy with the address, the amount
    in sats, and the payer's comment if they left one. If a payment never arrives, I can see it
@@ -107,7 +107,7 @@ Since it's my own code, adding notifications was just two hooks:
 LNURL-withdraw is for tips. I can leave one in a restaurant as a QR code. The staff scan it,
 claim the sats into their own wallet, and I get a notification when they do.
 
-The code is public from today, MIT licensed, on my own Forgejo:
+The code is public from today, MIT licensed, on Forgejo:
 [unbeholden/lnurl-server](https://git.unbeholden.dev/unbeholden/lnurl-server).
 
 ## Should you?

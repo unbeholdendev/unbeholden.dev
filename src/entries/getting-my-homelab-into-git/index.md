@@ -1,0 +1,119 @@
+---
+title: Getting my homelab into Git
+date: 2026-10-31
+summary: Two Proxmox hosts, a NAS and a small Kubernetes cluster, mostly described in two Git repositories. A dozen containers on one LXC aren't yet, so I'm moving them.
+topic: Self-hosting
+poster:
+  src: ./poster.jpg
+  alt: Wooden letter tiles spelling RECONCILE on a white shelf, in front of a bunch of dried flowers in blue, teal and cream.
+---
+
+The Lightning node, the Forgejo that agents push to and the host they work on all run at home. I've
+written about them one at a time and never shown how they fit together, so here's all of it as it
+stands today, including the part I want to change.
+
+## What's in it
+
+The hosts are named after towns in Lineage 2, because I enjoyed playing it as a kid.
+
+- An OpenWrt router, with AdGuard Home for DNS.
+- Rune and Dion, two machines running [Proxmox](https://www.proxmox.com).
+- A TrueNAS box, which also runs Jellyfin and Immich.
+- LXCs on Proxmox. Goddard runs the Bitcoin node, Aden runs Docker, Oren runs the dev containers,
+  Gludin runs Dokploy and Heine runs Forgejo Actions jobs.
+- A two-node [Talos](https://www.talos.dev) cluster, as VMs on Dion.
+
+Outside the house there's Giran, the rented VPS that serves this site and my mail, joined to the
+rest over a tailnet.
+
+## Two repositories
+
+Both repositories are private for now, so I can't link them. I plan to make both public, but they
+need some work first to be safe to share. They split along one line: `dotfiles` covers the machines
+I sit at and the containers agents work in, and `infra` covers everything else.
+
+I've already written about [dotfiles](/blog/an-agent-that-configures-my-machine). It's one Nix flake
+that builds my T14 and the old T460s I keep as a backup, the shell on Oren and the dev container
+profile. It also puts everything `infra` needs on the laptops: Ansible, OpenTofu, kubectl, talosctl,
+the Flux CLI, and SOPS with age.
+
+`infra` has three layers:
+
+- **Ansible** holds the inventory and sets up the hosts. The bootstrap playbook takes a fresh Debian
+  machine, upgrades it, installs its firewall rules, turns on unattended upgrades and disables root
+  and password logins. Other playbooks install Docker, Tailscale and Headscale.
+- **OpenTofu** creates the two Talos VMs on Dion: 2 vCPUs and 4 GiB of memory for the control plane,
+  4 vCPUs and 8 GiB for the worker. Its Proxmox API token only has permissions on those two VMs.
+  Installing Talos itself is still manual, and its configuration stays out of Git.
+- **[Flux](https://fluxcd.io)** watches a directory on `main` and reconciles the cluster against
+  whatever is there.
+
+Agents work on both repositories the same way they work on everything else. They open a pull
+request and I merge it.
+
+## The cluster
+
+Everything on the cluster sits behind one private address. [MetalLB](https://metallb.io) holds the
+address, [Traefik](https://traefik.io/traefik) answers on it, and
+[cert-manager](https://cert-manager.io) gets a single wildcard certificate for it through a DNS
+challenge. Secrets are in Git, encrypted with [SOPS](https://getsops.io) and age. No port on the
+router leads there, and Giran reaches it over the tailnet.
+
+So far it runs [Homepage](https://gethomepage.dev), [Renovate](https://docs.renovatebot.com) and
+[Forgejo](https://forgejo.org).
+
+Flux pulls its configuration from Forgejo, and Forgejo is one of the things Flux deploys. If Forgejo
+goes down, the cluster keeps running what it has but stops taking changes.
+
+## Aden
+
+Most of what's left runs on Aden, as Docker containers:
+
+- [Vaultwarden](https://github.com/dani-garcia/vaultwarden) for passwords and
+  [Radicale](https://radicale.org) for calendars and contacts.
+- [ntfy](https://ntfy.sh) for push notifications.
+- [Umami](https://umami.is) for analytics, with its Postgres.
+- [BTC RPC Explorer](https://github.com/janoside/btc-rpc-explorer) and
+  [lnurl-server](/blog/running-my-own-bitcoin-and-lightning-node), both of which talk to the node
+  on Goddard.
+- [reviewer](/blog/a-reviewer-for-my-agents) and
+  [Unbeholden Wallet](/blog/a-bitcoin-wallet-in-a-browser-tab), which I wrote.
+- [Dockhand](https://github.com/Finsys/dockhand), which manages the others.
+
+That's a dozen or so containers using about 500 MB of memory. Aden is backed up to TrueNAS, so I
+wouldn't lose the data, but `infra` installs Docker on it and stops there. Nothing in Git says what
+runs on the host or how.
+
+Versions are loose too. Most of the containers run `latest` or no tag at all, so which version I'm
+on depends on when I last pulled.
+
+## Moving Aden to the cluster
+
+I want everything in Git. Each service becomes a directory in `infra` with a pinned image, so the
+repository says exactly what runs and a rebuild gives the same result. Renovate runs on the cluster
+as a daily job and opens a pull request when a pinned image, Helm chart or OpenTofu provider has a
+new release. It never merges one. I merge it, and Flux deploys the update from there.
+
+I haven't moved any of them yet. Forgejo has already made the same move, and its directory is the template:
+a pinned chart, a retained volume and a written restore and cutover procedure.
+
+Moving won't make anything more available, because both Talos nodes are VMs on Dion. If Dion goes,
+the cluster goes with it.
+
+Three things need care on the way:
+
+**Public routes.** ntfy and Umami have public hostnames, and everything on the cluster today is
+private. Traefik picks the app from the hostname in each request, so if Giran sent public traffic to
+that address, one bad route could expose Forgejo or Vaultwarden. Public apps will get their own
+Traefik on a second private address, and Giran will forward public traffic to that one alone.
+
+**Storage.** The cluster has no storage class. Each volume is a directory on the worker's 32 GiB
+disk, shared with images and logs, and it survives restarts and reboots but not losing the worker.
+I'll back the volumes up the way Aden is backed up, with a scheduled job in `infra` that copies
+them to TrueNAS. That has to work before Radicale's data or Umami's database moves.
+
+**Vaultwarden.** The private age key that decrypts the cluster's secrets is backed up in Vaultwarden,
+so moving Vaultwarden onto the cluster looks circular. I'm fine with it, because my phone and laptop
+keep local copies of the vault, and I can still get the key if the cluster is gone.
+
+Dockhand doesn't move. It has no job once Aden is empty.

@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import Forgejo from '../assets/forgejo.svg';
+import GitHub from '../assets/github.svg';
 
 const things: ({ name: string; description: string } & ({ link: string; code?: string } | { link?: undefined; code: string }))[] = [
 	{
@@ -21,7 +21,7 @@ const things: ({ name: string; description: string } & ({ link: string; code?: s
 		name: 'AI PR reviewer',
 		description:
 			'A code review bot for Forgejo. It reviews pull requests with Claude Code and answers questions in the comments.',
-		code: 'https://git.unbeholden.dev/unbeholden/reviewer',
+		code: 'https://github.com/unbeholdendev/reviewer',
 	},
 	{
 		name: 'Unbeholden',
@@ -43,28 +43,30 @@ const things: ({ name: string; description: string } & ({ link: string; code?: s
 		name: 'lnurl-server',
 		description:
 			'A small Lightning Address server in Go. Payments to you@yourdomain are invoiced by your own LND node.',
-		code: 'https://git.unbeholden.dev/unbeholden/lnurl-server',
+		code: 'https://github.com/unbeholdendev/lnurl-server',
 	},
 	{
 		name: 'lnrecc',
 		description:
 			'Recurring Lightning payments from your own LND node, on a cron schedule. Pocket money, a subscription or a regular donation.',
-		code: 'https://git.unbeholden.dev/unbeholden/lnrecc',
+		code: 'https://github.com/unbeholdendev/lnrecc',
 	},
 	{
 		name: 'lofextra',
 		description:
 			'A local-first expense tracker. Data stays on your device in SQLite and syncs encrypted between devices, with a 12-word phrase in place of an account.',
 		link: 'https://lofextra.unbeholden.dev',
-		code: 'https://git.unbeholden.dev/unbeholden/lofextra',
+		code: 'https://github.com/unbeholdendev/lofextra',
 	},
 ];
 
 // Committed, not fetched at build, per ADR-0001. Add one with `bun scripts/og-image.ts <link>`.
 const images = import.meta.glob<{ default: ImageMetadata }>('../assets/built/*', { eager: true });
-const image = (link: string) =>
-	Object.entries(images).find(([path]) => path.includes(`/${new URL(link).hostname}.`))?.[1]
-		.default;
+const image = (link: string) => {
+	const { hostname, pathname } = new URL(link);
+	const name = hostname + pathname.replace(/\/$/, '').replaceAll('/', '.');
+	return Object.entries(images).find(([path]) => path.includes(`/${name}.`))?.[1].default;
+};
 ---
 
 <Layout
@@ -111,7 +113,7 @@ const image = (link: string) =>
 							/>
 						) : (
 							<div class="border-key group-hover:border-mid -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
-								<Forgejo aria-hidden="true" class="h-1/2 w-auto" />
+								<GitHub aria-hidden="true" class="text-dim h-1/2 w-auto" />
 							</div>
 						)}
 					</li>

@@ -7,7 +7,7 @@ Astro 7 static site, Tailwind 4 via `@tailwindcss/vite`. Bun is the package mana
 
 ### Issue tracker
 
-Issues live in Forgejo at `git.unbeholden.dev/unbeholden/unbeholden.dev`, driven by the `forgejo`
+Issues live in Forgejo at `git.home.unbeholden.dev/unbeholden/unbeholden.dev`, driven by the `forgejo`
 MCP tools. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels

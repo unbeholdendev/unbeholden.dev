@@ -68,7 +68,7 @@ The pieces:
 - An LXC at home running [Bitcoin Core](https://bitcoincore.org),
   [LND](https://github.com/lightningnetwork/lnd) and [Fulcrum](https://github.com/cculianu/Fulcrum),
   an Electrum server, so my wallets use the node at home.
-- [lnurl-server](https://git.unbeholden.dev/unbeholden/lnurl-server), about 1,300 lines of Go,
+- [lnurl-server](https://github.com/unbeholdendev/lnurl-server), about 1,300 lines of Go,
   next to LND. It answers Lightning Address lookups, asks LND for invoices, and posts to ntfy.
 - An [ntfy](https://ntfy.sh) server, for push notifications to my phone.
 - Giran, the VPS that serves this site, joined to the home box over a tailnet managed by
@@ -107,8 +107,8 @@ I added notifications with two hooks:
 LNURL-withdraw is for tips. I can leave one in a restaurant as a QR code. The staff scan it,
 claim the sats into their own wallet, and I get a notification when they do.
 
-The code is public from today, MIT licensed, on Forgejo:
-[unbeholden/lnurl-server](https://git.unbeholden.dev/unbeholden/lnurl-server).
+The code is public from today, MIT licensed, on GitHub:
+[unbeholdendev/lnurl-server](https://github.com/unbeholdendev/lnurl-server).
 
 ## Should you?
 

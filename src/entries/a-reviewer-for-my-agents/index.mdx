@@ -17,7 +17,7 @@ about that setup in
 version is that I review once, on the diff.
 
 So I built
-[reviewer](https://git.unbeholden.dev/unbeholden/reviewer), a bot that reviews each pull request
+[reviewer](https://github.com/unbeholdendev/reviewer), a bot that reviews each pull request
 before I get to it. It runs Claude Code against the change and posts a normal Forgejo review:
 a recommendation, a short summary, and comments on the lines it has something to say about.
 
@@ -131,7 +131,7 @@ Reading them from the base matters: a pull request can't rewrite the rules it's 
 
 ## What I ask it for
 
-The prompt is [in the repo](https://git.unbeholden.dev/unbeholden/reviewer/src/branch/main/prompts/review.md).
+The prompt is [in the repo](https://github.com/unbeholdendev/reviewer/blob/main/prompts/review.md).
 It looks for bugs, security problems and missing error handling, but it also looks for more code
 than the task needs: helpers nobody asked for, checks for cases that can't happen, comments that
 repeat the code.
@@ -198,6 +198,6 @@ already: earlier reviews, issues, and the decisions written down in the reposito
 ## Using it
 
 The code is public:
-[unbeholden/reviewer](https://git.unbeholden.dev/unbeholden/reviewer). It needs a Forgejo user
+[unbeholdendev/reviewer](https://github.com/unbeholdendev/reviewer). It needs a Forgejo user
 for the bot, a Claude token, and a webhook on each repository or on the org. The README has the
 rest.

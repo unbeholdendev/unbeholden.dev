@@ -1,42 +1,32 @@
-# Issue tracker: Forgejo (via MCP)
+# Issue tracker: Forgejo (via `tea`)
 
 Issues and specs for this repo live as Forgejo issues at
 `https://git.home.unbeholden.dev/unbeholden/unbeholden.dev`.
 
-Neither `gh` nor `glab` applies, and no Forgejo CLI is installed. **Use the `forgejo` MCP
-tools for every operation.** Their schemas are deferred, so load them first, e.g.
-`ToolSearch("select:mcp__forgejo__create_issue,mcp__forgejo__list_repo_issues")`.
-
-Every tool takes `owner` and `repo`, which are not inferred from `git remote`:
-
-- `owner`: `unbeholden`
-- `repo`: `unbeholden.dev`
+Use `tea` for every operation, from inside the repo so it infers the repo from `git remote`.
+Add `--output json` when you need to parse the result. `gh` and `glab` don't apply. For
+anything `tea` lacks, use `tea api <path>`, for example
+`tea api repos/unbeholden/unbeholden.dev/issues/60/comments`.
 
 ## Conventions
 
-- **Create an issue**: `mcp__forgejo__create_issue` with `title` and `body`. It takes no
-  `labels` argument; label the issue afterwards in a second call.
-- **Read an issue**: `mcp__forgejo__get_issue_by_index` with `index`, then
-  `mcp__forgejo__list_issue_comments` for the thread. `index` is the `#number`.
-- **List issues**: `mcp__forgejo__list_repo_issues` with `state` (`open`/`closed`/`all`),
-  `labels` (comma-separated names) and `type` (`issues` or `pulls`).
-- **Comment**: `mcp__forgejo__create_issue_comment`.
-- **Apply / remove labels**: `mcp__forgejo__add_issue_labels` and
-  `mcp__forgejo__remove_issue_labels` both take comma-separated numeric label *IDs*, not
-  names. Get the IDs from `mcp__forgejo__list_repo_labels`.
-- **Close**: post the explanation with `create_issue_comment`, then
-  `mcp__forgejo__issue_state_change` with `state: "closed"`. State changes carry no comment.
-- **Assign**: `mcp__forgejo__update_issue` with `assignee`. There is no `@me`; pass the
-  username from `mcp__forgejo__get_my_user_info`.
-- **Labels**: `mcp__forgejo__list_repo_labels` must be called with
-  `include_org_labels: false`. The token lacks the `read:organization` scope, so the
-  default (`true`) fails with a 403 on the `unbeholden` org.
-- **Create a label**: `mcp__forgejo__create_repo_label` with `name` and a 6-digit hex
-  `color`.
+- **Create an issue**: `tea issues create --title <title> --description-file <file>`, with
+  `--labels <names>` to label it in the same call.
+- **Read an issue**: `tea issues <index>`, then `tea api` on its `comments` for the thread.
+  `index` is the `#number`.
+- **List issues**: `tea issues list --state open|closed|all --labels <names>`.
+- **Comment**: `tea comment <index> <body>`.
+- **Apply / remove labels**: `tea issues edit <index> --add-labels <names>` or
+  `--remove-labels <names>`. Both take comma-separated names.
+- **Close**: post the explanation with `tea comment`, then `tea issues close <index>`.
+- **Assign**: `tea issues edit <index> --add-assignees <username>`. Get your username from
+  `tea whoami`.
+- **Labels**: `tea labels list`.
+- **Create a label**: `tea labels create --name <name> --color <6-digit hex>`.
 
 Forgejo shares one index space across issues and pull requests, so a bare `#42` may be
-either. Resolve with `mcp__forgejo__get_pull_request_by_index` and fall back to
-`get_issue_by_index`.
+either. Check with `tea api repos/unbeholden/unbeholden.dev/pulls/42`, which returns 404 for
+an issue.
 
 ## Pull requests as a triage surface
 
@@ -45,39 +35,38 @@ feature requests; `/triage` reads this flag.)_
 
 When set to `yes`, PRs run through the same labels and states as issues:
 
-- **Read a PR**: `mcp__forgejo__get_pull_request_by_index`, plus
-  `mcp__forgejo__get_pull_request_diff` for the diff and
-  `mcp__forgejo__list_issue_comments` for the thread.
-- **List PRs for triage**: `mcp__forgejo__list_repo_pull_requests`, then drop PRs authored
-  by maintainers. Forgejo reports no `authorAssociation`; check the author against
-  `mcp__forgejo__list_org_members` where the token allows it, otherwise judge by hand.
-- **Label / comment / close**: the issue tools work on PR indexes too
-  (`add_issue_labels`, `create_issue_comment`, `issue_state_change`).
+- **Read a PR**: `tea api repos/unbeholden/unbeholden.dev/pulls/<index>`, plus
+  `tea pr review-comments <index>` for review comments and `tea api` on the issue's
+  `comments` for the thread. Add `.diff` to the `pulls/<index>` path for the diff.
+- **List PRs for triage**: `tea pr list --state open`, then drop PRs authored by
+  maintainers. Forgejo reports no `authorAssociation`; check the author against
+  `tea api orgs/unbeholden/members` where the token allows it, otherwise judge by hand.
+- **Label / comment / close**: the issue commands work on PR indexes too.
 
 ## When a skill says "publish to the issue tracker"
 
-Create a Forgejo issue with `mcp__forgejo__create_issue`.
+Create a Forgejo issue with `tea issues create`.
 
 ## When a skill says "fetch the relevant ticket"
 
-`mcp__forgejo__get_issue_by_index`, then `mcp__forgejo__list_issue_comments`.
+`tea issues <index>`, then `tea api` on its `comments`.
 
 ## Wayfinding operations
 
 Used by `/wayfinder`. The **map** is a single issue with **child** issues as tickets.
 
 - **Map**: one issue labelled `wayfinder:map`, holding the Notes / Decisions-so-far / Fog
-  body. Create it, then add the label.
+  body.
 - **Child ticket**: an issue with `Part of #<map>` at the top of its body, listed in a task
-  list in the map body. The MCP server exposes no sub-issue endpoint. Labels:
-  `wayfinder:<type>` (`research`/`prototype`/`grilling`/`task`). Once claimed, the ticket
-  is assigned to the driving dev.
-- **Blocking**: a `Blocked by: #<n>, #<n>` line at the top of the child body. Forgejo has
-  native issue dependencies, but no MCP tool reaches them, so the body line is canonical
-  here. A ticket is unblocked when every blocker is closed.
-- **Frontier query**: `list_repo_issues` with `state: "open"`, scoped to the map's task
-  list; drop any ticket with an open issue in its `Blocked by` line or with an assignee.
-  First in map order wins.
-- **Claim**: `update_issue` with `assignee: "<your username>"`, the session's first write.
-- **Resolve**: `create_issue_comment` with the answer, then `issue_state_change` to
-  `closed`, then append a context pointer to the map's Decisions-so-far.
+  list in the map body. Labels: `wayfinder:<type>` (`research`/`prototype`/`grilling`/`task`).
+  Once claimed, the ticket is assigned to the driving dev.
+- **Blocking**: a `Blocked by: #<n>, #<n>` line at the top of the child body. It is canonical
+  here, rather than Forgejo's native issue dependencies. A ticket is unblocked when every
+  blocker is closed.
+- **Frontier query**: `tea issues list --state open`, scoped to the map's task list; drop any
+  ticket with an open issue in its `Blocked by` line or with an assignee. First in map order
+  wins.
+- **Claim**: `tea issues edit <index> --add-assignees <your username>`, the session's first
+  write.
+- **Resolve**: `tea comment` with the answer, then `tea issues close`, then append a context
+  pointer to the map's Decisions-so-far.

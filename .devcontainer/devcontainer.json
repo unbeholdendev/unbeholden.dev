@@ -1,5 +1,4 @@
 {
   "name": "unbeholden.dev",
-  "image": "oven/bun:1.4",
-  "appPort": ["4321:4321"]
+  "image": "oven/bun:1.4"
 }

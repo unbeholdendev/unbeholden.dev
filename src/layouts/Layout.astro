@@ -9,6 +9,7 @@ interface Props {
 	description?: string;
 	image?: { src: string; alt: string; width: number; height: number };
 	article?: { published: Date; updated?: Date };
+	profile?: boolean;
 }
 
 // Every page shares the card unless it brings its own, so nothing is ever posted bare.
@@ -24,6 +25,7 @@ const {
 	description = 'Digital sovereignty, in practice. Self-hosting, homelab and networking, Linux and agent tooling, on hardware I own.',
 	image = card,
 	article,
+	profile = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const social = new URL(image.src, Astro.site);
@@ -47,6 +49,27 @@ const current = (section: string) => (here.startsWith(section) ? 'page' : undefi
 		<ClientRouter />
 		<title>{title}</title>
 		<link rel="canonical" href={canonical} />
+		<link rel="describedby" href={new URL('/llms.txt', Astro.site)} type="text/plain" />
+		{
+			profile && (
+				<script is:inline type="application/ld+json" set:html={JSON.stringify({
+					'@context': 'https://schema.org',
+					'@type': 'ProfilePage',
+					url: canonical.href,
+					name: title,
+					mainEntity: {
+						'@type': 'Person',
+						'@id': new URL('/about#person', Astro.site).href,
+						name: 'Jakub Kot',
+						url: new URL('/about', Astro.site).href,
+						sameAs: [
+							'https://github.com/unbeholdendev',
+							'https://www.linkedin.com/in/jakubkot/',
+						],
+					},
+				}).replace(/</g, '\\u003c')} />
+			)
+		}
 		<link
 			rel="alternate"
 			type="application/atom+xml"

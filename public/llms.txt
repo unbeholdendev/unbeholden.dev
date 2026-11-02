@@ -1,0 +1,16 @@
+# Unbeholden
+
+> Jakub Kot's personal site: software engineering, self-hosting, Linux, agent tooling, Bitcoin and Lightning.
+
+## Profile
+
+- [About](https://unbeholden.dev/about): Who I am and how I run this site.
+- [CV](https://unbeholden.dev/cv): My professional experience in HTML.
+- [CV PDF](https://unbeholden.dev/cv.pdf): My current two-page CV.
+- [Contact](https://unbeholden.dev/contact): Work enquiries and other ways to reach me.
+
+## Writing and software
+
+- [Blog](https://unbeholden.dev/blog): All published entries.
+- [Full-text Atom feed](https://unbeholden.dev/feed.xml): Every entry's article, with publication and update dates.
+- [Built](https://unbeholden.dev/built): Software I've made, with source links where public.

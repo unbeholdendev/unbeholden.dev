@@ -58,6 +58,18 @@ const things: ({ name: string; description: string } & ({ link: string; code?: s
 		link: 'https://lofextra.unbeholden.dev',
 		code: 'https://github.com/unbeholdendev/lofextra',
 	},
+	{
+		name: '.files',
+		description:
+			'One Nix flake for my machines. NixOS and niri on two ThinkPads, plus Home Manager config for a headless host and dev containers.',
+		code: 'https://github.com/unbeholdendev/dotfiles',
+	},
+	{
+		name: 'infra',
+		description:
+			'My homelab in Git. Ansible sets up the hosts, OpenTofu creates the VMs and Flux reconciles the Kubernetes cluster.',
+		code: 'https://github.com/unbeholdendev/infra',
+	},
 ];
 
 // Committed, not fetched at build, per ADR-0001. Add one with `bun scripts/og-image.ts <link>`.

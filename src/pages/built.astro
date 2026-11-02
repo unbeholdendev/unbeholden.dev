@@ -115,7 +115,7 @@ const image = (link: string) => {
 								</a>
 							</h2>
 							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
-							<p class="meta mt-3 text-pretty">{thing.stack.join(' · ')}</p>
+							<p class="text-dim text-meta mt-3 font-mono text-pretty">{thing.stack.join(' · ')}</p>
 							<p class="meta mt-1 text-pretty">
 								{thing.link === undefined ? new URL(thing.code).pathname.slice(1) : new URL(thing.link).hostname}
 								{thing.link && thing.code && (

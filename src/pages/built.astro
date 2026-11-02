@@ -5,6 +5,18 @@ import GitHub from '../assets/github.svg';
 
 const things: ({ name: string; description: string } & ({ link: string; code?: string } | { link?: undefined; code: string }))[] = [
 	{
+		name: 'dotfiles',
+		description:
+			'One Nix flake for my machines. NixOS and niri on two ThinkPads, plus Home Manager config for a headless host and dev containers.',
+		code: 'https://github.com/unbeholdendev/dotfiles',
+	},
+	{
+		name: 'infra',
+		description:
+			'My homelab in Git. Ansible sets up the hosts, OpenTofu creates the VMs and Flux reconciles the Kubernetes cluster.',
+		code: 'https://github.com/unbeholdendev/infra',
+	},
+	{
 		name: 'Unbeholden Wallet',
 		description:
 			'A watch-only Bitcoin wallet in a browser tab. It connects to a node of your choosing and never holds a private key.',
@@ -57,18 +69,6 @@ const things: ({ name: string; description: string } & ({ link: string; code?: s
 			'A local-first expense tracker. Data stays on your device in SQLite and syncs encrypted between devices, with a 12-word phrase in place of an account.',
 		link: 'https://lofextra.unbeholden.dev',
 		code: 'https://github.com/unbeholdendev/lofextra',
-	},
-	{
-		name: '.files',
-		description:
-			'One Nix flake for my machines. NixOS and niri on two ThinkPads, plus Home Manager config for a headless host and dev containers.',
-		code: 'https://github.com/unbeholdendev/dotfiles',
-	},
-	{
-		name: 'infra',
-		description:
-			'My homelab in Git. Ansible sets up the hosts, OpenTofu creates the VMs and Flux reconciles the Kubernetes cluster.',
-		code: 'https://github.com/unbeholdendev/infra',
 	},
 ];
 

@@ -1,0 +1,13 @@
+{
+  "enabledPlugins": {
+    "visual-explainer@visual-explainer-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "visual-explainer-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "nicobailon/visual-explainer"
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+<svg viewBox="0 0 1200 810" role="img" aria-labelledby="st-title st-desc" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',ui-monospace,monospace" font-size="20" fill="none" stroke-width="1.5">
+<title id="st-title">Mail ports skip the proxy, so Stalwart sees real IPs</title>
+<desc id="st-desc">The VPS sits behind the provider firewall, whose four inbound rules let TCP 25, 465, 587 and 993 in from anywhere. Other mail servers deliver inbound mail on port 25, and mail clients submit and read mail on 465, 587 and 993. Those ports go straight from the host to the Stalwart container, so Stalwart sees the real IP of whoever connects, and SPF checks, rate limits and IP bans work. HTTP and HTTPS on 80 and 443 go through Traefik, run by Dokploy, for the admin UI and autodiscovery. Traefik forwards those requests, so Stalwart sees only Traefik's internal IP; a ban on that IP takes the web side down, and the fix is putting the Docker subnets on Stalwart's allowed IP list. Traefik gets web certificates with the HTTP challenge; Stalwart gets its own with DNS-01 through the registrar API. Stalwart relays outbound mail through SMTP2Go as an MTA route, which delivers it to recipients' servers and sees outbound metadata only.</desc>
+<rect x="320" y="90" width="840" height="540" rx="4" stroke-dasharray="6 6" style="stroke:var(--faint,#675d51)"/>
+<text x="336" y="118" font-size="18" letter-spacing="0.12em" style="fill:var(--faint,#675d51)">PROVIDER FIREWALL · VPS</text>
+<g style="stroke:var(--fg,#1c1915)">
+<rect x="40" y="195" width="240" height="70" rx="4"/>
+<rect x="40" y="310" width="240" height="70" rx="4"/>
+<rect x="40" y="425" width="240" height="70" rx="4"/>
+<rect x="460" y="405" width="220" height="110" rx="4"/>
+<rect x="820" y="130" width="300" height="390" rx="4"/>
+<rect x="820" y="700" width="300" height="80" rx="4"/>
+<rect x="460" y="700" width="240" height="80" rx="4"/>
+</g>
+<g font-family="Rubik,sans-serif" font-size="24" font-weight="600" style="fill:var(--fg,#1c1915)">
+<text x="58" y="226">Mail servers</text>
+<text x="58" y="341">Mail clients</text>
+<text x="58" y="456">HTTP clients</text>
+<text x="478" y="440">Traefik</text>
+<text x="838" y="734">SMTP2Go</text>
+<text x="478" y="734">Recipients</text>
+</g>
+<text x="838" y="168" font-family="Rubik,sans-serif" font-size="30" font-weight="600" style="fill:var(--fg,#1c1915)">Stalwart</text>
+<g font-size="18" style="fill:var(--faint,#675d51)">
+<text x="58" y="252">other domains</text>
+<text x="58" y="367">phone, desktop</text>
+<text x="58" y="482">admin, autodiscovery</text>
+<text x="478" y="466">Dokploy</text>
+<text x="838" y="194">container</text>
+<text x="478" y="760">their mail servers</text>
+</g>
+<g font-family="'Nunito Sans',sans-serif" font-size="19" style="fill:var(--dim,#4a4238)">
+<text x="478" y="496">TLS: HTTP challenge</text>
+<text x="838" y="312">SPF, rate limits, IP bans work</text>
+<text x="838" y="502">TLS: DNS-01, registrar API</text>
+<text x="838" y="760">Sees outbound metadata only</text>
+</g>
+<text x="838" y="286" style="fill:var(--amber,#8a5a00)">sees real IPs</text>
+<text x="838" y="452" style="fill:var(--mid,#b0551c)">sees Traefik's IP</text>
+<g stroke-width="3" style="stroke:var(--amber,#8a5a00)">
+<path d="M280 230H816M280 345H816"/>
+<path d="M806 222L818 230L806 238M806 337L818 345L806 353"/>
+</g>
+<g font-size="18" style="fill:var(--amber,#8a5a00)">
+<text x="336" y="218">25 · delivers inbound mail</text>
+<text x="336" y="333">465 · 587 · 993 · submits, reads</text>
+</g>
+<g style="stroke:var(--fg,#1c1915)">
+<path d="M280 460H456M680 460H816M960 520V696M820 740H704"/>
+<path d="M446 454L456 460L446 466M806 454L816 460L806 466M954 686L960 696L966 686M714 734L704 740L714 746"/>
+</g>
+<g font-size="18" style="fill:var(--fg,#1c1915)">
+<text x="336" y="448">80 · 443</text>
+<text x="696" y="440">forwards</text>
+<text x="972" y="672">relays · MTA route</text>
+<text x="712" y="728">delivers</text>
+</g>
+<g font-family="'Nunito Sans',sans-serif" font-size="19">
+<text x="460" y="568" style="fill:var(--mid,#b0551c)">Ban Traefik's IP and the web side goes down</text>
+<text x="460" y="596" style="fill:var(--fg,#1c1915)">Fix: Docker subnets on the allowed IP list</text>
+</g>
+</svg>

@@ -8,6 +8,8 @@ poster:
   alt: A row of colourful mailboxes, numbered and on wooden posts, tangled in dry vines with yellow flowers behind.
 ---
 
+import Traffic from './traffic.svg';
+
 The standard advice is not to self-host email. Nothing you send will get delivered, the big
 providers will bin it, and you'll lose your weekends to spam filters. I did it anyway. It took
 one long day, and most of those warnings turned out to be out of date or fixable. I now run
@@ -67,6 +69,8 @@ The decision that mattered most was keeping the mail ports away from the proxy. 
 587 and 993 go straight from the container to the host, and only HTTP goes through Traefik.
 SPF checks, rate limiting and IP bans all need the real IP of whoever's connecting, and a proxy
 hides it. That heads off a whole class of problems and causes one, which I'll get to.
+
+<figure><Traffic /></figure>
 
 The provider firewall has four inbound rules:
 

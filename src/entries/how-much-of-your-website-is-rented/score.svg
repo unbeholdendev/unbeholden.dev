@@ -1,0 +1,42 @@
+<svg viewBox="0 0 1200 450" role="img" aria-labelledby="sc-title sc-desc" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',ui-monospace,monospace" font-size="20" fill="none" stroke-width="1.5">
+<title id="sc-title">How this site scores 50: half its weight is owned</title>
+<desc id="sc-desc">Check scored four services on unbeholden.dev, drawn as one bar whose segments are as wide as their weights, 9 in total. Owned: the web server, hosting, weight 3, and the mail server, mail, weight 1.5. Rented: SMTP2Go, mail, weight 1.5, and Spaceship DNS, DNS, weight 3. Mail, DNS and hosting each count 3, and the two mail providers share the mail weight, 1.5 each. Owned weight is 4.5 of 9, so the score is 50. Six findings are listed but not scored: Astro, the RSS feed, Open Graph tags, HSTS, HTTP/3 and a Google site verification record.</desc>
+<defs>
+<pattern id="sc-hatch" patternUnits="userSpaceOnUse" width="12" height="12" patternTransform="rotate(45)">
+<path d="M0 0V12" stroke-width="4" style="stroke:var(--mid,#b0551c)"/>
+</pattern>
+</defs>
+<text x="60" y="58" font-family="Rubik,sans-serif" font-size="34" font-weight="600" style="fill:var(--amber,#8a5a00)">Owned · score 50</text>
+<text x="620" y="58" font-family="Rubik,sans-serif" font-size="34" font-weight="600" style="fill:var(--mid,#b0551c)">Rented</text>
+<g font-size="18" style="fill:var(--dim,#4a4238)">
+<text x="60" y="90">4.5 of 9 weight = 50%</text>
+<text x="620" y="90">4.5 of 9 weight = 50%</text>
+</g>
+<path d="M60 116V106H596V116" style="stroke:var(--amber,#8a5a00)"/>
+<path d="M604 116V106H1140V116" style="stroke:var(--mid,#b0551c)"/>
+<g style="fill:var(--amber,#8a5a00);stroke:var(--amber,#8a5a00)">
+<rect x="61" y="130" width="356" height="80"/>
+<rect x="423" y="130" width="176" height="80"/>
+</g>
+<g fill="url(#sc-hatch)" style="stroke:var(--mid,#b0551c)">
+<rect x="601" y="130" width="176" height="80"/>
+<rect x="783" y="130" width="356" height="80"/>
+</g>
+<g font-family="Rubik,sans-serif" font-size="24" font-weight="600" style="fill:var(--fg,#1c1915)">
+<text x="60" y="246">Web server</text>
+<text x="420" y="246">Mail server</text>
+<text x="600" y="246">SMTP2Go</text>
+<text x="780" y="246">Spaceship DNS</text>
+</g>
+<g font-size="18" style="fill:var(--dim,#4a4238)">
+<text x="60" y="274">hosting · 3</text>
+<text x="420" y="274">mail · 1.5</text>
+<text x="600" y="274">mail · 1.5</text>
+<text x="780" y="274">DNS · 3</text>
+</g>
+<path d="M420 292V302H780V292" style="stroke:var(--faint,#675d51)"/>
+<text x="420" y="330" font-family="'Nunito Sans',sans-serif" font-size="20" style="fill:var(--dim,#4a4238)">Mail counts 3, shared by two providers</text>
+<path d="M60 370H1140" stroke-dasharray="6 6" style="stroke:var(--faint,#675d51)"/>
+<text x="60" y="404" font-size="18" letter-spacing="0.12em" style="fill:var(--faint,#675d51)">LISTED, NOT SCORED · WEIGHT 0</text>
+<text x="60" y="434" font-family="'Nunito Sans',sans-serif" font-size="20" style="fill:var(--dim,#4a4238)">Astro · RSS feed · Open Graph tags · HSTS · HTTP/3 · Google site verification</text>
+</svg>

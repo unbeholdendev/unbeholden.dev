@@ -1,0 +1,101 @@
+<svg viewBox="0 0 1200 1000" role="img" aria-labelledby="ln-title ln-desc" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',ui-monospace,monospace" font-size="20" fill="none" stroke-width="1.5">
+<title id="ln-title">One payment to hello@unbeholden.dev, and the one way in to home</title>
+<desc id="ln-desc">A payer's wallet looks up hello@unbeholden.dev and sends GET /.well-known/lnurlp/hello to Giran, the VPS that serves this site. Giran passes the request over the tailnet, managed by Headscale, to lnurl-server at home, with the host that was asked for, unbeholden.dev. lnurl-server, LND and ntfy are at home, which has no ports forwarded; the tailnet link from Giran is the only way requests come in. lnurl-server returns JSON with a callback URL and the amounts it accepts, back through Giran. The wallet calls the callback with an amount, and Giran forwards it over the tailnet. lnurl-server asks LND for a new invoice using an invoice-only macaroon, gets the invoice, posts "invoice created" to ntfy, and hands the invoice back to the wallet through Giran. The wallet pays the invoice over Lightning to LND. LND's invoice stream reports that the invoice settled, lnurl-server posts "paid" to ntfy, and ntfy pushes it to my phone.</desc>
+<rect x="600" y="20" width="590" height="960" rx="4" stroke-dasharray="6 6" style="stroke:var(--faint,#675d51)"/>
+<text x="616" y="48" font-size="18" letter-spacing="0.12em" style="fill:var(--faint,#675d51)">HOME · NO PORTS FORWARDED</text>
+<g style="stroke:var(--fg,#1c1915)">
+<rect x="60" y="70" width="120" height="70" rx="4"/>
+<rect x="400" y="70" width="140" height="70" rx="4"/>
+<rect x="630" y="70" width="180" height="70" rx="4"/>
+<rect x="850" y="70" width="120" height="70" rx="4"/>
+<rect x="1050" y="70" width="120" height="70" rx="4"/>
+</g>
+<g font-family="Rubik,sans-serif" font-size="24" font-weight="600" text-anchor="middle" style="fill:var(--fg,#1c1915)">
+<text x="120" y="103">Wallet</text>
+<text x="470" y="103">Giran</text>
+<text x="720" y="103">lnurl-server</text>
+<text x="910" y="103">LND</text>
+<text x="1110" y="103">ntfy</text>
+</g>
+<g font-size="18" text-anchor="middle" style="fill:var(--faint,#675d51)">
+<text x="120" y="128">payer</text>
+<text x="470" y="128">the VPS</text>
+<text x="720" y="128">Go</text>
+<text x="910" y="128">node</text>
+<text x="1110" y="128">push</text>
+</g>
+<path d="M120 140V920M470 140V920M720 140V920M910 140V920M1110 140V920" stroke-width="1" style="stroke:var(--faint,#675d51)"/>
+<g style="stroke:var(--faint,#675d51)">
+<circle cx="30" cy="200" r="14"/>
+<circle cx="30" cy="260" r="14"/>
+<circle cx="30" cy="330" r="14"/>
+<circle cx="30" cy="390" r="14"/>
+<circle cx="30" cy="440" r="14"/>
+<circle cx="30" cy="500" r="14"/>
+<circle cx="30" cy="590" r="14"/>
+<circle cx="30" cy="640" r="14"/>
+<circle cx="30" cy="700" r="14"/>
+<circle cx="30" cy="770" r="14"/>
+<circle cx="30" cy="830" r="14"/>
+<circle cx="30" cy="900" r="14"/>
+</g>
+<g font-size="18" text-anchor="middle" style="fill:var(--faint,#675d51)">
+<text x="30" y="206">1</text>
+<text x="30" y="266">2</text>
+<text x="30" y="336">3</text>
+<text x="30" y="396">4</text>
+<text x="30" y="446">5</text>
+<text x="30" y="506">6</text>
+<text x="30" y="596">7</text>
+<text x="30" y="646">8</text>
+<text x="30" y="706">9</text>
+<text x="30" y="776">10</text>
+<text x="30" y="836">11</text>
+<text x="30" y="906">12</text>
+</g>
+<text x="134" y="168" font-family="'Nunito Sans',sans-serif" font-size="19" style="fill:var(--dim,#4a4238)">looks up hello@unbeholden.dev</text>
+<g style="stroke:var(--fg,#1c1915)">
+<path d="M120 200H468M458 194L468 200L458 206"/>
+<path d="M120 390H468M458 384L468 390L458 396"/>
+<path d="M720 500H908M898 494L908 500L898 506"/>
+<path d="M720 640H1108M1098 634L1108 640L1098 646"/>
+<path d="M120 770H908M898 764L908 770L898 776"/>
+<path d="M910 830H722M732 824L722 830L732 836"/>
+<path d="M720 900H1108M1098 894L1108 900L1098 906"/>
+</g>
+<g stroke-dasharray="6 6" style="stroke:var(--dim,#4a4238)">
+<path d="M470 330H122"/>
+<path d="M910 590H722"/>
+<path d="M470 700H122"/>
+</g>
+<path d="M132 324L122 330L132 336M732 584L722 590L732 596M132 694L122 700L132 706" style="stroke:var(--dim,#4a4238)"/>
+<path d="M720 330H470M720 700H470" stroke-width="3" stroke-dasharray="6 6" style="stroke:var(--amber,#8a5a00)"/>
+<g style="fill:var(--amber,#8a5a00)"><circle cx="470" cy="330" r="5"/><circle cx="470" cy="700" r="5"/></g>
+<path d="M470 260H718M708 254L718 260L708 266M470 440H718M708 434L718 440L708 446" stroke-width="3" style="stroke:var(--amber,#8a5a00)"/>
+<g font-size="18" style="fill:var(--fg,#1c1915)">
+<text x="134" y="191">GET /.well-known/lnurlp/hello</text>
+<text x="134" y="381">callback with amount</text>
+<text x="732" y="491">new invoice</text>
+<text x="732" y="631">invoice created</text>
+<text x="134" y="761">pays over Lightning</text>
+<text x="732" y="821">settles</text>
+<text x="732" y="891">paid</text>
+</g>
+<g font-size="18" style="fill:var(--dim,#4a4238)">
+<text x="134" y="321">JSON: callback, amounts</text>
+<text x="732" y="581">invoice</text>
+<text x="134" y="691">invoice</text>
+</g>
+<g font-size="18" stroke-width="6" paint-order="stroke" style="fill:var(--amber,#8a5a00);stroke:var(--panel,#fffbf2)">
+<text x="482" y="251">host unbeholden.dev</text>
+<text x="482" y="286">tailnet · Headscale</text>
+<text x="482" y="431">forward</text>
+<text x="482" y="466">tailnet</text>
+</g>
+<g font-size="18" style="fill:var(--faint,#675d51)">
+<text x="732" y="524">invoice-only</text>
+<text x="732" y="546">macaroon</text>
+<text x="732" y="854">invoice stream</text>
+</g>
+<text x="1170" y="955" text-anchor="end" font-family="'Nunito Sans',sans-serif" font-size="19" style="fill:var(--dim,#4a4238)">pushes to my phone</text>
+</svg>

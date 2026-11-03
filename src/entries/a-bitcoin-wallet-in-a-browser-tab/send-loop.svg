@@ -1,0 +1,56 @@
+<svg viewBox="0 0 1200 670" role="img" aria-labelledby="sl-title sl-desc" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',ui-monospace,monospace" font-size="20" fill="none" stroke-width="1.5">
+<title id="sl-title">How the wallet sends a payment without ever holding the key</title>
+<desc id="sl-desc">The browser tab is watch-only. It holds a descriptor or xpub and no private key. To send, it builds a PSBT and shows it as an animated QR code to an air-gapped signer such as a SeedSigner. The signer holds the private key, which never leaves it. It shows the addresses and amounts; you approve and it signs. You scan the signed transaction back into the tab with the camera, or load it from a file. The wallet then broadcasts it through your chosen Electrum server or Esplora API.</desc>
+<g style="stroke:var(--faint,#675d51)" stroke-dasharray="6 6">
+<rect x="40" y="100" width="480" height="340" rx="4"/>
+<rect x="780" y="100" width="380" height="340" rx="4"/>
+</g>
+<g font-size="18" letter-spacing="0.12em" style="fill:var(--faint,#675d51)">
+<text x="56" y="128">BROWSER TAB · WATCH-ONLY</text>
+<text x="796" y="128">AIR-GAPPED SIGNER</text>
+</g>
+<rect x="70" y="150" width="420" height="230" rx="4" style="stroke:var(--fg,#1c1915)"/>
+<text x="92" y="196" font-family="Rubik,sans-serif" font-size="30" font-weight="600" style="fill:var(--fg,#1c1915)">Unbeholden Wallet</text>
+<g style="fill:var(--fg,#1c1915)">
+<text x="122" y="256">descriptor, xpub</text>
+<text x="122" y="292">builds the PSBT</text>
+</g>
+<text x="122" y="328" style="fill:var(--mid,#b0551c)">private key</text>
+<path d="M96 249l5 5 10-12M96 285l5 5 10-12" style="stroke:var(--fg,#1c1915)"/>
+<path d="M98 315l10 10M108 315l-10 10" style="stroke:var(--mid,#b0551c)"/>
+<rect x="810" y="150" width="320" height="230" rx="4" style="stroke:var(--fg,#1c1915)"/>
+<text x="832" y="196" font-family="Rubik,sans-serif" font-size="30" font-weight="600" style="fill:var(--fg,#1c1915)">Signer</text>
+<text x="832" y="226" font-size="18" style="fill:var(--faint,#675d51)">e.g. SeedSigner</text>
+<rect x="832" y="244" width="200" height="40" rx="4" stroke-width="3" style="stroke:var(--amber,#8a5a00)"/>
+<text x="848" y="271" style="fill:var(--amber,#8a5a00)">private key</text>
+<g font-family="'Nunito Sans',sans-serif" font-size="20" style="fill:var(--dim,#4a4238)">
+<text x="866" y="322">Shows addresses, amounts</text>
+<text x="866" y="352">You approve, it signs</text>
+</g>
+<text x="796" y="424" font-family="'Nunito Sans',sans-serif" font-size="20" style="fill:var(--dim,#4a4238)">The key never leaves</text>
+<path d="M490 220H806" style="stroke:var(--fg,#1c1915)"/>
+<path d="M796 214L806 220L796 226" style="stroke:var(--fg,#1c1915)"/>
+<text x="572" y="208" font-size="18" style="fill:var(--fg,#1c1915)">PSBT · animated QR</text>
+<path d="M810 330H494" style="stroke:var(--fg,#1c1915)"/>
+<path d="M504 324L494 330L504 336" style="stroke:var(--fg,#1c1915)"/>
+<text x="572" y="318" font-size="18" style="fill:var(--fg,#1c1915)">scan signed tx</text>
+<text x="572" y="358" font-size="18" style="fill:var(--faint,#675d51)">camera, or a file</text>
+<path d="M280 380V516" style="stroke:var(--fg,#1c1915)"/>
+<path d="M274 506L280 516L286 506" style="stroke:var(--fg,#1c1915)"/>
+<text x="322" y="484" font-size="18" style="fill:var(--fg,#1c1915)">broadcast</text>
+<rect x="70" y="520" width="420" height="120" rx="4" style="stroke:var(--fg,#1c1915)"/>
+<text x="92" y="564" font-family="Rubik,sans-serif" font-size="26" font-weight="600" style="fill:var(--fg,#1c1915)">Your server</text>
+<text x="92" y="600" font-family="'Nunito Sans',sans-serif" font-size="20" style="fill:var(--dim,#4a4238)">Electrum server or Esplora API</text>
+<g style="stroke:var(--fg,#1c1915)">
+<circle cx="552" cy="202" r="13"/>
+<circle cx="846" cy="316" r="13"/>
+<circle cx="552" cy="312" r="13"/>
+<circle cx="302" cy="478" r="13"/>
+</g>
+<g font-size="18" text-anchor="middle" style="fill:var(--fg,#1c1915)">
+<text x="552" y="208">1</text>
+<text x="846" y="322">2</text>
+<text x="552" y="318">3</text>
+<text x="302" y="484">4</text>
+</g>
+</svg>

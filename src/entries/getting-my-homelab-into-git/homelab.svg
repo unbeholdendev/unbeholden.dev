@@ -1,0 +1,75 @@
+<svg viewBox="0 0 1200 1080" role="img" aria-labelledby="hl-title hl-desc" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',ui-monospace,monospace" font-size="20" fill="none" stroke-width="1.5">
+<title id="hl-title">The homelab, and which repository describes each part</title>
+<desc id="hl-desc">At home: an OpenWrt router running AdGuard Home for DNS, a TrueNAS box running Jellyfin and Immich, and two Proxmox hosts, Rune and Dion. Ansible in the infra repository sets up the hosts at home and Giran. The Proxmox hosts run five LXCs: Goddard runs the Bitcoin node, Gludin runs Dokploy, Oren runs the dev containers and gets its shell from dotfiles, Heine runs Forgejo Actions jobs, and Aden runs Docker with a dozen containers. Ansible in infra installs Docker on Aden, but what runs on it is not in Git. Dion also hosts the Talos cluster as two VMs, a control plane with 2 vCPUs and 4 GiB and a worker with 4 vCPUs and 8 GiB, which OpenTofu in infra creates. Flux in infra reconciles the cluster, which runs Homepage, Renovate and Forgejo. The laptops, a T14 and a T460s, are built by dotfiles. Outside the house, Giran, a rented VPS that serves this site and mail, reaches the cluster over the tailnet.</desc>
+<g style="stroke:var(--faint,#675d51)" stroke-dasharray="6 6">
+<rect x="20" y="200" width="1160" height="860" rx="4"/>
+<rect x="50" y="400" width="1100" height="630" rx="4"/>
+<rect x="80" y="450" width="580" height="550" rx="4"/>
+<rect x="700" y="450" width="420" height="550" rx="4"/>
+<rect x="730" y="500" width="360" height="430" rx="4"/>
+</g>
+<g font-size="18" letter-spacing="0.12em" style="fill:var(--faint,#675d51)">
+<text x="36" y="228">HOME</text>
+<text x="66" y="428">PROXMOX · RUNE AND DION</text>
+<text x="96" y="478">LXCS</text>
+<text x="716" y="478">DION</text>
+<text x="746" y="528">TALOS · 2 VMS</text>
+</g>
+<g style="stroke:var(--fg,#1c1915)">
+<rect x="40" y="30" width="300" height="120" rx="4"/>
+<rect x="860" y="30" width="300" height="120" rx="4"/>
+<rect x="50" y="250" width="320" height="110" rx="4"/>
+<rect x="410" y="250" width="320" height="110" rx="4"/>
+<rect x="100" y="530" width="240" height="110" rx="4"/>
+<rect x="400" y="530" width="240" height="110" rx="4"/>
+<rect x="100" y="680" width="240" height="110" rx="4"/>
+<rect x="400" y="680" width="240" height="110" rx="4"/>
+<rect x="760" y="550" width="300" height="80" rx="4"/>
+<rect x="760" y="670" width="300" height="80" rx="4"/>
+</g>
+<rect x="100" y="830" width="540" height="140" rx="4" stroke-width="3" style="stroke:var(--mid,#b0551c)"/>
+<g font-family="Rubik,sans-serif" font-weight="600" style="fill:var(--fg,#1c1915)">
+<text x="62" y="74" font-size="30">Laptops</text>
+<text x="882" y="74" font-size="30">Giran</text>
+<text x="72" y="290" font-size="30">Router</text>
+<text x="432" y="290" font-size="30">TrueNAS</text>
+<text x="120" y="570" font-size="26">Goddard</text>
+<text x="420" y="570" font-size="26">Gludin</text>
+<text x="120" y="720" font-size="26">Oren</text>
+<text x="420" y="720" font-size="26">Heine</text>
+<text x="780" y="584" font-size="24">Control plane</text>
+<text x="780" y="704" font-size="24">Worker</text>
+</g>
+<text x="120" y="870" font-family="Rubik,sans-serif" font-size="26" font-weight="600" style="fill:var(--mid,#b0551c)">Aden</text>
+<g font-size="18" style="fill:var(--faint,#675d51)">
+<text x="62" y="102">T14 · T460s</text>
+<text x="882" y="102">rented VPS · site, mail</text>
+<text x="72" y="318">OpenWrt</text>
+<text x="780" y="612">VM · 2 vCPU · 4 GiB</text>
+<text x="780" y="732">VM · 4 vCPU · 8 GiB</text>
+</g>
+<g font-family="'Nunito Sans',sans-serif" font-size="20" style="fill:var(--dim,#4a4238)">
+<text x="72" y="346">AdGuard Home · DNS</text>
+<text x="432" y="320">Jellyfin, Immich</text>
+<text x="120" y="600">Bitcoin node</text>
+<text x="420" y="600">Dokploy</text>
+<text x="120" y="750">Dev containers</text>
+<text x="420" y="750">Forgejo Actions jobs</text>
+<text x="120" y="900">Docker · a dozen containers</text>
+<text x="760" y="850">Homepage · Renovate · Forgejo</text>
+</g>
+<g font-size="18" style="fill:var(--amber,#8a5a00)">
+<text x="62" y="132">dotfiles</text>
+<text x="110" y="228">infra · Ansible sets up the hosts</text>
+<text x="882" y="132">infra · Ansible</text>
+<text x="120" y="777">dotfiles</text>
+<text x="120" y="930">infra · Ansible installs Docker</text>
+<text x="760" y="790">infra · OpenTofu creates VMs</text>
+<text x="760" y="880">infra · Flux reconciles</text>
+</g>
+<path d="M120 946l10 10M130 946l-10 10" stroke-width="2.5" style="stroke:var(--mid,#b0551c)"/>
+<text x="142" y="957" font-size="18" style="fill:var(--mid,#b0551c)">what runs on it: not in Git</text>
+<path d="M1000 150V496" style="stroke:var(--fg,#1c1915)"/>
+<path d="M994 486L1000 496L1006 486" style="stroke:var(--fg,#1c1915)"/>
+<text x="988" y="300" font-size="18" text-anchor="end" style="fill:var(--fg,#1c1915)">reaches over tailnet</text>
+</svg>

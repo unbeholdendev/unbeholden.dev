@@ -16,7 +16,9 @@ test('the production build publishes every entry', () => {
 	const blog = readFileSync(new URL('blog/index.html', output), 'utf8');
 	const feed = readFileSync(new URL('feed.xml', output), 'utf8');
 	const sitemap = readFileSync(new URL('sitemap-0.xml', output), 'utf8');
-	const entries = readdirSync(new URL('../src/entries/', import.meta.url));
+	const entries = readdirSync(new URL('../src/entries/', import.meta.url), { withFileTypes: true })
+		.filter((entry) => entry.isDirectory())
+		.map((entry) => entry.name);
 
 	for (const id of entries) {
 		assert.ok(existsSync(new URL(`blog/${id}/index.html`, output)), `${id}: article`);

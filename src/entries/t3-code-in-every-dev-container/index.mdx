@@ -1,0 +1,166 @@
+---
+title: T3 Code in every dev container
+date: 2026-11-04
+summary: My agents work in dev containers on a host at home. Each container now runs its own T3 Code server, and I pair my devices with it directly, with no account and no relay.
+topic: Agent tooling
+poster:
+  src: ./poster.jpg
+  alt: The T3 Code logo, a white T3 on a black rounded square, on a plain beige background.
+---
+
+import Servers from './servers.svg';
+
+My agents work in dev containers on Oren, an LXC at home. I used to reach them over SSH, in
+[herdr](https://herdr.dev), which I described in
+[an agent that configures my machine](/blog/an-agent-that-configures-my-machine). From my phone that
+meant SSH into Oren and spawning agents by hand in a terminal, which is clunky. A few days ago I added
+[T3 Code](https://github.com/pingdotgg/t3code) beside herdr to compare the two. herdr is gone now,
+and so are `dcclaude`, `dcpi` and `dccodex`, my scripts for starting an agent in a container.
+
+T3 Code calls itself an "agent harness control surface". It's a server with iOS, Android, web and
+desktop clients, and it drives agent CLIs that are already installed and signed in, in my case
+Claude Code and Codex. It's MIT licensed and packaged in nixpkgs, which is where my 0.1.5 comes from.
+The README calls the project "very very early" and says to expect bugs.
+
+All of this lives in my dotfiles, which now have a
+[public mirror](https://github.com/unbeholdendev/dotfiles).
+
+## What I like so far
+
+I'm excited about this one, mostly because of how much it shows me in a single UI compared to herdr.
+I get the git diff, and I can merge from the same UI.
+
+The built-in browser is the biggest win. It runs inside the container, so I preview changes in T3
+Code's browser instead of exposing a port to the host. I don't have to think about which ports to
+expose, or whether two projects want the same one. I've already removed the exposed ports from every
+dev container.
+
+Working from my phone is nearly as big. The mobile UI is built for it, and I can pick up where an
+agent left off, or start something new, without setting up a terminal session.
+
+## One server per container
+
+Agents run where the server runs. A single server on Oren would have put them outside the
+containers, and the containers are the reason I can run agents without permission prompts. So every
+container gets its own server, and the boundary stays where it was.
+
+It's also my biggest complaint so far. I have to pair every container with the desktop app and the
+phone, one by one. A single server on Oren that could reach into any dev container would mean pairing
+once. I might fork T3 Code and build that myself.
+
+`dcup`, the script that brings a container up, now starts one:
+
+```bash
+T3CODE_TELEMETRY_ENABLED=false setsid -f flock -n /history/t3.lock \
+  t3 start --no-browser --host 0.0.0.0 --port 3773 --base-dir /history/t3 \
+  </dev/null >/dev/null 2>&1
+```
+
+`/history` is a bind mount from the host, so threads and pairings are kept outside the container and
+survive a rebuild. The lock makes running `dcup` again a no-op while the server is alive. The
+output goes nowhere because it holds pairing details.
+
+Each workspace claims a port on the host, the first free one from 37731, and keeps it. `socat`
+forwards that port to the container, and it looks up the container's address on every connection,
+because a rebuild changes it.
+
+My clients end up with one server per project. `dcup` writes the project's folder name to
+`/etc/machine-info` before starting the server, because T3 Code otherwise names it after the
+container's random hostname.
+
+## Pairing without a third party
+
+T3 Code offers a managed route called T3 Connect, where your devices sign in to the same account and
+find your machines without any router changes. I don't want it: my devices can already reach Oren,
+and it would add an account to something that has no need of one. The nixpkgs build doesn't offer it
+anyway, and `t3 connect` says it's "unavailable in builds without public configuration".
+
+The direct route is a one-time link. `t3 pair` prints one as a QR code, but it runs inside the
+container, so the link carries an address like `http://172.17.0.2:3773` that my phone can't reach. It
+has no option to change that. `t3 auth pairing create` does take a base URL, so I added a small
+script, `dcpair`, that runs on the host:
+
+```bash
+url=$(devcontainer exec --workspace-folder "$folder" zsh -c \
+  't3 auth pairing create --base-dir /history/t3 --base-url "$1" --json' \
+  zsh "http://$(hostname -I | cut -d' ' -f1):${port##*/}" | jq -r .pairUrl)
+
+printf %s "$url" | qrencode -t ansiutf8
+echo "$url"
+```
+
+The URL reaches `qrencode` on stdin, which keeps the token out of the process list. Off my LAN, the
+address only works when the tailnet routes to that subnet.
+
+<figure><Servers /></figure>
+
+## What didn't work first time
+
+**`t3 serve`.** It looks like the right command for a headless server, and it forces project
+bootstrap off whatever you pass. My flag to add the workspace as a project did nothing, so after
+pairing the server showed no projects, and threads ran in a scratch folder under `/history/t3`.
+`t3 start --no-browser` adds the project and doesn't add a duplicate on the next start.
+
+**Worktrees.** My agents make a git worktree for any work that changes files. One made with
+`git worktree` doesn't attach to the T3 Code thread, so the diff panel stays empty. Their
+instructions now say to use T3 Code's worktree tools instead.
+
+**The browser.** In my containers it stayed blank at first. It's a prebuilt Chrome, so it can't
+load libraries from the Nix store, and Chrome won't start its sandbox as root. The fix has a cost, so
+`dcup` asks once per workspace. If I say yes, it
+installs the libraries with the distro's package manager, and in a root container it turns the
+sandbox off.
+
+## One tool for Forgejo
+
+My agents reached Forgejo through an MCP server. T3 Code doesn't use it. Its server runs a forge CLI
+itself, `fj` or `tea`, for the PR status and review notifications in a thread. So I replaced the MCP
+server with `tea`, and agents and T3 Code now use the same tool.
+
+The switch has costs. `tea` targets Gitea, and `tea pr reply` gets a 405 from Forgejo, so agents answer review
+comments with a normal PR comment. An MCP server gave agents typed parameters, where `tea` gives them
+flags and `--help`. The Forgejo token also now sits in `tea`'s config as well as its own file.
+
+## It steers the agent
+
+I expected T3 Code to be a window onto Claude Code. It also adds its own instructions and tools to
+the session, and some of them disagree with mine. It tells agents to run subagents in the foreground,
+not to check their own edits in its browser, and to wait for reviews with its PR watch rather than a
+poll.
+
+Nothing decides which instruction wins, so an agent uses its judgement. My prompt now says my rules
+win. I don't know yet whether agents will follow that.
+
+## The downsides
+
+The forward listens on every interface of the host, and the pairing code is the only gate. A token
+gets every permission by default, including a terminal in the container, unless you limit it with
+`--scope`. I don't limit mine. T3 Code's docs say to treat pairing links like passwords, and Oren
+has to stay off public networks.
+
+A paired device can also start an agent that runs without prompts. That's the same trade I made
+before: inside the container there's a token that can push branches and can't merge them. A shared
+agent login is in there too, on a volume every container mounts.
+
+With the browser on in a root container, a page that exploits a Chrome bug gets root in that
+container, with those tokens. So I only point it at the workspace's own dev servers.
+
+The nixpkgs package includes Electron, so it's about 3.7 GiB. It lands once, on a Nix store volume
+the containers share.
+
+The servers and forwards are background processes that `dcup` starts, not services. Nothing brings
+them back after Oren restarts until I run `dcup` again. Direct pairings have a 30-day default
+lifetime, and I don't know yet whether they renew, so I may be pairing again every month.
+
+## Summary
+
+T3 Code replaced herdr within a few days. It's a much better way to work with agents, and I can start
+or resume their work from my phone with little effort.
+
+Each dev container runs its own server, so agents stay inside the containers. I pair my devices with
+each one through a link `dcpair` prints on Oren, with no account and no relay. The browser runs in the
+container too, which let me remove every exposed port.
+
+The costs are a pairing per container, a pairing link that grants full access, a 3.7 GiB package and
+a project that calls itself very early. Pairing every container separately is what I'd change first,
+maybe in a fork.

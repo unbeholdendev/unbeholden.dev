@@ -1,0 +1,65 @@
+<svg viewBox="0 0 1200 700" role="img" aria-labelledby="t3-title t3-desc" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',ui-monospace,monospace" font-size="20" fill="none" stroke-width="1.5">
+<title id="t3-title">One T3 Code server per dev container, reached directly from my devices</title>
+<desc id="t3-desc">My phone and laptops run the T3 Code app and connect straight to Oren, an LXC at home. On Oren, each workspace has its own host port, 37731, 37732 and so on, and socat forwards it to port 3773 in that workspace's dev container. Each dev container, such as unbeholden.dev or dotfiles, runs its own T3 Code server, which runs Claude Code and Codex inside the container. dcpair, on Oren, asks a container for a pairing link with Oren's address in it and prints it as a QR code for the phone to scan. Threads and pairings live in /history/t3, a bind mount from Oren. T3 Connect, which would add an account and a relay, is not used.</desc>
+<g style="stroke:var(--faint,#675d51)" stroke-dasharray="6 6">
+<rect x="40" y="20" width="190" height="90" rx="4"/>
+<rect x="340" y="150" width="840" height="530" rx="4"/>
+<rect x="640" y="200" width="520" height="150" rx="4"/>
+<rect x="640" y="370" width="520" height="150" rx="4"/>
+</g>
+<text x="58" y="58" font-family="Rubik,sans-serif" font-size="24" font-weight="600" style="fill:var(--faint,#675d51)">T3 Connect</text>
+<text x="58" y="88" font-size="18" style="fill:var(--faint,#675d51)">account · relay</text>
+<g font-size="18" letter-spacing="0.12em" style="fill:var(--faint,#675d51)">
+<text x="356" y="178">OREN · LXC AT HOME</text>
+<text x="656" y="228">DEV CONTAINER · UNBEHOLDEN.DEV</text>
+<text x="656" y="398">DEV CONTAINER · DOTFILES</text>
+</g>
+<g style="stroke:var(--fg,#1c1915)">
+<rect x="40" y="200" width="190" height="300" rx="4"/>
+<rect x="380" y="242" width="200" height="90" rx="4"/>
+<rect x="380" y="412" width="200" height="90" rx="4"/>
+<rect x="670" y="245" width="460" height="85" rx="4"/>
+<rect x="670" y="415" width="460" height="85" rx="4"/>
+<rect x="380" y="560" width="200" height="90" rx="4"/>
+<rect x="700" y="560" width="430" height="90" rx="4"/>
+</g>
+<g font-family="Rubik,sans-serif" font-weight="600" style="fill:var(--fg,#1c1915)">
+<text x="58" y="244" font-size="28">My devices</text>
+<text x="690" y="280" font-size="24">T3 Code server</text>
+<text x="690" y="450" font-size="24">T3 Code server</text>
+</g>
+<g font-size="22" style="fill:var(--fg,#1c1915)">
+<text x="400" y="278">socat :37731</text>
+<text x="400" y="448">socat :37732</text>
+<text x="400" y="596">dcpair</text>
+<text x="720" y="596">/history/t3</text>
+</g>
+<g font-size="18" style="fill:var(--faint,#675d51)">
+<text x="58" y="274">phone, laptops</text>
+<text x="1110" y="280" text-anchor="end">:3773</text>
+<text x="1110" y="450" text-anchor="end">:3773</text>
+</g>
+<g font-family="'Nunito Sans',sans-serif" font-size="19" style="fill:var(--dim,#4a4238)">
+<text x="58" y="314">T3 Code app</text>
+<text x="400" y="310">forwards to :3773</text>
+<text x="400" y="480">forwards to :3773</text>
+<text x="690" y="312">runs Claude Code, Codex</text>
+<text x="690" y="482">runs Claude Code, Codex</text>
+<text x="400" y="628">prints a pairing QR</text>
+<text x="720" y="628">threads, pairings · bind mount</text>
+</g>
+<path d="M135 200V114" stroke-dasharray="6 6" style="stroke:var(--mid,#b0551c)"/>
+<path d="M125 147l20 20M145 147l-20 20" stroke-width="3" style="stroke:var(--mid,#b0551c)"/>
+<text x="157" y="163" font-size="18" style="fill:var(--mid,#b0551c)">not used</text>
+<path d="M230 287H376M580 287H666" stroke-width="3" style="stroke:var(--amber,#8a5a00)"/>
+<path d="M366 279L378 287L366 295M656 279L668 287L656 295" stroke-width="3" style="stroke:var(--amber,#8a5a00)"/>
+<text x="244" y="275" font-size="18" style="fill:var(--amber,#8a5a00)">connect</text>
+<path d="M230 457H376M580 457H666" style="stroke:var(--fg,#1c1915)"/>
+<path d="M370 451L380 457L370 463M660 451L670 457L660 463" style="stroke:var(--fg,#1c1915)"/>
+<path d="M580 590H660V524" style="stroke:var(--fg,#1c1915)"/>
+<path d="M654 534L660 524L666 534" style="stroke:var(--fg,#1c1915)"/>
+<text x="672" y="548" font-size="18" style="fill:var(--fg,#1c1915)">asks for a link</text>
+<path d="M380 620H135V504" style="stroke:var(--fg,#1c1915)"/>
+<path d="M129 514L135 504L141 514" style="stroke:var(--fg,#1c1915)"/>
+<text x="150" y="608" font-size="18" style="fill:var(--fg,#1c1915)">pairing QR</text>
+</svg>

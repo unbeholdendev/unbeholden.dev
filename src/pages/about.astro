@@ -10,11 +10,11 @@ const away = { target: '_blank', rel: 'noopener noreferrer', class: 'link' };
 	description="Who runs Unbeholden, what it runs on, and why the data stays here."
 >
 	<h1 class="font-display text-statement mt-masthead max-w-statement mb-10 font-extrabold text-pretty">
-		I'm Jakub. I keep my own data, and run open source wherever there's a good version.
+		I'm Jakub. I self-host what I can, and run open source wherever there's a good version.
 	</h1>
 	<div class="callout text-article max-w-[760px] p-5 sm:p-10">
 		<p class="font-display text-standfirst font-medium text-pretty">
-			I've never found a good reason to hand a company my photos and my mail when I don't have to.
+			I've never found a good reason to hand photos and mail to a company when I don't have to.
 			Convenience is the only argument for it, and running it myself has cost less than I expected.
 		</p>
 		<p class="text-dim mt-6">
@@ -24,21 +24,21 @@ const away = { target: '_blank', rel: 'noopener noreferrer', class: 'link' };
 		</p>
 		<p class="text-dim mt-6">
 			When something I need doesn't exist, or only exists as a service someone could take away, I
-			write it myself and publish it here. It's usually small and solves one specific problem.
+			write it and publish it here. It's usually small and solves one specific problem.
 		</p>
 		<p class="text-dim mt-6">
 			If any of it's useful to you, good. Copy what you like, and maybe you'll find something you
 			didn't know you could run yourself.
 		</p>
 		<p class="text-dim mt-6">
-			For my professional experience and a downloadable CV, <a href="/cv" class="link">see my CV</a>.
+			Professional experience and a downloadable PDF are on <a href="/cv" class="link">the CV page</a>.
 		</p>
 		<h2 class="font-display text-h2 mt-12 font-bold">The setup</h2>
 		<ul class="text-dim mt-4 list-disc space-y-2 pl-6">
 			<li>A rented VPS: this site and <a href="https://stalw.art" {...away}>Stalwart</a> for mail, behind <a href="https://dokploy.com" {...away}>Dokploy</a> and <a href="https://traefik.io" {...away}>Traefik</a>. Outbound mail goes through <a href="https://www.smtp2go.com" {...away}>SMTP2Go</a>.</li>
 			<li>At home: a <a href="https://www.proxmox.com" {...away}>Proxmox</a> host with LXC containers, among them <a href="https://forgejo.org" {...away}>Forgejo</a> and the agents' dev containers, plus <a href="https://bitcoincore.org" {...away}>Bitcoin Core</a>, <a href="https://github.com/lightningnetwork/lnd" {...away}>LND</a> and the <a href="https://github.com/unbeholdendev/lnurl-server" {...away}>Lightning Address server</a>.</li>
 			<li>Between them, a tailnet managed by <a href="https://headscale.net" {...away}>Headscale</a>.</li>
-			<li>Also mine: <a href="https://listmonk.app" {...away}>Listmonk</a> for the subscription list, <a href="https://ntfy.sh" {...away}>ntfy</a> for notifications, <a href="https://umami.is" {...away}>Umami</a> for analytics.</li>
+			<li>Also self-hosted: <a href="https://listmonk.app" {...away}>Listmonk</a> for the subscription list, <a href="https://ntfy.sh" {...away}>ntfy</a> for notifications, <a href="https://umami.is" {...away}>Umami</a> for analytics.</li>
 		</ul>
 		<p class="text-dim mt-10">Prose is CC BY 4.0. Code is CC0/MIT.</p>
 	</div>

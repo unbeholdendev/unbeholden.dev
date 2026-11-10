@@ -5,8 +5,8 @@
 ## Profile
 
 - [About](https://unbeholden.dev/about): Who I am and how I run this site.
-- [CV](https://unbeholden.dev/cv): My professional experience in HTML.
-- [CV PDF](https://unbeholden.dev/cv.pdf): My current two-page CV.
+- [CV](https://unbeholden.dev/cv): Professional experience in HTML.
+- [CV PDF](https://unbeholden.dev/cv.pdf): The current two-page CV.
 - [Contact](https://unbeholden.dev/contact): Work enquiries and other ways to reach me.
 
 ## Writing and software

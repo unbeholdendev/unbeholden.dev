@@ -8,14 +8,14 @@ const things: ({ name: string; description: string; stack: string[] } & ({ link:
 		name: 'dotfiles',
 		stack: ['Nix', 'NixOS', 'Home Manager', 'niri'],
 		description:
-			'One Nix flake for my machines. NixOS and niri on two ThinkPads, plus Home Manager config for a headless host and dev containers.',
+			'One Nix flake for NixOS and niri on two ThinkPads, plus Home Manager config for a headless host and dev containers.',
 		code: 'https://github.com/unbeholdendev/dotfiles',
 	},
 	{
 		name: 'infra',
 		stack: ['Kubernetes', 'Flux', 'Talos', 'OpenTofu', 'Ansible'],
 		description:
-			'My homelab in Git. Ansible sets up the hosts, OpenTofu creates the VMs and Flux reconciles the Kubernetes cluster.',
+			'A homelab in Git. Ansible sets up the hosts, OpenTofu creates the VMs and Flux reconciles the Kubernetes cluster.',
 		code: 'https://github.com/unbeholdendev/infra',
 	},
 	{
@@ -71,7 +71,7 @@ const things: ({ name: string; description: string; stack: string[] } & ({ link:
 		name: 'lnrecc',
 		stack: ['Rust', 'Tokio', 'LND'],
 		description:
-			'Recurring Lightning payments from your own LND node, on a cron schedule. Pocket money, a subscription or a regular donation.',
+			'Recurring Lightning payments from your LND node, on a cron schedule. Pocket money, a subscription or a regular donation.',
 		code: 'https://github.com/unbeholdendev/lnrecc',
 	},
 	{

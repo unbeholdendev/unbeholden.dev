@@ -8,12 +8,11 @@ const entries = await listEntries();
 
 <Layout>
 	<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
-		A shelf of hardware, a rented VPS, and no third parties in&nbsp;between.
+		I run the services I depend on, on a shelf of hardware and a rented&nbsp;VPS.
 	</h1>
 	<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
 		I write about self-hosting, homelab and networking, Linux, agent tooling, and the small bits
-		of config that make daily work less annoying. When the tool I need doesn't exist, I build it
-		and put it here.
+		of config that make daily work less annoying.
 	</p>
 	<div class="mt-section">
 		<EntryList entries={entries.slice(0, 3)} total={entries.length} />

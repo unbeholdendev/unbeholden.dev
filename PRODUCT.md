@@ -36,7 +36,7 @@ Read on desktop and phone, often from a link in a feed, chat or search. Entries 
 
 - Name: Unbeholden. Author: Jakub, writing in first person.
 - Voice: plain, direct, dry; British English; no em-dashes; no marketing tone.
-- Front page statement: "A shelf of hardware, a rented VPS, and no third parties in between."
+- Front page statement: "I run the services I depend on, on a shelf of hardware and a rented VPS."
 
 ## Evidence on Hand
 

@@ -1,7 +1,8 @@
 ---
 title: A code reviewer for coding agents
 date: 2026-10-13
-summary: Agents open pull requests on a self-hosted Forgejo, and a bot running Claude Code reviews each one. The agents work through the obvious problems with it first, and I take the last look before anything merges and goes to production.
+updated: 2026-11-11
+summary: Agents open pull requests on a self-hosted Forgejo, and a bot running Pi reviews each one. The agents work through the obvious problems with it first, and I take the last look before anything merges and goes to production.
 topic: Agents / Self-hosting
 poster:
   src: ./poster.jpg
@@ -18,7 +19,7 @@ version is that I review once, on the diff.
 
 So I built
 [reviewer](https://github.com/unbeholdendev/reviewer), a bot that reviews each pull request
-before I get to it. It runs Claude Code against the change and posts a normal Forgejo review:
+before I get to it. It runs [Pi](https://github.com/earendil-works/pi) against the change and posts a normal Forgejo review:
 a recommendation, a short summary, and comments on the lines it has something to say about.
 
 ## What a review looks like
@@ -126,7 +127,7 @@ inline comment is marked `blocking` or `nit`.
   diff.
 - Reacts 👀 when it starts, and posts a comment if a review fails.
 
-It reads `REVIEW.md`, `AGENTS.md` and `CLAUDE.md` from the base branch as the repository's rules.
+It reads `REVIEW.md` and `AGENTS.md` from the base branch as the repository's rules.
 Reading them from the base matters: a pull request can't rewrite the rules it's reviewed by.
 
 ## What I ask it for
@@ -150,28 +151,28 @@ A pull request is untrusted input. It's code someone else wrote, and the diff, t
 the description can all contain text that reads like instructions. The bot is built on that
 assumption:
 
-- Claude runs in a checkout of the pull request with only Read, Grep and Glob. It can't run
-  commands or write files.
-- It runs with `--safe-mode`, so it doesn't load settings, hooks or skills from the checkout. A
-  pull request that adds a hook can't get it run.
-- Its environment holds the Claude token and nothing else. The Forgejo token and the webhook
-  secret stay in the server process.
-- What it returns is JSON against a schema. The server checks it, and drops inline comments on
-  lines that aren't in the diff.
-- Each run has a ten-minute timeout and a limit of 30 turns.
+- Pi runs in a checkout of the pull request with only read, grep, find and ls. It can't run
+  commands or write files, and the tools refuse paths and symlinks outside the checkout.
+- It doesn't load settings, extensions or skills from the checkout. A pull request that adds
+  one can't get it run.
+- Pi runs inside the server process, not in a sandbox. So the bot has a container to itself,
+  with only the credentials and repositories it needs.
+- What it returns is JSON against a schema. The server checks it, and a comment on a line that
+  isn't in the diff goes in the review body instead of on the line.
+- Each run has a ten-minute timeout.
 
 So the worst a prompt injection can do is get a bad review posted, and I read the diff anyway.
 
 ## How it's built
 
-About 600 lines of TypeScript on [Bun](https://bun.sh), plus 700 of tests. A Forgejo webhook
+About 700 lines of TypeScript on [Bun](https://bun.sh), plus 1,100 of tests. A Forgejo webhook
 hits the server, the signature is checked, and a job starts for that pull request. There's one
 job per pull request and a global limit on how many run at once, two by default.
 
-To review, it checks out the pull request head in a git worktree, builds the diff, and passes Claude
-Code the prompt, the repository's rules, the conversation so far and its own open comments.
-`claude -p` does the work. It uses a Claude subscription through `claude setup-token`, so
-there's no separate API bill.
+To review, it checks out the pull request head in a git worktree, builds the diff, and passes Pi
+the prompt, the repository's rules, the conversation so far and its own open comments.
+Pi's SDK does the work inside the server, with no CLI installed. It signs in with an OpenAI
+subscription, so there's no separate API bill.
 
 Each review ends with a hidden marker holding the commit it reviewed, and the next review reads
 that marker to know where to start the diff. Its open comments and the conversation come
@@ -199,5 +200,5 @@ already: earlier reviews, issues, and the decisions written down in the reposito
 
 The code is public:
 [unbeholdendev/reviewer](https://github.com/unbeholdendev/reviewer). It needs a Forgejo user
-for the bot, a Claude token, and a webhook on each repository or on the org. The README has the
+for the bot, an OpenAI subscription or an API key, and a webhook on each repository or on the org. The README has the
 rest.

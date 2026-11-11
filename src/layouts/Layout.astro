@@ -15,14 +15,14 @@ interface Props {
 // Every page shares the card unless it brings its own, so nothing is ever posted bare.
 const card = {
 	src: '/og.png',
-	alt: 'Unbeholden: what I run, what I build',
+	alt: 'Unbeholden: software, and the infrastructure behind it',
 	width: 1200,
 	height: 630,
 };
 
 const {
-	title = 'Unbeholden · What I run, what I build',
-	description = 'What I run, what I build. Self-hosting, homelab and networking, Linux and agent tooling, on hardware I own.',
+	title = 'Unbeholden · Software, and the infrastructure behind it',
+	description = 'Software, and the infrastructure behind it. Self-hosting, homelab and networking, Linux and agent tooling, on hardware I own.',
 	image = card,
 	article,
 	profile = false,
@@ -136,7 +136,7 @@ const current = (section: string) => (here.startsWith(section) ? 'page' : undefi
 					<Logo />
 					<span>
 						<span class="font-display text-wordmark block font-extrabold">Unbeholden</span>
-						<span class="meta mt-2 block">What I run, what I build</span>
+						<span class="meta mt-2 block text-balance">Software, and the infrastructure behind it</span>
 					</span>
 				</a>
 				<nav class="grid w-full grid-cols-4 gap-2 text-center sm:flex sm:w-auto max-sm:[&>a]:px-1 max-sm:[&>a]:text-[14px]">

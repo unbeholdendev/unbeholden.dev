@@ -28,7 +28,7 @@ export const GET: APIRoute = async ({ site }) => {
 	const feed = new Feed({
 		title: 'Unbeholden',
 		description:
-			'What I run, what I build. Every entry in full, so you can read it without loading the site.',
+			'Software, and the infrastructure behind it. Every entry in full, so you can read it without loading the site.',
 		id: url('/'),
 		link: url('/'),
 		feedLinks: { atom: url('feed.xml') },

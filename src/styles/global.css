@@ -336,13 +336,15 @@
 }
 
 @utility link {
-  color: var(--fg);
+  color: inherit;
   text-decoration-line: underline;
-  text-decoration-color: var(--mid);
-  text-decoration-thickness: 2px;
+  text-decoration-color: color-mix(in srgb, currentColor 55%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 
-  &:hover {
-    background: color-mix(in srgb, var(--mid) 14%, transparent);
+  &:hover,
+  a:hover & {
+    text-decoration-color: currentColor;
   }
 }
 

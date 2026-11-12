@@ -14,7 +14,7 @@ const { entries, total } = Astro.props;
 <ul class="callout px-5 lg:pr-8 lg:pl-0">
 	{
 		entries.map((entry, i) => (
-			<li class="group row">
+			<li class="row">
 				<p class="gnum" aria-hidden="true">{total - i}</p>
 				<div>
 					<h2 class="font-display text-h2 font-bold text-balance">
@@ -33,7 +33,7 @@ const { entries, total } = Astro.props;
 					alt=""
 					widths={[320, 640]}
 					sizes="(min-width: 1024px) 288px, 100vw"
-					class="border-key group-hover:border-mid -order-1 aspect-[2/1] w-full rounded border-2 object-cover lg:order-none lg:aspect-[3/2]"
+					class="border-key -order-1 aspect-[2/1] w-full rounded border-2 object-cover lg:order-none lg:aspect-[3/2]"
 				/>
 			</li>
 		))

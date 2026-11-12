@@ -7,7 +7,7 @@ import { test } from 'node:test';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = new URL('../dist/client/', import.meta.url);
 
-test('the production build publishes every entry', () => {
+test('the production build publishes every entry', { timeout: 60_000 }, () => {
 	execFileSync('bun', ['run', 'build'], {
 		cwd: root,
 		stdio: 'pipe',

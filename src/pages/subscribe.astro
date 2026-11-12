@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
 import { subscribe } from '../lib/forms';
 import { push } from '../lib/ntfy';
 
@@ -12,25 +13,25 @@ const { ok, email } = await subscribe(await Astro.request.formData(), push);
 if (!ok) Astro.response.status = 400;
 ---
 
-<Layout title="Subscribe · Unbeholden" description="An email when I publish.">
+<Layout title="Subscribe" description="An email when I publish.">
 	{
 		ok ? (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
+				<h1 class="page-title">
 					Check your inbox.
 				</h1>
-				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
+				<p class="lede mt-6">
 					I've sent a confirmation link to {email}. Nothing gets mailed to you until you click it.
 				</p>
 			</Fragment>
 		) : (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
+				<h1 class="page-title">
 					That didn't go through.
 				</h1>
-				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
+				<p class="lede mt-6">
 					Nothing was sent or saved. Try again, or write to
-					<a href="mailto:hello@unbeholden.dev" class="link">hello@unbeholden.dev</a> and I'll
+					<a href={`mailto:${site.email}`} class="link">{site.email}</a> and I'll
 					add you by hand.
 				</p>
 			</Fragment>

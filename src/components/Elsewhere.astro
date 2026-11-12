@@ -1,0 +1,32 @@
+---
+import Link from './Link.astro';
+import GitHub from '../assets/github.svg';
+import Nostr from '../assets/nostr.svg';
+import X from '../assets/x.svg';
+import Lightning from '../assets/lightning.svg';
+import Feed from '../assets/feed.svg';
+import Email from '../assets/email.svg';
+import { site } from '../data/site';
+
+const places = [
+	{ name: 'GitHub', href: 'https://github.com/unbeholdendev', Icon: GitHub },
+	{ name: 'Nostr', href: 'https://njump.me/npub1awq28saxmfuk88je4uvecljfpeydnj7tdueu4lay8xqv6xkn0c5q69qwgl', Icon: Nostr },
+	{ name: 'X', href: 'https://x.com/unbeholdendev', Icon: X },
+	{ name: 'Lightning', href: 'lightning:ln@unbeholden.dev', address: 'ln@unbeholden.dev', Icon: Lightning },
+	{ name: 'Feed', href: '/feed.xml', Icon: Feed },
+	{ name: 'Email', href: `mailto:${site.email}`, address: site.email, Icon: Email },
+];
+---
+
+<nav aria-label="Elsewhere" class="flex-[1_1_160px]">
+	<h2 class="heading-3 mb-1">Elsewhere</h2>
+	<ul class="text-dim -ml-3 flex flex-wrap [&_a]:grid [&_a]:size-11 [&_a]:place-items-center [&_a:hover]:text-fg [&_svg]:size-5">
+		{places.map(({ name, href, address, Icon }) => (
+			<li>
+				<Link href={href} aria-label={address ? `${name}: ${address}` : name} title={address ?? name}>
+					<Icon />
+				</Link>
+			</li>
+		))}
+	</ul>
+</nav>

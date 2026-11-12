@@ -24,7 +24,7 @@ const watch = video && `https://www.youtube.com/watch?v=${video.id}`;
 ---
 
 <Layout
-	title={`${title} · Unbeholden`}
+	{title}
 	description={summary}
 	image={{ src: social.src, alt: poster.alt, width: 1200, height: 630 }}
 	article={{ published: date, updated }}
@@ -33,10 +33,10 @@ const watch = video && `https://www.youtube.com/watch?v=${video.id}`;
 		class="callout text-article mt-12 px-5 pt-6 pb-12 [--gap:40px] [--gutter:176px] lg:grid lg:grid-cols-[var(--gutter)_min(600px,100%)] lg:justify-center lg:gap-x-(--gap) lg:px-12 lg:pt-14 lg:pb-20"
 		style={`--n: "${n}."`}
 	>
-		<p class="gnum mb-4 lg:mb-0" aria-hidden="true">{n}</p>
+		<p class="entry-number mb-4 lg:mb-0" aria-hidden="true">{n}</p>
 		<header class="min-w-0">
 			<h1 class="font-display text-h1 font-extrabold text-balance">{title}</h1>
-			<p class="font-display mt-6 text-standfirst font-medium text-pretty">{summary}</p>
+			<p class="standfirst mt-6">{summary}</p>
 			<p class="meta mt-5 text-pretty">
 				{topic} · {day(date)} · {readTime(minutes)}
 				{updated && ` · Updated ${day(updated)}`}
@@ -69,7 +69,7 @@ const watch = video && `https://www.youtube.com/watch?v=${video.id}`;
 			older ? (
 				<a href={`/blog/${older.id}`} class="border-key grid gap-2 border-t-2 pt-4">
 					<span class="meta">← Older</span>
-					<span class="font-display text-h3 font-bold link">{older.data.title}</span>
+					<span class="heading-3 link">{older.data.title}</span>
 				</a>
 			) : (
 				<span />
@@ -79,7 +79,7 @@ const watch = video && `https://www.youtube.com/watch?v=${video.id}`;
 			newer && (
 				<a href={`/blog/${newer.id}`} class="border-key grid gap-2 border-t-2 pt-4 text-right">
 					<span class="meta">Newer →</span>
-					<span class="font-display text-h3 font-bold link">{newer.data.title}</span>
+					<span class="heading-3 link">{newer.data.title}</span>
 				</a>
 			)
 		}

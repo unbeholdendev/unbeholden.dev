@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { MAX_MESSAGE as MAX, sendContact } from '../lib/forms';
+import Link from '../components/Link.astro';
+import { site } from '../data/site';
+import { MAX_MESSAGE, sendContact } from '../lib/forms';
 import { rateLimit } from '../lib/rate-limit';
 import { push } from '../lib/ntfy';
 
@@ -28,19 +30,16 @@ const copy = {
 		lede: 'The form takes ten messages an hour, and this hour is full. Try again later, or send an email instead.',
 	},
 };
-
-const field =
-	'border-key bg-panel placeholder:text-faint w-full rounded-lg border-2 px-3 py-2';
 ---
 
-<Layout title="Contact · Unbeholden" description="Write to me.">
+<Layout title="Contact" description="Write to me.">
 	{
 		state === 'sent' ? (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
+				<h1 class="page-title">
 					Got it.
 				</h1>
-				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
+				<p class="lede mt-6">
 					It's on my phone. If you left a way to reach you, I'll reply there.
 				</p>
 				<p class="mt-8">
@@ -49,19 +48,19 @@ const field =
 			</Fragment>
 		) : (
 			<Fragment>
-				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
+				<h1 class="page-title">
 					{copy[state].heading}
 				</h1>
-				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
+				<p class="lede mt-6">
 					{copy[state].lede}
 				</p>
 				<p class="text-dim text-lede max-w-lede mt-4">
-					Rather talk? <a href="https://cal.unbeholden.dev/u/jakub/lets-chat" target="_blank" rel="noopener noreferrer" class="link">Book a half-hour call</a>.
+					Rather talk? <Link href="https://cal.unbeholden.dev/u/jakub/lets-chat" class="link">Book a half-hour call</Link>.
 				</p>
 				<form method="post" action="/contact" class="callout mt-section flex max-w-[720px] flex-col gap-8 p-5 sm:p-8">
 					<label class="flex flex-col gap-2">
 						<span class="meta">Name (optional)</span>
-						<input type="text" name="name" autocomplete="name" maxlength="100" value={name} class={field} />
+						<input type="text" name="name" autocomplete="name" maxlength="100" value={name} class="field w-full" />
 					</label>
 					<label class="flex flex-col gap-2">
 						<span class="meta">Email (optional)</span>
@@ -72,7 +71,7 @@ const field =
 							autocomplete="email"
 							placeholder="you@example.org"
 							value={email}
-							class={field}
+							class="field w-full"
 						/>
 						<span class="meta">
 							Fill this in if you'd like a reply, or put another way to reach you in the message.
@@ -80,7 +79,7 @@ const field =
 					</label>
 					<label class="flex flex-col gap-2">
 						<span class="meta">Message</span>
-						<textarea name="message" required maxlength={MAX} rows="8" class={`${field} resize-y`}
+						<textarea name="message" required maxlength={MAX_MESSAGE} rows="8" class="field w-full resize-y"
 							>{message}</textarea
 						>
 					</label>
@@ -88,7 +87,7 @@ const field =
 					<div class="flex flex-col items-end gap-2">
 						<button type="submit" class="chip">Send</button>
 						<span class="meta">
-							Or write to <a href="mailto:hello@unbeholden.dev" class="link">hello@unbeholden.dev</a>
+							Or write to <a href={`mailto:${site.email}`} class="link">{site.email}</a>
 						</span>
 					</div>
 				</form>

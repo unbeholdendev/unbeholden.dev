@@ -3,115 +3,25 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import GitHub from '../assets/github.svg';
 import Feed from '../components/Feed.astro';
+import Link from '../components/Link.astro';
+import { projects, screenshot } from '../data/projects';
 import { byDay, getActivity, shortDate } from '../lib/activity';
 
 export const prerender = false;
 
-const things: ({ name: string; description: string; stack: string[] } & ({ link: string; code?: string } | { link?: undefined; code: string }))[] = [
-	{
-		name: 'dotfiles',
-		stack: ['Nix', 'NixOS', 'Home Manager', 'niri'],
-		description:
-			'One Nix flake for NixOS and niri on two ThinkPads, plus Home Manager config for a headless host and dev containers.',
-		code: 'https://github.com/unbeholdendev/dotfiles',
-	},
-	{
-		name: 'infra',
-		stack: ['Kubernetes', 'Flux', 'Talos', 'OpenTofu', 'Ansible'],
-		description:
-			'A homelab in Git. Ansible sets up the hosts, OpenTofu creates the VMs and Flux reconciles the Kubernetes cluster.',
-		code: 'https://github.com/unbeholdendev/infra',
-	},
-	{
-		name: 'Unbeholden Wallet',
-		stack: ['TypeScript', 'React', 'Vite', 'Tailwind'],
-		description:
-			'A watch-only Bitcoin wallet in a browser tab. It connects to a node of your choosing and never holds a private key.',
-		link: 'https://wallet.unbeholden.dev',
-		code: 'https://github.com/unbeholdendev/unbeholden-wallet',
-	},
-	{
-		name: 'Unbeholden Check',
-		stack: ['TypeScript', 'Astro', 'Bun'],
-		description:
-			'Type a domain to see which services it rents from third parties, with the evidence, and the open source software that could replace each one.',
-		link: 'https://check.unbeholden.dev',
-		code: 'https://github.com/unbeholdendev/sovereignty-scorecard',
-	},
-	{
-		name: 'AI PR reviewer',
-		stack: ['TypeScript', 'Bun', 'Hono'],
-		description:
-			'A code review bot for Forgejo. It reviews pull requests with Pi and answers questions in the comments.',
-		code: 'https://github.com/unbeholdendev/reviewer',
-	},
-	{
-		name: 'Unbeholden',
-		stack: ['TypeScript', 'Astro', 'Tailwind', 'Bun'],
-		description: 'This site.',
-		link: 'https://unbeholden.dev',
-		code: 'https://github.com/unbeholdendev/unbeholden.dev',
-	},
-	{
-		name: 'Skorpik',
-		stack: ['TypeScript', 'React', 'Astro', 'Hono', 'Postgres'],
-		description: 'An office prediction league on real matches, with no betting.',
-		link: 'https://skorpik.app',
-	},
-	{
-		name: 'Lightning payments for UCP',
-		stack: ['BOLT12', 'Lightning Address'],
-		description:
-			'A spec for paying over Lightning in the Universal Commerce Protocol. It defines three handlers: BOLT12, Lightning Address and an invoice API. The payment preimage proves each payment.',
-		code: 'https://github.com/Musqet/ucp-lightning-spec',
-	},
-	{
-		name: 'lnurl-server',
-		stack: ['Go', 'LND', 'gRPC'],
-		description:
-			'A small Lightning Address server in Go. Payments to you@yourdomain are invoiced by your own LND node.',
-		code: 'https://github.com/unbeholdendev/lnurl-server',
-	},
-	{
-		name: 'lnrecc',
-		stack: ['Rust', 'Tokio', 'LND'],
-		description:
-			'Recurring Lightning payments from your LND node, on a cron schedule. Pocket money, a subscription or a regular donation.',
-		code: 'https://github.com/unbeholdendev/lnrecc',
-	},
-	{
-		name: 'lofextra',
-		stack: ['TypeScript', 'React', 'Astro', 'SQLite'],
-		description:
-			'A local-first expense tracker. Data stays on your device in SQLite and syncs encrypted between devices, with a 12-word phrase in place of an account.',
-		link: 'https://lofextra.unbeholden.dev',
-		code: 'https://github.com/unbeholdendev/lofextra',
-	},
-];
-
-// Committed, not fetched at build, per ADR-0001. Add one with `bun scripts/og-image.ts <link>`.
-const images = import.meta.glob<{ default: ImageMetadata }>('../assets/work/*', { eager: true });
-const image = (link: string) => {
-	const { hostname, pathname } = new URL(link);
-	const name = hostname + pathname.replace(/\/$/, '').replaceAll('/', '.');
-	return Object.entries(images).find(([path]) => path.includes(`/${name}.`))?.[1].default;
-};
-
 const activity = await getActivity();
-const ordered = things
-	.map((thing) => ({ ...thing, updated: thing.code ? activity?.latest(thing.code) : undefined }))
+const ordered = projects
+	.map((project) => ({ ...project, updated: project.code ? activity?.latest(project.code) : undefined }))
 	.sort((a, b) => (b.updated?.getTime() ?? 0) - (a.updated?.getTime() ?? 0));
-const away = (href: string) =>
-	new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 const pulls = byDay(activity?.pulls ?? []);
 const days = activity?.days ?? [];
 ---
 
 <Layout
-	title="Work · Unbeholden"
+	title="Work"
 	description="What I build, with links and source where public, plus my open source contributions and recent commits on GitHub."
 >
-	<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
+	<h1 class="page-title">
 		What I build.
 	</h1>
 	<p class="meta mt-6 text-pretty">
@@ -120,49 +30,49 @@ const days = activity?.days ?? [];
 		{days.length > 0 && <>{' · '}<a href="#recently" class="link">Recent commits</a></>}
 	</p>
 	{pulls.length > 0 && <Feed id="contributions" heading="Open source contributions" blurb="Pull requests to other people's projects on GitHub." days={pulls} />}
-	<h2 id="projects" class="font-display text-h2 mt-section scroll-mt-28 font-bold">Projects</h2>
+	<h2 id="projects" class="heading-2 mt-section scroll-mt-28">Projects</h2>
 	<ul class="callout mt-6 px-5 lg:px-8">
 		{
-			ordered.map((thing) => {
-				const href = thing.link === undefined ? thing.code : thing.link;
-				const src = image(href);
+			ordered.map((project) => {
+				const href = project.link === undefined ? project.code : project.link;
+				const src = screenshot(href);
 				return (
-					<li class="row lg:grid-cols-[1fr_288px] lg:bg-left-top">
+					<li class="row">
 						<div>
-							<h3 class="font-display text-h2 font-bold text-balance">
-								<a href={href} {...away(href)} class="link">
-									{thing.name}
-								</a>
+							<h3 class="heading-2 text-balance">
+								<Link href={href} class="link">
+									{project.name}
+								</Link>
 							</h3>
-							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
-							<p class="text-dim text-meta mt-3 font-mono text-pretty">{thing.stack.join(' · ')}</p>
-							{thing.code && (thing.link || thing.updated) && (
+							<p class="summary mt-3">{project.description}</p>
+							<p class="text-dim text-meta mt-3 font-mono text-pretty">{project.stack.join(' · ')}</p>
+							{project.code && (project.link || project.updated) && (
 								<p class="meta mt-1 flex flex-wrap gap-x-3 gap-y-1">
-									{thing.link && <a href={thing.code} {...away(thing.code)} class="link">Source</a>}
-									{thing.updated && (
-										<a href={`${thing.code}/commits`} {...away(thing.code)} class="link">Updated {shortDate(thing.updated)}</a>
+									{project.link && <Link href={project.code} class="link">Source</Link>}
+									{project.updated && (
+										<Link href={`${project.code}/commits`} class="link">Updated {shortDate(project.updated)}</Link>
 									)}
 								</p>
 							)}
+						</div>
+						{src ? (
+							/* Empty alt: the row repeats the name and description beside it. Add one if it says more. */
+							<Image
+								src={src}
+								alt=""
+								widths={[320, 640]}
+								sizes="(min-width: 1024px) 288px, 100vw"
+								class="border-key -order-1 aspect-[40/21] w-full rounded border-2 object-cover lg:order-none"
+							/>
+						) : (
+							<div class="border-key -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
+								<GitHub aria-hidden="true" class="text-dim h-1/2 w-auto" />
 							</div>
-							{src ? (
-								/* Empty alt: the row repeats the name and description beside it. Add one if it says more. */
-								<Image
-									src={src}
-									alt=""
-									widths={[320, 640]}
-									sizes="(min-width: 1024px) 288px, 100vw"
-									class="border-key -order-1 aspect-[40/21] w-full rounded border-2 object-cover lg:order-none"
-								/>
-							) : (
-								<div class="border-key -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
-									<GitHub aria-hidden="true" class="text-dim h-1/2 w-auto" />
-								</div>
-							)}
-						</li>
-					);
-				})
-			}
+						)}
+					</li>
+				);
+			})
+		}
 	</ul>
 	{days.length > 0 && <Feed id="recently" heading="Recently" blurb="Public commits on GitHub from the last 14 days." days={days} />}
 </Layout>

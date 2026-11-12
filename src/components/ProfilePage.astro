@@ -1,0 +1,23 @@
+---
+interface Props {
+	url: URL;
+	name: string;
+}
+
+const { url, name } = Astro.props;
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'ProfilePage',
+	url: url.href,
+	name,
+	mainEntity: {
+		'@type': 'Person',
+		'@id': new URL('/about#person', Astro.site).href,
+		name: 'Jakub Kot',
+		url: new URL('/about', Astro.site).href,
+		sameAs: ['https://github.com/unbeholdendev', 'https://www.linkedin.com/in/jakubkot/'],
+	},
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />

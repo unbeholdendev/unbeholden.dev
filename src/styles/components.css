@@ -1,0 +1,99 @@
+@layer components {
+  .callout {
+    background: var(--panel);
+    border: 2px solid var(--key);
+    border-radius: 8px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-nav);
+    line-height: 1;
+    padding: 10px 16px;
+    background: var(--panel);
+    border: 2px solid var(--key);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .chip:hover {
+    background: color-mix(in srgb, var(--mid) 14%, var(--panel));
+    color: var(--fg);
+  }
+
+  .chip:active {
+    translate: 0 1px;
+  }
+
+  .chip[type='submit'] {
+    background: var(--mid);
+    color: var(--panel);
+  }
+
+  .chip[type='submit']:hover {
+    background: color-mix(in srgb, var(--mid) 85%, var(--key));
+  }
+
+  .chip:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+
+  .chip[aria-current] {
+    background: var(--key);
+    color: var(--panel);
+  }
+
+  .row {
+    position: relative;
+    display: grid;
+    gap: 16px;
+    padding-block: 24px;
+  }
+
+  .row + .row {
+    border-top: 2px solid var(--key);
+  }
+
+  @media (min-width: 1024px) {
+    .row {
+      grid-template-columns: 1fr 288px;
+      gap: 32px;
+      padding-block: 40px;
+    }
+
+    .row:has(> .entry-number) {
+      grid-template-columns: 200px 1fr 288px;
+    }
+
+    .row + .row {
+      border-top: 0;
+      background: linear-gradient(var(--key), var(--key)) 0 0 / 100% 2px no-repeat;
+    }
+
+    .row + .row:has(> .entry-number) {
+      background-position: 200px 0;
+    }
+  }
+
+  .entry-number {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 56px;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: var(--mid);
+  }
+
+  @media (min-width: 1024px) {
+    .entry-number {
+      font-size: 112px;
+      text-align: right;
+    }
+  }
+}

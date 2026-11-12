@@ -1,0 +1,71 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import ProfilePage from './ProfilePage.astro';
+import { site } from '../data/site';
+
+interface Props {
+	title: string;
+	description: string;
+	image: { src: string; alt: string; width: number; height: number };
+	article?: { published: Date; updated?: Date };
+	profile: boolean;
+}
+
+const { title, description, image, article, profile } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const social = new URL(image.src, Astro.site);
+const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="preload" href="/fonts/rubik-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+<meta name="generator" content={Astro.generator} />
+<ClientRouter />
+<title>{title}</title>
+<link rel="canonical" href={canonical} />
+<link rel="describedby" href={new URL('/llms.txt', Astro.site)} type="text/plain" />
+{profile && <ProfilePage url={canonical} name={title} />}
+<link rel="alternate" type="application/atom+xml" title={site.name} href={new URL('/feed.xml', Astro.site)} />
+<meta name="description" content={description} />
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:title" content={title} />
+<meta property="og:url" content={canonical} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={social} />
+<meta property="og:image:alt" content={image.alt} />
+<!-- Without the dimensions the first scrape lays the card out before the image
+     has been fetched, and renders it without one. -->
+<meta property="og:image:width" content={String(image.width)} />
+<meta property="og:image:height" content={String(image.height)} />
+{
+	article && (
+		<>
+			<meta property="article:published_time" content={article.published.toISOString()} />
+			{article.updated && <meta property="article:modified_time" content={article.updated.toISOString()} />}
+		</>
+	)
+}
+<!-- X reads the OpenGraph tags, but without a card type it renders the small
+     one, so the image is stated again here. -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={social} />
+<meta name="twitter:image:alt" content={image.alt} />
+<!-- A view transition swaps the root attributes, dropping data-theme. Set it on the
+     incoming page before the swap, or the transition snapshots the OS theme. -->
+<script is:inline>
+	(() => {
+		const apply = (root) => { try { if (localStorage.theme) root.dataset.theme = localStorage.theme; } catch {} };
+		apply(document.documentElement);
+		document.addEventListener('astro:before-swap', (e) => apply(e.newDocument.documentElement));
+	})();
+</script>
+{websiteId && <script is:inline defer src="/u/script.js" data-website-id={websiteId} />}

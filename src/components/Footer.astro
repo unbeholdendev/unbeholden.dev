@@ -1,0 +1,23 @@
+<footer class="meta border-key mt-10 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t-2 pt-4">
+	<span>Served from a rented VPS. Nothing on this page loads from anyone else.</span>
+	<button id="mode-toggle" type="button" class="link cursor-pointer" hidden>Dark mode</button>
+</footer>
+<!-- Rerun: the swapped-in button carries no listener. -->
+<script is:inline data-astro-rerun>
+	(() => {
+		const root = document.documentElement;
+		const button = document.getElementById('mode-toggle');
+		const dark = () =>
+			root.dataset.theme
+				? root.dataset.theme === 'dark'
+				: matchMedia('(prefers-color-scheme: dark)').matches;
+		const label = () => (button.textContent = dark() ? 'Light mode' : 'Dark mode');
+		button.addEventListener('click', () => {
+			root.dataset.theme = dark() ? 'light' : 'dark';
+			try { localStorage.setItem('theme', root.dataset.theme); } catch {}
+			label();
+		});
+		label();
+		button.hidden = false;
+	})();
+</script>

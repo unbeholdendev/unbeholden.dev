@@ -1,4 +1,5 @@
 ---
+import Link from './Link.astro';
 import { shortDate, type Day } from '../lib/activity';
 
 interface Props {
@@ -9,15 +10,14 @@ interface Props {
 }
 
 const { id, heading, blurb, days } = Astro.props;
-const away = { target: '_blank', rel: 'noopener noreferrer' };
 const hash = (url: string) => url.split('/commit/')[1]?.slice(0, 7);
 const grid = 'grid gap-x-6 gap-y-1 sm:grid-cols-[11rem_1fr]';
 const row = '-mx-3 px-3 py-3';
 ---
 
 <section class="mt-section" aria-labelledby={id}>
-	<h2 id={id} class="font-display text-h2 scroll-mt-28 font-bold">{heading}</h2>
-	<p class="text-dim max-w-summary mt-3 text-pretty">{blurb}</p>
+	<h2 id={id} class="heading-2 scroll-mt-28">{heading}</h2>
+	<p class="summary mt-3">{blurb}</p>
 	<ol class="callout mt-6 px-5 lg:px-8">
 		{days.map(({ date, groups }) => (
 			<li class="border-key py-2 not-first:border-t-2 sm:grid sm:grid-cols-[4.5rem_1fr] sm:gap-x-6">
@@ -30,7 +30,7 @@ const row = '-mx-3 px-3 py-3';
 									<span class="text-dim text-meta truncate font-mono">{repo}</span>
 									<span class="text-pretty">
 										{hash(first.url) && <code class="text-dim text-meta mr-2">{hash(first.url)}</code>}
-										<a href={first.url} {...away} class="link after:absolute after:inset-0">{first.title}</a>
+										<Link href={first.url} class="link after:absolute after:inset-0">{first.title}</Link>
 									</span>
 								</div>
 							) : (
@@ -53,7 +53,7 @@ const row = '-mx-3 px-3 py-3';
 										{[first, ...rest].map((item) => (
 											<li class="text-pretty">
 												{hash(item.url) && <code class="text-dim text-meta mr-2">{hash(item.url)}</code>}
-												<a href={item.url} {...away} class="link">{item.title}</a>
+												<Link href={item.url} class="link">{item.title}</Link>
 											</li>
 										))}
 									</ol>

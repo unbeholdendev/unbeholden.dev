@@ -1,0 +1,135 @@
+@layer components {
+  .article {
+    counter-reset: section;
+  }
+
+  .article > * + * {
+    margin-top: 20px;
+  }
+
+  /* The diagram is the one thing narrower than its labels allow: under 800px
+     they fall below 10px. So it takes the gutter too, and scrolls below that. */
+  .article > figure {
+    --amber: light-dark(#8a5a00, #e7b04a);
+    overflow-x: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .article > figure {
+      margin-left: calc(-1 * (var(--gutter) + var(--gap)));
+    }
+  }
+
+  .article > figure svg {
+    display: block;
+    min-width: 800px;
+  }
+
+  .article h2,
+  .article h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+    text-wrap: balance;
+    margin-top: 72px;
+  }
+
+  .article h3 {
+    font-size: var(--text-h3);
+    margin-top: 40px;
+  }
+
+  .article h2 {
+    position: relative;
+  }
+
+  .article h2::before {
+    counter-increment: section;
+    content: var(--n) counter(section);
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: var(--mid);
+  }
+
+  @media (min-width: 1024px) {
+    .article h2::before {
+      position: absolute;
+      right: calc(100% + var(--gap));
+      top: 0;
+      width: var(--gutter);
+      margin: 0;
+      font-size: 64px;
+      text-align: right;
+    }
+  }
+
+  .article :is(h2, h3) + * {
+    margin-top: 16px;
+  }
+
+  .article a {
+    @apply link;
+  }
+
+  .article ul,
+  .article ol {
+    padding-left: 1.4em;
+  }
+
+  .article ul { list-style: disc; }
+  .article ol { list-style: decimal; }
+  .article li + li { margin-top: 0.5em; }
+
+  .article p {
+    text-wrap: pretty;
+  }
+
+  .article blockquote {
+    padding-left: 20px;
+    border-left: 4px solid var(--mid);
+    color: var(--dim);
+  }
+
+  .article code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+  }
+
+  .article :not(pre) > code {
+    padding: 1px 5px;
+    border: 1px solid color-mix(in srgb, var(--key) 30%, transparent);
+    border-radius: 4px;
+    background: var(--bg2);
+    overflow-wrap: anywhere;
+  }
+
+  .article pre {
+    padding: 16px 20px;
+    border: 1px solid color-mix(in srgb, var(--key) 30%, transparent);
+    border-radius: 4px;
+    background: var(--bg2) !important;
+    overflow-x: auto;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .article pre code {
+    font-size: 1em;
+    color: var(--fg);
+  }
+
+  .article img {
+    border-radius: 4px;
+  }
+
+  .article hr {
+    border: 0;
+    border-top: 2px solid var(--key);
+  }
+}

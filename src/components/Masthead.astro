@@ -1,0 +1,22 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+
+const current = (section: string) => (Astro.url.pathname.startsWith(section) ? 'page' : undefined);
+---
+
+<header class="flex flex-wrap items-end justify-between gap-4">
+	<a href="/" class="callout hover:border-mid flex w-full items-center gap-4 px-5 pt-3 pb-4 sm:w-auto">
+		<Logo />
+		<span>
+			<span class="font-display text-wordmark block font-extrabold">{site.name}</span>
+			<span class="meta mt-2 block text-balance">{site.tagline}</span>
+		</span>
+	</a>
+	<nav class="grid w-full grid-cols-4 gap-2 text-center sm:flex sm:w-auto max-sm:[&>a]:px-1 max-sm:[&>a]:text-[14px]">
+		<a href="/blog" class="chip" aria-current={current('/blog')}>Blog</a>
+		<a href="/work" class="chip" aria-current={current('/work')}>Work</a>
+		<a href="/about" class="chip" aria-current={current('/about')}>About</a>
+		<a href="/contact" class="chip" aria-current={current('/contact')}>Contact</a>
+	</nav>
+</header>

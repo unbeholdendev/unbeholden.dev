@@ -1,7 +1,11 @@
 ---
-import { ClientRouter } from 'astro:transitions';
+import Head from '../components/Head.astro';
+import HiringBanner from '../components/HiringBanner.astro';
+import Masthead from '../components/Masthead.astro';
 import Subscribe from '../components/Subscribe.astro';
-import Logo from '../components/Logo.astro';
+import Elsewhere from '../components/Elsewhere.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
 import '../styles/global.css';
 
 interface Props {
@@ -21,202 +25,37 @@ const card = {
 };
 
 const {
-	title = 'Unbeholden · Software, and the infrastructure behind it',
-	description = 'Software, and the infrastructure behind it. Self-hosting, homelab and networking, Linux and agent tooling, on hardware I own.',
+	title,
+	description = `${site.tagline}. Self-hosting, homelab and networking, Linux and agent tooling, on hardware I own.`,
 	image = card,
 	article,
 	profile = false,
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const social = new URL(image.src, Astro.site);
-const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
-const here = Astro.url.pathname;
-const asks = here !== '/subscribe';
-const current = (section: string) => (here.startsWith(section) ? 'page' : undefined);
+const offerSubscription = Astro.url.pathname !== '/subscribe';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-		<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<link rel="preload" href="/fonts/rubik-latin.woff2" as="font" type="font/woff2" crossorigin />
-		<link rel="preload" href="/fonts/nunito-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-		<meta name="generator" content={Astro.generator} />
-		<ClientRouter />
-		<title>{title}</title>
-		<link rel="canonical" href={canonical} />
-		<link rel="describedby" href={new URL('/llms.txt', Astro.site)} type="text/plain" />
-		{
-			profile && (
-				<script is:inline type="application/ld+json" set:html={JSON.stringify({
-					'@context': 'https://schema.org',
-					'@type': 'ProfilePage',
-					url: canonical.href,
-					name: title,
-					mainEntity: {
-						'@type': 'Person',
-						'@id': new URL('/about#person', Astro.site).href,
-						name: 'Jakub Kot',
-						url: new URL('/about', Astro.site).href,
-						sameAs: [
-							'https://github.com/unbeholdendev',
-							'https://www.linkedin.com/in/jakubkot/',
-						],
-					},
-				}).replace(/</g, '\\u003c')} />
-			)
-		}
-		<link
-			rel="alternate"
-			type="application/atom+xml"
-			title="Unbeholden"
-			href={new URL('/feed.xml', Astro.site)}
+		<Head
+			title={title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`}
+			{description}
+			{image}
+			{article}
+			{profile}
 		/>
-		<meta name="description" content={description} />
-		<meta property="og:type" content={article ? 'article' : 'website'} />
-		<meta property="og:site_name" content="Unbeholden" />
-		<meta property="og:locale" content="en_GB" />
-		<meta property="og:title" content={title} />
-		<meta property="og:url" content={canonical} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={social} />
-		<meta property="og:image:alt" content={image.alt} />
-		<!-- Without the dimensions the first scrape lays the card out before the image
-		     has been fetched, and renders it without one. -->
-		<meta property="og:image:width" content={String(image.width)} />
-		<meta property="og:image:height" content={String(image.height)} />
-		{
-			article && (
-				<>
-					<meta
-						property="article:published_time"
-						content={article.published.toISOString()}
-					/>
-					{article.updated && (
-						<meta
-							property="article:modified_time"
-							content={article.updated.toISOString()}
-						/>
-					)}
-				</>
-			)
-		}
-		<!-- X reads the OpenGraph tags, but without a card type it renders the small
-		     one, so the image is stated again here. -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={social} />
-		<meta name="twitter:image:alt" content={image.alt} />
-		<!-- A view transition swaps the root attributes, dropping data-theme. Set it on the
-		     incoming page before the swap, or the transition snapshots the OS theme. -->
-		<script is:inline>
-			(() => {
-				const apply = (root) => { try { if (localStorage.theme) root.dataset.theme = localStorage.theme; } catch {} };
-				apply(document.documentElement);
-				document.addEventListener('astro:before-swap', (e) => apply(e.newDocument.documentElement));
-			})();
-		</script>
-		{
-			websiteId && (
-				<script is:inline defer src="/u/script.js" data-website-id={websiteId} />
-			)
-		}
 	</head>
 	<body>
 		<a href="#main" class="chip fixed top-3 left-3 z-20 -translate-y-24 focus:translate-y-0">Skip to content</a>
-		<aside aria-label="Looking for work" class="[--link-hover:currentColor] sticky top-0 z-10 bg-mid text-panel border-key border-b-2">
-			<p class="font-display mx-auto flex max-w-page flex-wrap items-baseline gap-x-4 gap-y-1 px-4 py-3 text-[17px] leading-snug font-semibold sm:px-10">
-				<span>I'm looking for a role as technical co-founder or founding engineer.</span>
-				<a href="/contact" class="link focus-visible:outline-key">Write to me</a>
-			</p>
-		</aside>
+		<HiringBanner />
 		<div class="mx-auto flex min-h-screen max-w-page flex-col px-4 pt-8 pb-12 sm:px-10 sm:pt-12">
-			<header class="flex flex-wrap items-end justify-between gap-4">
-				<a href="/" class="callout hover:border-mid flex w-full items-center gap-4 px-5 pt-3 pb-4 sm:w-auto">
-					<Logo />
-					<span>
-						<span class="font-display text-wordmark block font-extrabold">Unbeholden</span>
-						<span class="meta mt-2 block text-balance">Software, and the infrastructure behind it</span>
-					</span>
-				</a>
-				<nav class="grid w-full grid-cols-4 gap-2 text-center sm:flex sm:w-auto max-sm:[&>a]:px-1 max-sm:[&>a]:text-[14px]">
-					<a href="/blog" class="chip" aria-current={current('/blog')}>Blog</a>
-					<a href="/work" class="chip" aria-current={current('/work')}>Work</a>
-					<a href="/about" class="chip" aria-current={current('/about')}>About</a>
-					<a href="/contact" class="chip" aria-current={current('/contact')}>Contact</a>
-				</nav>
-			</header>
+			<Masthead />
 			<main id="main" class="flex-1"><slot /></main>
-			<div
-				class="border-key mt-20 flex flex-wrap items-start gap-x-10 gap-y-6 border-t-2 pt-8"
-			>
-				{asks && <Subscribe />}
-				<nav aria-label="Elsewhere" class="flex-[1_1_160px]">
-					<h2 class="font-display text-h3 mb-1 font-bold">Elsewhere</h2>
-					<ul class="text-dim -ml-3 flex flex-wrap [&_a]:grid [&_a]:size-11 [&_a]:place-items-center [&_a:hover]:text-fg [&_svg]:size-5">
-						<li>
-							<a href="https://github.com/unbeholdendev" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener noreferrer">
-								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
-							</a>
-						</li>
-						<li>
-							<a href="https://njump.me/npub1awq28saxmfuk88je4uvecljfpeydnj7tdueu4lay8xqv6xkn0c5q69qwgl" aria-label="Nostr" title="Nostr" target="_blank" rel="noopener noreferrer">
-								<svg viewBox="40 40 184 184" fill="currentColor"><path d="M210.8 199.4c0 3.1-2.5 5.7-5.7 5.7h-68c-3.1 0-5.7-2.5-5.7-5.7v-15.5c.3-19 2.3-37.2 6.5-45.5 2.5-5 6.7-7.7 11.5-9.1 9.1-2.7 24.9-.9 31.7-1.2 0 0 20.4.8 20.4-10.7s-9.1-8.6-9.1-8.6c-10 .3-17.7-.4-22.6-2.4-8.3-3.3-8.6-9.2-8.6-11.2-.4-23.1-34.5-25.9-64.5-20.1-32.8 6.2.4 53.3.4 116.1v8.4c0 3.1-2.6 5.6-5.7 5.6H57.7c-3.1 0-5.7-2.5-5.7-5.7v-144c0-3.1 2.5-5.7 5.7-5.7h31.7c3.1 0 5.7 2.5 5.7 5.7 0 4.7 5.2 7.2 9 4.5 11.4-8.2 26-12.5 42.4-12.5 36.6 0 64.4 21.4 64.4 68.7v83.2ZM150 99.3c0-6.7-5.4-12.1-12.1-12.1s-12.1 5.4-12.1 12.1 5.4 12.1 12.1 12.1S150 106 150 99.3Z" /></svg>
-							</a>
-						</li>
-						<li>
-							<a href="https://x.com/unbeholdendev" aria-label="X" title="X" target="_blank" rel="noopener noreferrer">
-								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z" /></svg>
-							</a>
-						</li>
-						<li>
-							<a href="lightning:ln@unbeholden.dev" aria-label="Lightning: ln@unbeholden.dev" title="ln@unbeholden.dev">
-								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></svg>
-							</a>
-						</li>
-						<li>
-							<a href="/feed.xml" aria-label="Feed" title="Feed">
-								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z" /></svg>
-							</a>
-						</li>
-						<li>
-							<a href="mailto:hello@unbeholden.dev" aria-label="Email: hello@unbeholden.dev" title="hello@unbeholden.dev">
-								<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v.4l-10 6.25L2 6.4V6Zm0 2.75V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8.75l-9.47 5.92a1 1 0 0 1-1.06 0L2 8.75Z" /></svg>
-							</a>
-						</li>
-					</ul>
-				</nav>
+			<div class="border-key mt-20 flex flex-wrap items-start gap-x-10 gap-y-6 border-t-2 pt-8">
+				{offerSubscription && <Subscribe />}
+				<Elsewhere />
 			</div>
-			<footer
-				class="meta border-key mt-10 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t-2 pt-4"
-			>
-				<span>Served from a rented VPS. Nothing on this page loads from anyone else.</span>
-				<button id="mode-toggle" type="button" class="link cursor-pointer" hidden>Dark mode</button>
-			</footer>
+			<Footer />
 		</div>
-		<!-- Rerun: the swapped-in button carries no listener. -->
-		<script is:inline data-astro-rerun>
-			(() => {
-				const root = document.documentElement;
-				const button = document.getElementById('mode-toggle');
-				const dark = () =>
-					root.dataset.theme
-						? root.dataset.theme === 'dark'
-						: matchMedia('(prefers-color-scheme: dark)').matches;
-				const label = () => (button.textContent = dark() ? 'Light mode' : 'Dark mode');
-				button.addEventListener('click', () => {
-					root.dataset.theme = dark() ? 'light' : 'dark';
-					try { localStorage.setItem('theme', root.dataset.theme); } catch {}
-					label();
-				});
-				label();
-				button.hidden = false;
-			})();
-		</script>
 	</body>
 </html>

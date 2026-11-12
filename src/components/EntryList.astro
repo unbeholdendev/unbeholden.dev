@@ -15,14 +15,14 @@ const { entries, total } = Astro.props;
 	{
 		entries.map((entry, i) => (
 			<li class="row">
-				<p class="gnum" aria-hidden="true">{total - i}</p>
+				<p class="entry-number" aria-hidden="true">{total - i}</p>
 				<div>
-					<h2 class="font-display text-h2 font-bold text-balance">
+					<h2 class="heading-2 text-balance">
 						<a href={`/blog/${entry.id}`} class="link after:absolute after:inset-0">
 							{entry.data.title}
 						</a>
 					</h2>
-					<p class="text-dim max-w-summary mt-3 text-pretty">{entry.data.summary}</p>
+					<p class="summary mt-3">{entry.data.summary}</p>
 					<p class="meta mt-4 text-pretty">
 						{day(entry.data.date)} · {readTime(articleStats(entry).minutes)}
 						{entry.data.video && ` · Video, ${entry.data.video.duration}`}

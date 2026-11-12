@@ -112,9 +112,14 @@ const current = (section: string) => (here.startsWith(section) ? 'page' : undefi
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={social} />
 		<meta name="twitter:image:alt" content={image.alt} />
-		<!-- Rerun: a view transition swaps the root attributes, dropping data-theme. -->
-		<script is:inline data-astro-rerun>
-			try { if (localStorage.theme) document.documentElement.dataset.theme = localStorage.theme; } catch {}
+		<!-- A view transition swaps the root attributes, dropping data-theme. Set it on the
+		     incoming page before the swap, or the transition snapshots the OS theme. -->
+		<script is:inline>
+			(() => {
+				const apply = (root) => { try { if (localStorage.theme) root.dataset.theme = localStorage.theme; } catch {} };
+				apply(document.documentElement);
+				document.addEventListener('astro:before-swap', (e) => apply(e.newDocument.documentElement));
+			})();
 		</script>
 		{
 			websiteId && (

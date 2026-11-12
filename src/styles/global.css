@@ -344,7 +344,8 @@
 
   &:hover,
   a:hover & {
-    text-decoration-color: currentColor;
+    text-decoration-color: var(--link-hover, var(--mid));
+    text-decoration-thickness: 2px;
   }
 }
 

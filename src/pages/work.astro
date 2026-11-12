@@ -2,6 +2,10 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import GitHub from '../assets/github.svg';
+import Feed from '../components/Feed.astro';
+import { byDay, getActivity, shortDate } from '../lib/activity';
+
+export const prerender = false;
 
 const things: ({ name: string; description: string; stack: string[] } & ({ link: string; code?: string } | { link?: undefined; code: string }))[] = [
 	{
@@ -86,36 +90,51 @@ const things: ({ name: string; description: string; stack: string[] } & ({ link:
 ];
 
 // Committed, not fetched at build, per ADR-0001. Add one with `bun scripts/og-image.ts <link>`.
-const images = import.meta.glob<{ default: ImageMetadata }>('../assets/built/*', { eager: true });
+const images = import.meta.glob<{ default: ImageMetadata }>('../assets/work/*', { eager: true });
 const image = (link: string) => {
 	const { hostname, pathname } = new URL(link);
 	const name = hostname + pathname.replace(/\/$/, '').replaceAll('/', '.');
 	return Object.entries(images).find(([path]) => path.includes(`/${name}.`))?.[1].default;
 };
+
+const activity = await getActivity();
+const ordered = things
+	.map((thing) => ({ ...thing, updated: thing.code ? activity?.latest(thing.code) : undefined }))
+	.sort((a, b) => (b.updated?.getTime() ?? 0) - (a.updated?.getTime() ?? 0));
+const linkClass = 'relative underline decoration-mid decoration-2 underline-offset-3 hover:text-fg';
+const away = (href: string) =>
+	new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
+const pulls = byDay(activity?.pulls ?? []);
+const days = activity?.days ?? [];
 ---
 
 <Layout
-	title="Built · Unbeholden"
-	description="Things I've built, with a link and the source where it's public."
+	title="Work · Unbeholden"
+	description="What I build, with links and source where public, plus my open source contributions and recent commits on GitHub."
 >
 	<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
-		Things I've built.
+		What I build.
 	</h1>
-	<ul class="callout mt-section px-5 lg:px-8">
+	<p class="meta mt-6 text-pretty">
+		{pulls.length > 0 && <><a href="#contributions" class={linkClass}>Open source contributions</a>{' · '}</>}
+		<a href="#projects" class={linkClass}>Projects</a>
+		{days.length > 0 && <>{' · '}<a href="#recently" class={linkClass}>Recent commits</a></>}
+	</p>
+	{pulls.length > 0 && <Feed id="contributions" heading="Open source contributions" blurb="Pull requests to other people's projects on GitHub." days={pulls} />}
+	<h2 id="projects" class="font-display text-h2 mt-section scroll-mt-28 font-bold">Projects</h2>
+	<ul class="callout mt-6 px-5 lg:px-8">
 		{
-			things.map((thing) => {
+			ordered.map((thing) => {
 				const href = thing.link === undefined ? thing.code : thing.link;
 				const src = image(href);
-				const away = (href: string) =>
-					new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 				return (
-					<li class="group row lg:grid-cols-[1fr_288px] lg:bg-left-top">
+					<li class="row lg:grid-cols-[1fr_288px] lg:bg-left-top">
 						<div>
-							<h2 class="font-display text-h2 font-bold text-balance">
-								<a href={href} {...away(href)} class="group-hover:text-fg group-hover:underline group-hover:decoration-mid group-hover:decoration-2 after:absolute after:inset-0">
+							<h3 class="font-display text-h2 font-bold text-balance">
+								<a href={href} {...away(href)} class={linkClass}>
 									{thing.name}
 								</a>
-							</h2>
+							</h3>
 							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
 							<p class="text-dim text-meta mt-3 font-mono text-pretty">{thing.stack.join(' · ')}</p>
 							<p class="meta mt-1 text-pretty">
@@ -123,28 +142,35 @@ const image = (link: string) => {
 								{thing.link && thing.code && (
 									<>
 										{' · '}
-										<a href={thing.code} {...away(thing.code)} class="relative underline decoration-mid decoration-2 underline-offset-3 hover:text-fg">Source</a>
+										<a href={thing.code} {...away(thing.code)} class={linkClass}>Source</a>
+									</>
+								)}
+								{thing.code && thing.updated && (
+									<>
+										{' · '}
+										<a href={`${thing.code}/commits`} {...away(thing.code)} class={linkClass}>Updated {shortDate(thing.updated)}</a>
 									</>
 								)}
 							</p>
-						</div>
-						{src ? (
-							/* Empty alt: the row repeats the name and description beside it. Add one if it says more. */
-							<Image
-								src={src}
-								alt=""
-								widths={[320, 640]}
-								sizes="(min-width: 1024px) 288px, 100vw"
-								class="border-key group-hover:border-mid -order-1 aspect-[40/21] w-full rounded border-2 object-cover lg:order-none"
-							/>
-						) : (
-							<div class="border-key group-hover:border-mid -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
-								<GitHub aria-hidden="true" class="text-dim h-1/2 w-auto" />
 							</div>
-						)}
-					</li>
-				);
-			})
-		}
+							{src ? (
+								/* Empty alt: the row repeats the name and description beside it. Add one if it says more. */
+								<Image
+									src={src}
+									alt=""
+									widths={[320, 640]}
+									sizes="(min-width: 1024px) 288px, 100vw"
+									class="border-key -order-1 aspect-[40/21] w-full rounded border-2 object-cover lg:order-none"
+								/>
+							) : (
+								<div class="border-key -order-1 grid aspect-[40/21] w-full place-items-center rounded border-2 lg:order-none">
+									<GitHub aria-hidden="true" class="text-dim h-1/2 w-auto" />
+								</div>
+							)}
+						</li>
+					);
+				})
+			}
 	</ul>
+	{days.length > 0 && <Feed id="recently" heading="Recently" blurb="Public commits on GitHub from the last 14 days." days={days} />}
 </Layout>

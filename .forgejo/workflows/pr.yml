@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
+        # An exact version downloads directly; "latest" asks the GitHub API, which rate-limits the runner's shared IP.
+        with:
+          bun-version: 1.4.4
       - run: bun install --frozen-lockfile
       - run: bun run check
       - run: bun run test

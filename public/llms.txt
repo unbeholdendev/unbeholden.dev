@@ -13,4 +13,4 @@
 
 - [Blog](https://unbeholden.dev/blog): All published entries.
 - [Full-text Atom feed](https://unbeholden.dev/feed.xml): Every entry's article, with publication and update dates.
-- [Built](https://unbeholden.dev/built): Software I've made, with source links where public.
+- [Work](https://unbeholden.dev/work): Software I've made, with source links where public and recent public activity.

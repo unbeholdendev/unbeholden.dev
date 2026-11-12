@@ -16,5 +16,5 @@ for (const link of process.argv.slice(2)) {
 	const ext = res.headers.get('content-type')?.split('/')[1] ?? 'png';
 	const { hostname, pathname } = new URL(link);
 	const name = hostname + pathname.replace(/\/$/, '').replaceAll('/', '.');
-	await writeFile(`src/assets/built/${name}.${ext}`, Buffer.from(await res.arrayBuffer()));
+	await writeFile(`src/assets/work/${name}.${ext}`, Buffer.from(await res.arrayBuffer()));
 }

@@ -36,8 +36,8 @@ const linksInNewTab = {
 export default defineConfig({
   site: 'https://unbeholden.dev',
   trailingSlash: 'never',
-  // Every page stays prerendered. The adapter is here for the analytics proxy alone.
   adapter: node({ mode: 'standalone' }),
+  redirects: { '/built': '/work' },
   // MDX so an entry can import its diagram. Astro inlines an imported SVG, and
   // only an inlined one reads the page's colour mode.
   // /subscribe is where the form posts. A reader arriving by GET is sent to the front

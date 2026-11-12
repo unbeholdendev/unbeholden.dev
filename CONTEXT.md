@@ -36,9 +36,20 @@ _Avoid_: tag, category.
 Every entry, and the section of the site they live in.
 _Avoid_: writing, journal, archive.
 
-**Built**:
-The page listing things I've made: a name and description, with a link and source where public.
-_Avoid_: projects, portfolio, work.
+**Work**:
+The page listing things I've made: a name and description, with a link and source where public,
+ordered by **activity**. Formerly Built; `/built` redirects here.
+_Avoid_: projects, portfolio, built.
+
+**Activity**:
+Public commits to repos I own on GitHub, every one, and **contributions**, fetched when the
+page is served. See ADR-0004.
+_Avoid_: timeline, feed as the name of the thing; the list on the page is a feed of activity.
+
+**Contribution**:
+An open or merged pull request I made to someone else's public repo on GitHub, listed apart from
+the commits.
+_Avoid_: upstream PR. The page heads the list "Open source contributions".
 
 ### Presentation
 

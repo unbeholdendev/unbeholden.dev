@@ -12,7 +12,7 @@ Working engineers first: developers and sysadmins who self-host or want to, read
 
 ## Product Purpose
 
-Jakub's personal blog. It argues that software you depend on should be software you can inspect, move, and turn off, through entries on self-hosting, homelab and networking, Linux, agent tooling, and quality-of-life config, plus a Built page of things he has made.
+Jakub's personal blog. It argues that software you depend on should be software you can inspect, move, and turn off, through entries on self-hosting, homelab and networking, Linux, agent tooling, and quality-of-life config, plus a Work page of things he has made and his recent public activity.
 
 Success is reputation. Readers should be able to check the site's dependency budget and follow the technical entries. Reads, subscriptions and reuse matter less.
 
@@ -26,11 +26,11 @@ Read on desktop and phone, often from a link in a feed, chat or search. Entries 
 
 ## Capabilities and Constraints
 
-- Vocabulary is fixed in `CONTEXT.md`: entry, article, video, poster, topic, blog, Built, masthead, statement, subscription, dependency budget. Use those words.
+- Vocabulary is fixed in `CONTEXT.md`: entry, article, video, poster, topic, blog, Work, activity, masthead, statement, subscription, dependency budget. Use those words.
 - Dependency budget (ADR-0001): no third-party request at page load. Fonts self-hosted as subsetted woff2; no webfont CDN, embeds, share buttons or hosted scripts without revisiting the ADR.
-- Images such as Built screenshots and posters are committed, not fetched at build.
+- Images such as Work screenshots and posters are committed, not fetched at build.
 - URLs never end in a slash; prose is CC BY 4.0, code CC0/MIT (ADR-0002).
-- Astro static pages prerendered into a small Node server, for the analytics proxy and forms.
+- Astro static pages prerendered into a small Node server, for the analytics proxy and forms. Work is the one page rendered on request (ADR-0004).
 
 ## Brand Commitments
 
@@ -41,7 +41,7 @@ Read on desktop and phone, often from a link in a feed, chat or search. Entries 
 ## Evidence on Hand
 
 - Three entries in `src/entries/`: Stalwart email, Bitcoin and Lightning node, an agent that configures a machine.
-- Built: Skorpik and this site, with screenshots in `src/assets/built/`.
+- Work: Skorpik and this site, with screenshots in `src/assets/work/`.
 - No testimonials, reader counts, press or client names. Do not invent any.
 
 ## Product Principles

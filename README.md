@@ -2,7 +2,7 @@
 
 The source of [unbeholden.dev](https://unbeholden.dev), my blog and the list of things I've
 built. Astro 7 with Tailwind 4, run on Bun. Most pages are static; the subscribe and contact
-forms and a few proxy routes run on the server.
+forms, the Work page and a few proxy routes run on the server.
 
 This is a mirror of my private repo.
 
@@ -29,6 +29,7 @@ Every variable is optional. Leave one out and its feature does nothing.
 | `LNURL_URL` | at runtime | Lightning Address server behind `/.well-known/lnurlp/` |
 | `LISTMONK_URL`, `LISTMONK_LIST_ID`, `LISTMONK_API_USER`, `LISTMONK_API_TOKEN` | at runtime | Adds subscribers to a Listmonk list |
 | `NTFY_URL`, `NTFY_TOPIC`, `NTFY_TOKEN` | at runtime | Sends a push for each new subscriber or contact message |
+| `GITHUB_TOKEN` | at runtime | Reads public GitHub activity for `/work`; a token with no scopes is enough |
 
 Without the Listmonk variables the subscribe form still renders, but tells the reader nothing
 was sent. [ADR 0003](docs/adr/0003-subscriptions.md) explains why.

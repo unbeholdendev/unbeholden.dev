@@ -1,5 +1,6 @@
 ---
 import EntryList from '../components/EntryList.astro';
+import Lately from '../components/Lately.astro';
 import Layout from '../layouts/Layout.astro';
 import { listEntries } from '../lib/entries';
 
@@ -14,6 +15,9 @@ const entries = await listEntries();
 		I write about self-hosting, homelab and networking, Linux, agent tooling, and the small bits
 		of config that make daily work less annoying.
 	</p>
+	<Lately server:defer>
+		<p slot="fallback" class="meta mt-6 min-h-[2lh] sm:min-h-[1lh]"></p>
+	</Lately>
 	<div class="mt-section">
 		<EntryList entries={entries.slice(0, 3)} total={entries.length} />
 		{entries.length > 3 && <p class="mt-6"><a href="/blog" class="chip">All entries</a></p>}

@@ -69,7 +69,7 @@ const watch = video && `https://www.youtube.com/watch?v=${video.id}`;
 			older ? (
 				<a href={`/blog/${older.id}`} class="group border-key grid gap-2 border-t-2 pt-4 hover:border-mid">
 					<span class="meta">← Older</span>
-					<span class="font-display text-h3 font-bold decoration-mid decoration-2 group-hover:underline">{older.data.title}</span>
+					<span class="font-display text-h3 font-bold link">{older.data.title}</span>
 				</a>
 			) : (
 				<span />
@@ -79,7 +79,7 @@ const watch = video && `https://www.youtube.com/watch?v=${video.id}`;
 			newer && (
 				<a href={`/blog/${newer.id}`} class="group border-key grid gap-2 border-t-2 pt-4 text-right hover:border-mid">
 					<span class="meta">Newer →</span>
-					<span class="font-display text-h3 font-bold decoration-mid decoration-2 group-hover:underline">{newer.data.title}</span>
+					<span class="font-display text-h3 font-bold link">{newer.data.title}</span>
 				</a>
 			)
 		}

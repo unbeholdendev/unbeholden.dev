@@ -18,7 +18,7 @@ const { entries, total } = Astro.props;
 				<p class="gnum" aria-hidden="true">{total - i}</p>
 				<div>
 					<h2 class="font-display text-h2 font-bold text-balance">
-						<a href={`/blog/${entry.id}`} class="group-hover:text-fg group-hover:underline group-hover:decoration-mid group-hover:decoration-2 after:absolute after:inset-0">
+						<a href={`/blog/${entry.id}`} class="link after:absolute after:inset-0">
 							{entry.data.title}
 						</a>
 					</h2>

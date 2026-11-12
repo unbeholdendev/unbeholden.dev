@@ -9,7 +9,6 @@ interface Props {
 }
 
 const { id, heading, blurb, days } = Astro.props;
-const link = 'hover:underline hover:decoration-mid hover:decoration-2';
 const away = { target: '_blank', rel: 'noopener noreferrer' };
 const hash = (url: string) => url.split('/commit/')[1]?.slice(0, 7);
 const grid = 'grid gap-x-6 gap-y-1 sm:grid-cols-[11rem_1fr]';
@@ -31,7 +30,7 @@ const row = '-mx-3 rounded-md px-3 py-3 transition-colors hover:bg-(--bg)';
 									<span class="text-dim text-meta truncate font-mono">{repo}</span>
 									<span class="text-pretty">
 										{hash(first.url) && <code class="text-dim text-meta mr-2">{hash(first.url)}</code>}
-										<a href={first.url} {...away} class:list={[link, 'after:absolute after:inset-0 group-hover:underline group-hover:decoration-mid group-hover:decoration-2']}>{first.title}</a>
+										<a href={first.url} {...away} class="link after:absolute after:inset-0">{first.title}</a>
 									</span>
 								</div>
 							) : (
@@ -40,7 +39,7 @@ const row = '-mx-3 rounded-md px-3 py-3 transition-colors hover:bg-(--bg)';
 										<span class="text-dim text-meta truncate font-mono">{repo}</span>
 										<span>
 											<span class="block text-pretty group-open:hidden">{first.title}</span>
-											<span class="font-display text-meta text-mid mt-1 inline-flex items-center gap-1 font-bold group-hover:underline group-hover:decoration-2 group-hover:underline-offset-3 group-open:mt-0">
+											<span class="font-display text-meta text-mid mt-1 inline-flex items-center gap-1 font-bold underline decoration-2 underline-offset-3 group-open:mt-0">
 												<span class="group-open:hidden">Show all {rest.length + 1}</span>
 												<span class="hidden group-open:inline">Hide {rest.length + 1}</span>
 												{hash(first.url) ? 'commits' : 'pull requests'}
@@ -54,7 +53,7 @@ const row = '-mx-3 rounded-md px-3 py-3 transition-colors hover:bg-(--bg)';
 										{[first, ...rest].map((item) => (
 											<li class="text-pretty">
 												{hash(item.url) && <code class="text-dim text-meta mr-2">{hash(item.url)}</code>}
-												<a href={item.url} {...away} class={link}>{item.title}</a>
+												<a href={item.url} {...away} class="link">{item.title}</a>
 											</li>
 										))}
 									</ol>

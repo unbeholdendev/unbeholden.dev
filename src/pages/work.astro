@@ -101,7 +101,6 @@ const activity = await getActivity();
 const ordered = things
 	.map((thing) => ({ ...thing, updated: thing.code ? activity?.latest(thing.code) : undefined }))
 	.sort((a, b) => (b.updated?.getTime() ?? 0) - (a.updated?.getTime() ?? 0));
-const linkClass = 'relative underline decoration-mid decoration-2 underline-offset-3 hover:text-fg';
 const away = (href: string) =>
 	new URL(href).hostname === Astro.site?.hostname ? {} : { target: '_blank', rel: 'noopener noreferrer' };
 const pulls = byDay(activity?.pulls ?? []);
@@ -116,9 +115,9 @@ const days = activity?.days ?? [];
 		What I build.
 	</h1>
 	<p class="meta mt-6 text-pretty">
-		{pulls.length > 0 && <><a href="#contributions" class={linkClass}>Open source contributions</a>{' · '}</>}
-		<a href="#projects" class={linkClass}>Projects</a>
-		{days.length > 0 && <>{' · '}<a href="#recently" class={linkClass}>Recent commits</a></>}
+		{pulls.length > 0 && <><a href="#contributions" class="link">Open source contributions</a>{' · '}</>}
+		<a href="#projects" class="link">Projects</a>
+		{days.length > 0 && <>{' · '}<a href="#recently" class="link">Recent commits</a></>}
 	</p>
 	{pulls.length > 0 && <Feed id="contributions" heading="Open source contributions" blurb="Pull requests to other people's projects on GitHub." days={pulls} />}
 	<h2 id="projects" class="font-display text-h2 mt-section scroll-mt-28 font-bold">Projects</h2>
@@ -131,27 +130,20 @@ const days = activity?.days ?? [];
 					<li class="row lg:grid-cols-[1fr_288px] lg:bg-left-top">
 						<div>
 							<h3 class="font-display text-h2 font-bold text-balance">
-								<a href={href} {...away(href)} class={linkClass}>
+								<a href={href} {...away(href)} class="link">
 									{thing.name}
 								</a>
 							</h3>
 							<p class="text-dim max-w-summary mt-3 text-pretty">{thing.description}</p>
 							<p class="text-dim text-meta mt-3 font-mono text-pretty">{thing.stack.join(' · ')}</p>
-							<p class="meta mt-1 text-pretty">
-								{thing.link === undefined ? new URL(thing.code).pathname.slice(1) : new URL(thing.link).hostname}
-								{thing.link && thing.code && (
-									<>
-										{' · '}
-										<a href={thing.code} {...away(thing.code)} class={linkClass}>Source</a>
-									</>
-								)}
-								{thing.code && thing.updated && (
-									<>
-										{' · '}
-										<a href={`${thing.code}/commits`} {...away(thing.code)} class={linkClass}>Updated {shortDate(thing.updated)}</a>
-									</>
-								)}
-							</p>
+							{thing.code && (thing.link || thing.updated) && (
+								<p class="meta mt-1 flex flex-wrap gap-x-3 gap-y-1">
+									{thing.link && <a href={thing.code} {...away(thing.code)} class="link">Source</a>}
+									{thing.updated && (
+										<a href={`${thing.code}/commits`} {...away(thing.code)} class="link">Updated {shortDate(thing.updated)}</a>
+									)}
+								</p>
+							)}
 							</div>
 							{src ? (
 								/* Empty alt: the row repeats the name and description beside it. Add one if it says more. */

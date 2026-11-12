@@ -1,69 +1,33 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { MAX_MESSAGE as MAX, sendContact } from '../lib/forms';
 import { rateLimit } from '../lib/rate-limit';
 import { push } from '../lib/ntfy';
 
 export const prerender = false;
 
-const MAX = 3500;
-
-// ntfy caps a message at 4096 bytes, and 3500 characters outside ASCII can pass that. The
-// log holds every message whole, so the push can be cut short.
-function fit(text: string) {
-	const bytes = new TextEncoder().encode(text);
-	if (bytes.length <= 3700) return text;
-	const cut = new TextDecoder().decode(bytes.slice(0, 3700)).replace(/\uFFFD$/, '');
-	return `${cut}\n\n[Cut short. The whole message is in the server log.]`;
-}
-
-let state: 'form' | 'sent' | 'failed' | 'limited' = 'form';
-let name = '';
-let email = '';
-let message = '';
-
-if (Astro.request.method === 'POST') {
-	const form = await Astro.request.formData();
-	name = String(form.get('name') ?? '').trim().slice(0, 100);
-	email = String(form.get('email') ?? '').trim().slice(0, 254);
-	message = String(form.get('message') ?? '').trim();
-
-	// A bot fills the hidden field. Tell it yes and send nothing.
-	if (String(form.get('website') ?? '') !== '') state = 'sent';
-	else if (!message || message.length > MAX) state = 'failed';
-	else {
-		const admitted = rateLimit();
-		console.log(JSON.stringify({ contact: { name, email, message, admitted } }));
-		if (admitted === 'first-over') {
-			void push({
-				title: 'Contact form rate-limited',
-				message: 'Ten messages this hour. The rest are in the server log.',
-				tags: ['warning'],
-			});
-		}
-		if (admitted !== 'ok') state = 'limited';
-		else {
-			const replyable = /^[^\s@?&]+@[^\s@?&]+$/.test(email);
-			const sent = await push({
-				title: name ? `Message from ${name}` : 'Message',
-				message: email ? `${fit(message)}\n\n${email}` : fit(message),
-				tags: ['speech_balloon'],
-				actions: replyable
-					? [
-							{
-								action: 'view',
-								label: 'Reply',
-								url: `mailto:${email}?subject=${encodeURIComponent('Your message on unbeholden.dev')}`,
-							},
-						]
-					: undefined,
-			});
-			state = sent ? 'sent' : 'failed';
-		}
-	}
-}
+const { state, name, email, message } =
+	Astro.request.method === 'POST'
+		? await sendContact(await Astro.request.formData(), rateLimit, push)
+		: ({ state: 'form', name: '', email: '', message: '' } as const);
 
 if (state === 'failed') Astro.response.status = 400;
 if (state === 'limited') Astro.response.status = 429;
+
+const copy = {
+	form: {
+		heading: 'Write to me.',
+		lede: "A question about an entry, a correction, something you built, or a role you're hiring for. It comes straight to my phone, through a server I run.",
+	},
+	failed: {
+		heading: "That didn't go through.",
+		lede: "It didn't arrive. Your message is still below, so try again, or send an email instead.",
+	},
+	limited: {
+		heading: 'Too many messages right now.',
+		lede: 'The form takes ten messages an hour, and this hour is full. Try again later, or send an email instead.',
+	},
+};
 
 const field =
 	'border-key bg-panel placeholder:text-faint w-full rounded-lg border-2 px-3 py-2';
@@ -86,18 +50,10 @@ const field =
 		) : (
 			<Fragment>
 				<h1 class="font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty">
-					{state === 'failed'
-						? "That didn't go through."
-						: state === 'limited'
-							? 'Too many messages right now.'
-							: 'Write to me.'}
+					{copy[state].heading}
 				</h1>
 				<p class="text-dim text-lede max-w-lede mt-6 text-pretty">
-					{state === 'failed'
-						? "It didn't arrive. Your message is still below, so try again, or send an email instead."
-						: state === 'limited'
-							? 'The form takes ten messages an hour, and this hour is full. Try again later, or send an email instead.'
-							: "A question about an entry, a correction, something you built, or a role you're hiring for. It comes straight to my phone, through a server I run."}
+					{copy[state].lede}
 				</p>
 				<p class="text-dim text-lede max-w-lede mt-4">
 					Rather talk? <a href="https://cal.unbeholden.dev/u/jakub/lets-chat" target="_blank" rel="noopener noreferrer" class="link">Book a half-hour call</a>.

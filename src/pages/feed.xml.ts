@@ -4,14 +4,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { loadRenderers } from 'astro:container';
 import { getContainerRenderer } from '@astrojs/mdx/container-renderer';
 import { Feed } from 'feed';
-import { listEntries } from '../lib/entries';
-
-// Only inside a tag: a root-relative path in the prose itself, such as one quoted in a
-// code sample, is the author's text and stays as written.
-const absolute = (html: string, origin: string) =>
-	html.replace(/<[a-z][^>]*>/gi, (tag) =>
-		tag.replace(/(href|src|srcset)="\/(?!\/)/g, `$1="${origin}/`),
-	);
+import { absoluteUrls, listEntries } from '../lib/entries';
 
 export const GET: APIRoute = async ({ site }) => {
 	if (!site) throw new Error('The feed needs `site` set in astro.config.mjs.');
@@ -50,7 +43,7 @@ export const GET: APIRoute = async ({ site }) => {
 			date: updated ?? date,
 			category: [{ term: topic }],
 			description: summary,
-			content: absolute(await container.renderToString(Content), origin),
+			content: absoluteUrls(await container.renderToString(Content), origin),
 		});
 	}
 

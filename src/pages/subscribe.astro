@@ -1,50 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { subscribe } from '../lib/forms';
 import { push } from '../lib/ntfy';
 
 export const prerender = false;
 
-// Read at runtime, not through import.meta.env, which Vite would freeze into the build.
-const upstream = process.env.LISTMONK_URL;
-const list = Number(process.env.LISTMONK_LIST_ID);
-const user = process.env.LISTMONK_API_USER;
-const token = process.env.LISTMONK_API_TOKEN;
-
 if (Astro.request.method !== 'POST') return Astro.redirect('/', 303);
 
-const form = await Astro.request.formData();
-const email = String(form.get('email') ?? '').trim();
-
-// A bot fills the hidden field. Tell it yes and send nothing.
-let ok = String(form.get('website') ?? '') !== '';
-
-if (!ok && email && upstream && list && user && token) {
-	try {
-		const sent = await fetch(`${upstream}/api/subscribers`, {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-				authorization: `Basic ${btoa(`${user}:${token}`)}`,
-			},
-			// The opt-in mail greets by name, and the form asks for an address and nothing else.
-			body: JSON.stringify({
-				email,
-				name: email.split('@')[0],
-				status: 'enabled',
-				lists: [list],
-			}),
-			signal: AbortSignal.timeout(5000),
-		});
-		// Already on the list is not a failure, and saying it was would disclose who is on it.
-		ok = sent.ok || sent.status === 409;
-		// Started and not waited for, so the reader's answer never waits on my phone. A conflict
-		// is someone re-subscribing, so it is not news, and a bot tripping the honeypot above
-		// never reaches this branch at all.
-		if (sent.ok) void push({ title: 'New subscriber', message: email, tags: ['envelope'] });
-	} catch {
-		ok = false;
-	}
-}
+const { ok, email } = await subscribe(await Astro.request.formData(), push);
 
 if (!ok) Astro.response.status = 400;
 ---

@@ -128,7 +128,6 @@ const query = `query($login: String!, $search: String!) {
 	}
 }`;
 
-// Read at runtime, not through import.meta.env, which Vite would freeze into the build.
 const token = process.env.GITHUB_TOKEN;
 let last: Activity | undefined;
 let loading: Promise<void> | undefined;

@@ -2,15 +2,13 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-// import.meta.env freezes the value into the bundle at build; this has to be read at runtime.
-const upstream = process.env.UMAMI_URL;
-
 const forward = ['content-type', 'user-agent', 'x-umami-cache'];
 
 // Allowlisted, so a response header naming the origin cannot leak by being added upstream.
 const expose = ['content-type', 'cache-control', 'etag', 'last-modified'];
 
 const proxy: APIRoute = async ({ params, request, clientAddress }) => {
+	const upstream = process.env.UMAMI_URL;
 	// A catch-all would publish Umami's login route on this domain.
 	const path = params.path;
 	if (!upstream || (path !== 'script.js' && path !== 'api/send')) {

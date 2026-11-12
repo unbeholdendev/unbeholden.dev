@@ -1,4 +1,3 @@
-// Read at runtime, not through import.meta.env, which Vite would freeze into the build.
 const url = process.env.NTFY_URL;
 const topic = process.env.NTFY_TOPIC;
 const token = process.env.NTFY_TOKEN;

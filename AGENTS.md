@@ -3,6 +3,9 @@
 Astro 7 static site, Tailwind 4 via `@tailwindcss/vite`. Bun is the package manager
 (`bun.lock`); `bun run check` type-checks.
 
+Server code reads secrets and upstream URLs from `process.env`, never `import.meta.env`,
+which Vite freezes into the build.
+
 ## Agent skills
 
 ### Issue tracker

@@ -36,14 +36,14 @@ test('a short message is pushed whole', () => {
 });
 
 test('a long multi-byte message is cut at 3700 bytes without a broken character', () => {
-	const text = 'é'.repeat(1850) + 'x' + 'é'.repeat(10);
+	const text = `${'é'.repeat(1850)}x${'é'.repeat(10)}`;
 	const cut = truncateForPush(text);
 	const [kept, note] = cut.split('\n\n');
 	assert.equal(kept, 'é'.repeat(1850));
 	assert.equal(note, '[Cut short. The whole message is in the server log.]');
 
-	const odd = truncateForPush('x' + 'é'.repeat(2000));
-	assert.equal(odd.split('\n\n')[0], 'x' + 'é'.repeat(1849));
+	const odd = truncateForPush(`x${'é'.repeat(2000)}`);
+	assert.equal(odd.split('\n\n')[0], `x${'é'.repeat(1849)}`);
 	assert.ok(!odd.includes('\uFFFD'));
 });
 
@@ -57,7 +57,10 @@ test('a filled honeypot looks sent and does nothing', async () => {
 
 test('an empty or overlong message fails without counting against the limit', async () => {
 	let counted = 0;
-	const counting = () => (counted++, 'ok' as const);
+	const counting = () => {
+		counted++;
+		return 'ok' as const;
+	};
 	for (const message of ['', '   ', 'x'.repeat(3501)]) {
 		assert.equal((await sendContact(form({ message }), counting, notify(true))).state, 'failed');
 	}
@@ -75,7 +78,11 @@ test('the fields come back trimmed and capped for the form to show again', async
 });
 
 test('a sent message is logged and pushed with a reply action', async () => {
-	const result = await sendContact(form({ name: 'Ada', email: 'ada@example.org', message: 'Hello' }), admit('ok'), notify(true));
+	const result = await sendContact(
+		form({ name: 'Ada', email: 'ada@example.org', message: 'Hello' }),
+		admit('ok'),
+		notify(true),
+	);
 	assert.equal(result.state, 'sent');
 	assert.deepEqual(logged, [{ contact: { name: 'Ada', email: 'ada@example.org', message: 'Hello', admitted: 'ok' } }]);
 	assert.deepEqual(pushed, [
@@ -100,7 +107,12 @@ test('only a plain address gets a reply action', async () => {
 		await sendContact(form({ email, message: 'Hello' }), admit('ok'), notify(true));
 		assert.equal(pushed[0].actions, undefined, email);
 	}
-	assert.deepEqual(pushed[0], { title: 'Message', message: 'Hello\n\na@b@c', tags: ['speech_balloon'], actions: undefined });
+	assert.deepEqual(pushed[0], {
+		title: 'Message',
+		message: 'Hello\n\na@b@c',
+		tags: ['speech_balloon'],
+		actions: undefined,
+	});
 });
 
 test('a failed push is a failed send', async () => {

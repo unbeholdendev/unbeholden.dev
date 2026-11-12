@@ -1,28 +1,31 @@
 {
-  "name": "unbeholden.dev",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev --host",
-    "build": "astro build",
-    "preview": "astro preview",
-    "check": "astro check",
-    "test": "bun test",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.2",
-    "@astrojs/mdx": "^8.0.1",
-    "@astrojs/node": "^11.1.5",
-    "@astrojs/sitemap": "^3.7.4",
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.3",
-    "feed": "^6.0.0",
-    "tailwindcss": "^4.3.3"
-  },
-  "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@types/node": "^26.6.0",
-    "typescript": "^6"
-  }
+	"name": "unbeholden.dev",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev --host",
+		"build": "astro build",
+		"preview": "astro preview",
+		"check": "astro check",
+		"test": "bun test",
+		"astro": "astro",
+		"lint": "biome check",
+		"format": "biome check --write"
+	},
+	"dependencies": {
+		"@astrojs/markdown-satteri": "^0.4.2",
+		"@astrojs/mdx": "^8.0.1",
+		"@astrojs/node": "^11.1.5",
+		"@astrojs/sitemap": "^3.7.4",
+		"@tailwindcss/vite": "^4.3.3",
+		"astro": "^7.3.3",
+		"feed": "^6.0.0",
+		"tailwindcss": "^4.3.3"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.10",
+		"@biomejs/biome": "2.6.7",
+		"@types/node": "^26.6.0",
+		"typescript": "^6"
+	}
 }

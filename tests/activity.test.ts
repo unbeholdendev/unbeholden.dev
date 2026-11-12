@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { shape, type Raw, type RawCommit } from '../src/lib/activity';
+import { type Raw, type RawCommit, shape } from '../src/lib/activity';
 
 const now = new Date('2026-11-11T12:00:00Z');
 const at = (days: number) => new Date(now.getTime() - days * 86_400_000).toISOString();
@@ -36,7 +36,12 @@ const titles = (items: { title: string }[]) => items.map((item) => item.title);
 test('a squash commit becomes an item without its Forgejo PR number', () => {
 	const activity = shape(raw([repo('groat', [commit('Add a ledger (#12)')])]), now);
 	assert.deepEqual(activity.days[0].groups[0].items, [
-		{ repo: 'groat', title: 'Add a ledger', url: 'https://github.com/unbeholdendev/x/commit/18', date: new Date(at(1)) },
+		{
+			repo: 'groat',
+			title: 'Add a ledger',
+			url: 'https://github.com/unbeholdendev/x/commit/18',
+			date: new Date(at(1)),
+		},
 	]);
 });
 
@@ -47,15 +52,26 @@ test('the title is the first line of the message', () => {
 
 test('commits from the last 14 days group by day, then by repo, newest first', () => {
 	const hours = (repo: string, count: number) =>
-		Array.from({ length: count }, (_, hour) => commit(`${repo} ${hour}`, new Date(now.getTime() - hour * 3_600_000).toISOString()));
+		Array.from({ length: count }, (_, hour) =>
+			commit(`${repo} ${hour}`, new Date(now.getTime() - hour * 3_600_000).toISOString()),
+		);
 	const activity = shape(
-		raw([repo('groat', hours('groat', 30)), repo('infra', [commit('Update traefik', at(0.01)), commit('Old', at(100))])]),
+		raw([
+			repo('groat', hours('groat', 30)),
+			repo('infra', [commit('Update traefik', at(0.01)), commit('Old', at(100))]),
+		]),
 		now,
 	);
 	assert.deepEqual(
 		activity.days.map((day) => [day.date.toISOString(), day.groups.map((group) => [group.repo, group.items.length])]),
 		[
-			[now.toISOString(), [['groat', 13], ['infra', 1]]],
+			[
+				now.toISOString(),
+				[
+					['groat', 13],
+					['infra', 1],
+				],
+			],
 			[at(13 / 24), [['groat', 17]]],
 		],
 	);
@@ -90,7 +106,10 @@ test('contributions are open or merged pull requests, newest first, however old'
 });
 
 test("a repo's latest is its head commit, even outside the window", () => {
-	const activity = shape(raw([repo('groat', [commit('Recent')]), repo('lnrecc', [commit('Quiet', '2024-09-23T07:58:39Z')])]), now);
+	const activity = shape(
+		raw([repo('groat', [commit('Recent')]), repo('lnrecc', [commit('Quiet', '2024-09-23T07:58:39Z')])]),
+		now,
+	);
 	assert.deepEqual(activity.latest('https://github.com/unbeholdendev/lnrecc'), new Date('2024-09-23T07:58:39Z'));
 	assert.deepEqual(activity.latest('https://github.com/UnbeholdenDev/groat'), new Date(at(1)));
 	assert.equal(activity.latest('https://github.com/unbeholdendev/missing'), undefined);

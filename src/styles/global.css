@@ -1,167 +1,167 @@
-@import "tailwindcss";
-@import "./components.css";
-@import "./article.css";
-@import "./fonts.css";
+@import 'tailwindcss';
+@import './components.css';
+@import './article.css';
+@import './fonts.css';
 
 @theme inline {
-  --font-display: Rubik, system-ui, sans-serif;
-  --font-body: 'Nunito Sans', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--font-display: Rubik, system-ui, sans-serif;
+	--font-body: 'Nunito Sans', system-ui, sans-serif;
+	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
-  --color-bg2: var(--bg2);
-  --color-panel: var(--panel);
-  --color-key: var(--key);
-  --color-fg: var(--fg);
-  --color-dim: var(--dim);
-  --color-faint: var(--faint);
-  --color-mid: var(--mid);
+	--color-bg2: var(--bg2);
+	--color-panel: var(--panel);
+	--color-key: var(--key);
+	--color-fg: var(--fg);
+	--color-dim: var(--dim);
+	--color-faint: var(--faint);
+	--color-mid: var(--mid);
 
-  --text-wordmark: clamp(32px, 6vw, 48px);
-  --text-wordmark--line-height: 1;
-  --text-wordmark--letter-spacing: -0.02em;
-  --text-statement: clamp(36px, 5.6vw, 72px);
-  --text-statement--line-height: 1.02;
-  --text-statement--letter-spacing: -0.03em;
-  --text-h1: clamp(32px, 4.4vw, 52px);
-  --text-h1--line-height: 1.06;
-  --text-h1--letter-spacing: -0.025em;
-  --text-h2: clamp(22px, 2.4vw, 30px);
-  --text-h2--line-height: 1.18;
-  --text-h2--letter-spacing: -0.015em;
-  --text-h3: clamp(20px, 2vw, 24px);
-  --text-h3--line-height: 1.25;
-  --text-h3--letter-spacing: -0.01em;
-  --text-standfirst: clamp(21px, 2.2vw, 26px);
-  --text-standfirst--line-height: 1.32;
-  --text-standfirst--letter-spacing: -0.01em;
-  --text-lede: 19px;
-  --text-lede--line-height: 1.55;
-  --text-article: 18px;
-  --text-article--line-height: 1.7;
-  --text-body: 17px;
-  --text-body--line-height: 1.65;
-  --text-meta: 14px;
-  --text-nav: 15px;
+	--text-wordmark: clamp(32px, 6vw, 48px);
+	--text-wordmark--line-height: 1;
+	--text-wordmark--letter-spacing: -0.02em;
+	--text-statement: clamp(36px, 5.6vw, 72px);
+	--text-statement--line-height: 1.02;
+	--text-statement--letter-spacing: -0.03em;
+	--text-h1: clamp(32px, 4.4vw, 52px);
+	--text-h1--line-height: 1.06;
+	--text-h1--letter-spacing: -0.025em;
+	--text-h2: clamp(22px, 2.4vw, 30px);
+	--text-h2--line-height: 1.18;
+	--text-h2--letter-spacing: -0.015em;
+	--text-h3: clamp(20px, 2vw, 24px);
+	--text-h3--line-height: 1.25;
+	--text-h3--letter-spacing: -0.01em;
+	--text-standfirst: clamp(21px, 2.2vw, 26px);
+	--text-standfirst--line-height: 1.32;
+	--text-standfirst--letter-spacing: -0.01em;
+	--text-lede: 19px;
+	--text-lede--line-height: 1.55;
+	--text-article: 18px;
+	--text-article--line-height: 1.7;
+	--text-body: 17px;
+	--text-body--line-height: 1.65;
+	--text-meta: 14px;
+	--text-nav: 15px;
 
-  --container-page: 1200px;
-  --container-statement: 22ch;
-  --container-summary: 60ch;
-  --container-lede: 60ch;
+	--container-page: 1200px;
+	--container-statement: 22ch;
+	--container-summary: 60ch;
+	--container-lede: 60ch;
 
-  --spacing-masthead: 64px;
-  --spacing-section: clamp(48px, 7vw, 64px);
+	--spacing-masthead: 64px;
+	--spacing-section: clamp(48px, 7vw, 64px);
 }
 
 :root {
-  color-scheme: light;
+	color-scheme: light;
 
-  --bg: light-dark(#e9dec6, #1a1712);
-  --bg2: light-dark(#f7f1e3, #211d17);
-  --panel: light-dark(#fffbf2, #28231c);
-  --key: light-dark(#1c1915, #e8dfcf);
-  --fg: light-dark(#1c1915, #f1e9db);
-  --dim: light-dark(#4a4238, #c9bca6);
-  --faint: light-dark(#675d51, #a19580);
-  --mid: light-dark(#b0551c, #e48d4c);
+	--bg: light-dark(#e9dec6, #1a1712);
+	--bg2: light-dark(#f7f1e3, #211d17);
+	--panel: light-dark(#fffbf2, #28231c);
+	--key: light-dark(#1c1915, #e8dfcf);
+	--fg: light-dark(#1c1915, #f1e9db);
+	--dim: light-dark(#4a4238, #c9bca6);
+	--faint: light-dark(#675d51, #a19580);
+	--mid: light-dark(#b0551c, #e48d4c);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
+	:root {
+		color-scheme: dark;
+	}
 }
 
 :root[data-theme='light'] {
-  color-scheme: light;
+	color-scheme: light;
 }
 
 :root[data-theme='dark'] {
-  color-scheme: dark;
+	color-scheme: dark;
 }
 
 @layer base {
-  body {
-    background-color: var(--bg);
-    background-image: radial-gradient(circle, color-mix(in srgb, var(--key) 9%, transparent) 1px, transparent 1.5px);
-    background-size: 24px 24px;
-    color: var(--fg);
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    line-height: var(--text-body--line-height);
-  }
+	body {
+		background-color: var(--bg);
+		background-image: radial-gradient(circle, color-mix(in srgb, var(--key) 9%, transparent) 1px, transparent 1.5px);
+		background-size: 24px 24px;
+		color: var(--fg);
+		font-family: var(--font-body);
+		font-size: var(--text-body);
+		line-height: var(--text-body--line-height);
+	}
 
-  a {
-    text-underline-offset: 3px;
-  }
+	a {
+		text-underline-offset: 3px;
+	}
 
-  a,
-  button {
-    transition: color, background-color, border-color, text-decoration-color;
-    transition-duration: 150ms;
-  }
+	a,
+	button {
+		transition: color, background-color, border-color, text-decoration-color;
+		transition-duration: 150ms;
+	}
 
-  :focus-visible {
-    outline: 3px solid var(--mid);
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
+	:focus-visible {
+		outline: 3px solid var(--mid);
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
 
-  ::selection {
-    background: color-mix(in srgb, var(--mid) 50%, var(--panel));
-    color: var(--fg);
-  }
+	::selection {
+		background: color-mix(in srgb, var(--mid) 50%, var(--panel));
+		color: var(--fg);
+	}
 }
 
 @utility link {
-  color: inherit;
-  text-decoration-line: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 55%, transparent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+	color: inherit;
+	text-decoration-line: underline;
+	text-decoration-color: color-mix(in srgb, currentColor 55%, transparent);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
 
-  &:hover,
-  a:hover & {
-    text-decoration-color: var(--link-hover, var(--mid));
-    text-decoration-thickness: 2px;
-  }
+	&:hover,
+	a:hover & {
+		text-decoration-color: var(--link-hover, var(--mid));
+		text-decoration-thickness: 2px;
+	}
 }
 
 @utility meta {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: var(--text-meta);
-  line-height: 1.4;
-  color: var(--dim);
+	font-family: var(--font-display);
+	font-weight: 500;
+	font-size: var(--text-meta);
+	line-height: 1.4;
+	color: var(--dim);
 }
 
 @utility page-title {
-  @apply font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty;
+	@apply font-display text-statement mt-masthead max-w-statement font-extrabold text-pretty;
 }
 
 @utility lede {
-  @apply text-dim text-lede max-w-lede text-pretty;
+	@apply text-dim text-lede max-w-lede text-pretty;
 }
 
 @utility standfirst {
-  @apply font-display text-standfirst font-medium text-pretty;
+	@apply font-display text-standfirst font-medium text-pretty;
 }
 
 @utility summary {
-  @apply text-dim max-w-summary text-pretty;
+	@apply text-dim max-w-summary text-pretty;
 }
 
 @utility heading-2 {
-  @apply font-display text-h2 font-bold;
+	@apply font-display text-h2 font-bold;
 }
 
 @utility heading-3 {
-  @apply font-display text-h3 font-bold;
+	@apply font-display text-h3 font-bold;
 }
 
 @utility page-panel {
-  @apply text-article max-w-[760px] p-5 sm:p-10;
+	@apply text-article max-w-[760px] p-5 sm:p-10;
 }
 
 @utility field {
-  @apply border-key bg-panel placeholder:text-faint rounded-lg border-2 px-3 py-2;
+	@apply border-key bg-panel placeholder:text-faint rounded-lg border-2 px-3 py-2;
 }

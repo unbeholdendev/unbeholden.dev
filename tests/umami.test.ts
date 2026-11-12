@@ -19,7 +19,9 @@ function upstream(response: Response) {
 }
 
 const call = (route: typeof GET, path: string, request: Request) =>
-	route({ params: { path }, request, clientAddress: '10.0.0.9' } as unknown as Parameters<typeof GET>[0]) as Promise<Response>;
+	route({ params: { path }, request, clientAddress: '10.0.0.9' } as unknown as Parameters<
+		typeof GET
+	>[0]) as Promise<Response>;
 
 test('only the script and the send endpoint are proxied', async () => {
 	upstream(new Response('ok'));
@@ -53,16 +55,22 @@ test('only allowlisted headers go upstream and come back', async () => {
 			headers: { 'user-agent': 'Firefox', cookie: 'secret=1', 'x-umami-cache': 'abc', referer: 'https://x' },
 		}),
 	);
-	assert.deepEqual([...new Headers(sent[0].init.headers)], [
-		['user-agent', 'Firefox'],
-		['x-umami-cache', 'abc'],
-	]);
-	assert.deepEqual([...response.headers], [
-		['cache-control', 'max-age=60'],
-		['content-type', 'text/javascript'],
-		['etag', '"1"'],
-		['last-modified', 'Wed, 11 Nov 2026 00:00:00 GMT'],
-	]);
+	assert.deepEqual(
+		[...new Headers(sent[0].init.headers)],
+		[
+			['user-agent', 'Firefox'],
+			['x-umami-cache', 'abc'],
+		],
+	);
+	assert.deepEqual(
+		[...response.headers],
+		[
+			['cache-control', 'max-age=60'],
+			['content-type', 'text/javascript'],
+			['etag', '"1"'],
+			['last-modified', 'Wed, 11 Nov 2026 00:00:00 GMT'],
+		],
+	);
 	assert.equal(await response.text(), 'js');
 });
 
@@ -88,7 +96,10 @@ test('a body without a payload, or not JSON, passes through as sent', async () =
 	upstream(new Response(null, { status: 204 }));
 	await send('{"type":"identify"}');
 	await send('not json');
-	assert.deepEqual(sent.map((call) => call.init.body), ['{"type":"identify"}', 'not json']);
+	assert.deepEqual(
+		sent.map((call) => call.init.body),
+		['{"type":"identify"}', 'not json'],
+	);
 });
 
 test('an unreachable upstream is a 502', async () => {

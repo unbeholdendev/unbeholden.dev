@@ -68,7 +68,8 @@ export function byDay(items: Item[]): Day[] {
 	const days: Day[] = [];
 	for (const item of items) {
 		let day = days.at(-1);
-		if (day?.date.toISOString().slice(0, 10) !== item.date.toISOString().slice(0, 10)) days.push((day = { date: item.date, groups: [] }));
+		if (day?.date.toISOString().slice(0, 10) !== item.date.toISOString().slice(0, 10))
+			days.push((day = { date: item.date, groups: [] }));
 		let group = day.groups.find((group) => group.repo === item.repo);
 		if (!group) day.groups.push((group = { repo: item.repo, items: [] }));
 		group.items.push(item);
@@ -81,7 +82,12 @@ export function shape(raw: Raw, now: Date): Activity {
 	const commits = raw.user.repositories.nodes
 		.flatMap((repo) => {
 			const items = (repo.defaultBranchRef?.target.history?.nodes ?? []).map(
-				(commit): Item => ({ repo: repo.name, title: title(commit), url: commit.url, date: new Date(commit.committedDate) }),
+				(commit): Item => ({
+					repo: repo.name,
+					title: title(commit),
+					url: commit.url,
+					date: new Date(commit.committedDate),
+				}),
 			);
 			if (items[0]) heads.set(repo.url.toLowerCase(), items[0].date);
 			return items.filter((item) => item.date.getTime() >= now.getTime() - span);
@@ -107,7 +113,10 @@ export function shape(raw: Raw, now: Date): Activity {
 		days: byDay(commits),
 		pulls,
 		// Map keeps insertion order, newest first, so equal counts stay in recency order.
-		lately: [...counts].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([repo]) => repo),
+		lately: [...counts]
+			.sort((a, b) => b[1] - a[1])
+			.slice(0, 3)
+			.map(([repo]) => repo),
 		latest: (repoUrl) => heads.get(repoUrl.toLowerCase()),
 	};
 }

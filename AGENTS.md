@@ -1,7 +1,7 @@
 # unbeholden.dev
 
 Astro 7 static site, Tailwind 4 via `@tailwindcss/vite`. Bun is the package manager
-(`bun.lock`); `bun run check` type-checks.
+(`bun.lock`); `bun run check` type-checks; `bun run lint` runs Biome, which skips `.astro` files.
 
 Server code reads secrets and upstream URLs from `process.env`, never `import.meta.env`,
 which Vite freezes into the build.

@@ -8,8 +8,7 @@ export const day = new Intl.DateTimeFormat('en-GB', {
 	year: 'numeric',
 }).format;
 
-export const readTime = (minutes: number) =>
-	`${minutes} minute${minutes === 1 ? '' : 's'}`;
+export const readTime = (minutes: number) => `${minutes} minute${minutes === 1 ? '' : 's'}`;
 
 export async function listEntries() {
 	// Loaded on call, so the tests can import this module outside Astro.
@@ -33,6 +32,4 @@ export function articleStats(entry: Pick<CollectionEntry<'entries'>, 'body'>) {
 // Only inside a tag: a root-relative path in the prose itself, such as one quoted in a
 // code sample, is the author's text and stays as written.
 export const absoluteUrls = (html: string, origin: string) =>
-	html.replace(/<[a-z][^>]*>/gi, (tag) =>
-		tag.replace(/(href|src|srcset)="\/(?!\/)/g, `$1="${origin}/`),
-	);
+	html.replace(/<[a-z][^>]*>/gi, (tag) => tag.replace(/(href|src|srcset)="\/(?!\/)/g, `$1="${origin}/`));

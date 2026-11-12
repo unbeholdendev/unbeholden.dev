@@ -26,8 +26,12 @@ export interface Contact {
 }
 
 export async function sendContact(form: FormData, admit: () => Admission, notify: Notify): Promise<Contact> {
-	const name = String(form.get('name') ?? '').trim().slice(0, 100);
-	const email = String(form.get('email') ?? '').trim().slice(0, 254);
+	const name = String(form.get('name') ?? '')
+		.trim()
+		.slice(0, 100);
+	const email = String(form.get('email') ?? '')
+		.trim()
+		.slice(0, 254);
 	const message = String(form.get('message') ?? '').trim();
 	const fields = { name, email, message };
 

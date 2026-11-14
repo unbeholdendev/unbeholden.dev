@@ -1,19 +1,19 @@
 <svg viewBox="0 0 1200 1000" role="img" aria-labelledby="ln-title ln-desc" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono',ui-monospace,monospace" font-size="20" fill="none" stroke-width="1.5">
 <title id="ln-title">One payment to hello@unbeholden.dev, and the one way in to home</title>
-<desc id="ln-desc">A payer's wallet looks up hello@unbeholden.dev and sends GET /.well-known/lnurlp/hello to Giran, the VPS that serves this site. Giran passes the request over the tailnet, managed by Headscale, to lnurl-server at home, with the host that was asked for, unbeholden.dev. lnurl-server, LND and ntfy are at home, which has no ports forwarded; the tailnet link from Giran is the only way requests come in. lnurl-server returns JSON with a callback URL and the amounts it accepts, back through Giran. The wallet calls the callback with an amount, and Giran forwards it over the tailnet. lnurl-server asks LND for a new invoice using an invoice-only macaroon, gets the invoice, posts "invoice created" to ntfy, and hands the invoice back to the wallet through Giran. The wallet pays the invoice over Lightning to LND. LND's invoice stream reports that the invoice settled, lnurl-server posts "paid" to ntfy, and ntfy pushes it to my phone.</desc>
+<desc id="ln-desc">A payer's wallet looks up hello@unbeholden.dev and sends GET /.well-known/lnurlp/hello to Giran, the VPS that serves this site. Giran passes the request over the tailnet, managed by Headscale, to unbeholden-lnurl at home, with the host that was asked for, unbeholden.dev. unbeholden-lnurl, LND and ntfy are at home, which has no ports forwarded; the tailnet link from Giran is the only way requests come in. unbeholden-lnurl returns JSON with a callback URL and the amounts it accepts, back through Giran. The wallet calls the callback with an amount, and Giran forwards it over the tailnet. unbeholden-lnurl asks LND for a new invoice using an invoice-only macaroon, gets the invoice, posts "invoice created" to ntfy, and hands the invoice back to the wallet through Giran. The wallet pays the invoice over Lightning to LND. LND's invoice stream reports that the invoice settled, unbeholden-lnurl posts "paid" to ntfy, and ntfy pushes it to my phone.</desc>
 <rect x="600" y="20" width="590" height="960" rx="4" stroke-dasharray="6 6" style="stroke:var(--faint,#675d51)"/>
 <text x="616" y="48" font-size="18" letter-spacing="0.12em" style="fill:var(--faint,#675d51)">HOME · NO PORTS FORWARDED</text>
 <g style="stroke:var(--fg,#1c1915)">
 <rect x="60" y="70" width="120" height="70" rx="4"/>
 <rect x="400" y="70" width="140" height="70" rx="4"/>
-<rect x="630" y="70" width="180" height="70" rx="4"/>
+<rect x="610" y="70" width="220" height="70" rx="4"/>
 <rect x="850" y="70" width="120" height="70" rx="4"/>
 <rect x="1050" y="70" width="120" height="70" rx="4"/>
 </g>
 <g font-family="Rubik,sans-serif" font-size="24" font-weight="600" text-anchor="middle" style="fill:var(--fg,#1c1915)">
 <text x="120" y="103">Wallet</text>
 <text x="470" y="103">Giran</text>
-<text x="720" y="103">lnurl-server</text>
+<text x="720" y="103">unbeholden-lnurl</text>
 <text x="910" y="103">LND</text>
 <text x="1110" y="103">ntfy</text>
 </g>

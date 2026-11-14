@@ -63,11 +63,11 @@ export const projects: Project[] = [
 		code: 'https://github.com/Musqet/ucp-lightning-spec',
 	},
 	{
-		name: 'lnurl-server',
+		name: 'unbeholden-lnurl',
 		stack: ['Go', 'LND', 'gRPC'],
 		description:
 			'A small Lightning Address server in Go. Payments to you@yourdomain are invoiced by your own LND node.',
-		code: 'https://github.com/unbeholdendev/lnurl-server',
+		code: 'https://github.com/unbeholdendev/unbeholden-lnurl',
 	},
 	{
 		name: 'lnrecc',

@@ -38,6 +38,7 @@ export interface Item {
 	title: string;
 	url: string;
 	date: Date;
+	merged?: boolean;
 }
 
 export interface Group {
@@ -102,6 +103,7 @@ export function shape(raw: Raw, now: Date): Activity {
 				title: pull.title,
 				url: pull.url,
 				date: new Date(pull.mergedAt ?? pull.createdAt),
+				merged: pull.state === 'MERGED',
 			}),
 		)
 		.sort(newestFirst);

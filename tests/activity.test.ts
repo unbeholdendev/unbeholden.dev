@@ -81,7 +81,7 @@ test('commits from the last 14 days group by day, then by repo, newest first', (
 	assert.deepEqual(titles(edge.days.flatMap((day) => day.groups.flatMap((group) => group.items))), ['in']);
 });
 
-test('contributions are open or merged pull requests, newest first, however old', () => {
+test('contributions are open or merged pull requests, marked merged, newest first, however old', () => {
 	const activity = shape(
 		raw(
 			[],
@@ -95,11 +95,11 @@ test('contributions are open or merged pull requests, newest first, however old'
 		now,
 	);
 	assert.deepEqual(
-		activity.pulls.map((item) => [item.title, item.repo, item.date]),
+		activity.pulls.map((item) => [item.title, item.repo, item.date, item.merged]),
 		[
-			['Merged one', 'up/stream', new Date('2026-11-10T00:00:00Z')],
-			['Open one', 'up/stream', new Date('2026-11-08T00:00:00Z')],
-			['Old one', 'up/stream', new Date('2025-06-01T00:00:00Z')],
+			['Merged one', 'up/stream', new Date('2026-11-10T00:00:00Z'), true],
+			['Open one', 'up/stream', new Date('2026-11-08T00:00:00Z'), false],
+			['Old one', 'up/stream', new Date('2025-06-01T00:00:00Z'), true],
 		],
 	);
 	assert.deepEqual(activity.days, []);

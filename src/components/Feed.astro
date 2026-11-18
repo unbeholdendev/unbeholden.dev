@@ -1,5 +1,6 @@
 ---
 import Link from './Link.astro';
+import Merged from './Merged.astro';
 import { shortDate, type Day } from '../lib/activity';
 
 interface Props {
@@ -30,6 +31,7 @@ const row = '-mx-3 px-3 py-3';
 									<span class="text-dim text-meta truncate font-mono">{repo}</span>
 									<span class="text-pretty">
 										{hash(first.url) && <code class="text-dim text-meta mr-2">{hash(first.url)}</code>}
+										{first.merged && <Merged />}
 										<Link href={first.url} class="link after:absolute after:inset-0">{first.title}</Link>
 									</span>
 								</div>
@@ -53,6 +55,7 @@ const row = '-mx-3 px-3 py-3';
 										{[first, ...rest].map((item) => (
 											<li class="text-pretty">
 												{hash(item.url) && <code class="text-dim text-meta mr-2">{hash(item.url)}</code>}
+												{item.merged && <Merged />}
 												<Link href={item.url} class="link">{item.title}</Link>
 											</li>
 										))}

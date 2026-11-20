@@ -3,14 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import Link from '../components/Link.astro';
 import { site } from '../data/site';
 import { MAX_MESSAGE, sendContact } from '../lib/forms';
-import { rateLimit } from '../lib/rate-limit';
+import { contactLimit } from '../lib/rate-limit';
+import { clientIp } from '../lib/client-ip';
 import { push } from '../lib/ntfy';
 
 export const prerender = false;
 
+const client = clientIp(Astro.request, Astro.clientAddress);
 const { state, name, email, message } =
 	Astro.request.method === 'POST'
-		? await sendContact(await Astro.request.formData(), rateLimit, push)
+		? await sendContact(await Astro.request.formData(), () => contactLimit(client), push)
 		: ({ state: 'form', name: '', email: '', message: '' } as const);
 
 if (state === 'failed') Astro.response.status = 400;
@@ -27,7 +29,7 @@ const copy = {
 	},
 	limited: {
 		heading: 'Too many messages right now.',
-		lede: 'The form takes ten messages an hour, and this hour is full. Try again later, or send an email instead.',
+		lede: 'The form takes three messages an hour from each sender, and ten in all. This hour is full. Try again later, or send an email instead.',
 	},
 };
 ---

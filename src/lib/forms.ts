@@ -67,7 +67,7 @@ export async function sendContact(form: FormData, admit: () => Admission, notify
 	return { state: sent ? 'sent' : 'failed', ...fields };
 }
 
-export async function subscribe(form: FormData, notify: Notify) {
+export async function subscribe(form: FormData, admit: () => Admission, notify: Notify) {
 	const email = String(form.get('email') ?? '').trim();
 	if (filledByBot(form)) return { ok: true, email };
 
@@ -76,6 +76,12 @@ export async function subscribe(form: FormData, notify: Notify) {
 	const user = process.env.LISTMONK_API_USER;
 	const token = process.env.LISTMONK_API_TOKEN;
 	if (!email || !upstream || !list || !user || !token) return { ok: false, email };
+
+	const admitted = admit();
+	if (admitted === 'first-over') {
+		void notify({ title: 'Subscribe form rate-limited', message: 'Thirty sign-ups this hour.', tags: ['warning'] });
+	}
+	if (admitted !== 'ok') return { ok: false, limited: true, email };
 
 	try {
 		const sent = await fetch(`${upstream}/api/subscribers`, {

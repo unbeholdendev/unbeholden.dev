@@ -158,23 +158,23 @@ beforeEach(() => {
 });
 
 test('a filled honeypot looks subscribed and calls nothing', async () => {
-	const result = await subscribe(form({ email: 'bot@example.org', website: 'x' }), notify(true));
+	const result = await subscribe(form({ email: 'bot@example.org', website: 'x' }), admit('ok'), notify(true));
 	assert.deepEqual(result, { ok: true, email: 'bot@example.org' });
 	assert.deepEqual([requests, pushed], [[], []]);
 });
 
 test('without an address or any Listmonk setting, nothing is sent', async () => {
-	assert.equal((await subscribe(form({ email: ' ' }), notify(true))).ok, false);
+	assert.equal((await subscribe(form({ email: ' ' }), admit('ok'), notify(true))).ok, false);
 	for (const name of Object.keys(listmonk)) {
 		Object.assign(process.env, listmonk);
 		delete process.env[name];
-		assert.equal((await subscribe(form({ email: 'a@b.c' }), notify(true))).ok, false, name);
+		assert.equal((await subscribe(form({ email: 'a@b.c' }), admit('ok'), notify(true))).ok, false, name);
 	}
 	assert.deepEqual(requests, []);
 });
 
 test('a new subscriber is created in Listmonk and pushed', async () => {
-	const result = await subscribe(form({ email: ' ada@example.org ' }), notify(true));
+	const result = await subscribe(form({ email: ' ada@example.org ' }), admit('ok'), notify(true));
 	assert.deepEqual(result, { ok: true, email: 'ada@example.org' });
 	const [{ url, init }] = requests;
 	assert.equal(url, 'https://lists.internal/api/subscribers');
@@ -192,16 +192,32 @@ test('a new subscriber is created in Listmonk and pushed', async () => {
 
 test('an address already on the list succeeds without a push', async () => {
 	upstream(async () => new Response(null, { status: 409 }));
-	assert.equal((await subscribe(form({ email: 'ada@example.org' }), notify(true))).ok, true);
+	assert.equal((await subscribe(form({ email: 'ada@example.org' }), admit('ok'), notify(true))).ok, true);
 	assert.deepEqual(pushed, []);
 });
 
 test('an upstream error or a timeout fails without a push', async () => {
 	upstream(async () => new Response(null, { status: 500 }));
-	assert.equal((await subscribe(form({ email: 'ada@example.org' }), notify(true))).ok, false);
+	assert.equal((await subscribe(form({ email: 'ada@example.org' }), admit('ok'), notify(true))).ok, false);
 	upstream(async () => {
 		throw new DOMException('The operation timed out.', 'TimeoutError');
 	});
-	assert.equal((await subscribe(form({ email: 'ada@example.org' }), notify(true))).ok, false);
+	assert.equal((await subscribe(form({ email: 'ada@example.org' }), admit('ok'), notify(true))).ok, false);
 	assert.deepEqual(pushed, []);
+});
+
+test('over the limit, nothing reaches Listmonk; the first one over warns once', async () => {
+	const first = await subscribe(form({ email: 'ada@example.org' }), admit('first-over'), notify(true));
+	const later = await subscribe(form({ email: 'bob@example.org' }), admit('over'), notify(true));
+	assert.deepEqual(
+		[first, later],
+		[
+			{ ok: false, limited: true, email: 'ada@example.org' },
+			{ ok: false, limited: true, email: 'bob@example.org' },
+		],
+	);
+	assert.deepEqual(requests, []);
+	assert.deepEqual(pushed, [
+		{ title: 'Subscribe form rate-limited', message: 'Thirty sign-ups this hour.', tags: ['warning'] },
+	]);
 });

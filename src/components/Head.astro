@@ -15,9 +15,21 @@ const { title, description, image, article, profile } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const social = new URL(image.src, Astro.site);
 const websiteId = import.meta.env.UMAMI_WEBSITE_ID;
+const csp = [
+	"default-src 'self'",
+	"script-src 'self' 'unsafe-inline'",
+	"style-src 'self' 'unsafe-inline'",
+	"object-src 'none'",
+	"base-uri 'none'",
+	"form-action 'self'",
+].join('; ');
 ---
 
 <meta charset="utf-8" />
+<!-- Inline scripts need 'unsafe-inline': the server island's script carries a token
+     encrypted afresh on every build, so no hash outlives a deploy. Vite's dev server
+     injects its own scripts and socket, so the policy ships only in the build. -->
+{import.meta.env.PROD && <meta http-equiv="content-security-policy" content={csp} />}
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />

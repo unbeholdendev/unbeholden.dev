@@ -77,13 +77,13 @@ test('only allowlisted headers go upstream and come back', async () => {
 const send = (body: string, headers: Record<string, string> = {}) =>
 	call(POST, 'api/send', new Request('https://unbeholden.dev/u/api/send', { method: 'POST', body, headers }));
 
-test("the payload's ip is the first X-Forwarded-For entry", async () => {
+test("the payload's ip is the last X-Forwarded-For entry, the one the proxy added", async () => {
 	upstream(new Response(null, { status: 204 }));
 	await send(JSON.stringify({ type: 'event', payload: { url: '/', ip: '6.6.6.6' } }), {
-		'x-forwarded-for': ' 1.2.3.4 , 5.6.7.8',
+		'x-forwarded-for': ' 1.2.3.4 , 5.6.7.8 ',
 	});
 	assert.equal(sent[0].init.method, 'POST');
-	assert.deepEqual(JSON.parse(String(sent[0].init.body)), { type: 'event', payload: { url: '/', ip: '1.2.3.4' } });
+	assert.deepEqual(JSON.parse(String(sent[0].init.body)), { type: 'event', payload: { url: '/', ip: '5.6.7.8' } });
 });
 
 test('without X-Forwarded-For the ip is the client address', async () => {

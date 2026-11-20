@@ -3,14 +3,17 @@ import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
 import { subscribe } from '../lib/forms';
 import { push } from '../lib/ntfy';
+import { subscribeLimit } from '../lib/rate-limit';
+import { clientIp } from '../lib/client-ip';
 
 export const prerender = false;
 
 if (Astro.request.method !== 'POST') return Astro.redirect('/', 303);
 
-const { ok, email } = await subscribe(await Astro.request.formData(), push);
+const client = clientIp(Astro.request, Astro.clientAddress);
+const { ok, limited, email } = await subscribe(await Astro.request.formData(), () => subscribeLimit(client), push);
 
-if (!ok) Astro.response.status = 400;
+if (!ok) Astro.response.status = limited ? 429 : 400;
 ---
 
 <Layout title="Subscribe" description="An email when I publish.">

@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { clientIp } from '../../lib/client-ip';
 
 export const prerender = false;
 
@@ -23,7 +24,7 @@ const proxy: APIRoute = async ({ params, request, clientAddress }) => {
 
 	let body: string | undefined;
 	if (request.method === 'POST') {
-		const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || clientAddress;
+		const ip = clientIp(request, clientAddress);
 		const text = await request.text();
 		try {
 			const sent = JSON.parse(text);

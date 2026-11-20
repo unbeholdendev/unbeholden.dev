@@ -12,7 +12,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         # An exact version downloads directly; "latest" asks the GitHub API, which rate-limits the runner's shared IP.
         with:
-          bun-version: 1.4.4
+          bun-version: 1.4.5
       - run: bun install --frozen-lockfile
       - run: bunx biome ci
       - run: bun run check

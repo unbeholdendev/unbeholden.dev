@@ -6,6 +6,14 @@ export type Project = {
 
 export const projects: Project[] = [
 	{
+		name: 'Groat',
+		stack: ['TypeScript', 'React', 'Hono', 'SQLite', 'Bun'],
+		description:
+			'An expense tracker you run yourself. You add an expense in one line, like "ramen 24.50 #friends", and an optional AI can answer questions about your spending.',
+		link: 'https://groat.unbeholden.dev',
+		code: 'https://github.com/unbeholdendev/groat',
+	},
+	{
 		name: 'dotfiles',
 		stack: ['Nix', 'NixOS', 'Home Manager', 'niri'],
 		description:

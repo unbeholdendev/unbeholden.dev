@@ -1,6 +1,6 @@
 ---
 title: The best off-site backup I've found
-date: 2026-11-17
+date: 2026-11-24
 summary: The NAS doesn't help if the house burns down. The off-site copy goes to S3 Glacier Deep Archive, encrypted before it leaves home, for about $0.60 a month.
 topic: Self-hosting
 poster:
